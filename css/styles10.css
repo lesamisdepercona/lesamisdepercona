@@ -1,0 +1,282 @@
+body {
+  margin: 0;
+  font-family: Chivo ;
+  background-color: #cccccc;
+  font-weight: 50;
+   }
+
+
+/* CSS Partial Top */
+
+header{
+  background-color: #157315;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  position: static;
+  
+}
+
+.logo{margin-left: 20px;
+}
+
+   
+@media (max-width: 400px) {
+  .logo {
+   display: none;
+  }
+}
+
+
+header img {
+  width: 125%;
+}
+
+.fab {
+  color: #cccccc;
+}
+
+.social {
+color: black;
+margin-right: 20px;
+margin-bottom: 0 auto;
+position: absolute;
+right: 0;
+}
+
+
+/* CSS Partial Nav */
+.nav {
+height: 75px;
+position: static;
+background-color: #cccccc;
+margin-bottom: 0;
+
+}
+
+.navtop{
+  list-style: none;
+  text-decoration: none;
+  margin: 0px;
+}
+
+
+ul.navtop a {
+  color: rgb(62, 64, 82);
+  background-color: #cccccc;
+  padding: 14px 16px;
+  text-decoration: none;
+  text-transform: capitalize;
+  text-align: center;
+  display: block;
+  float: right;
+  margin: 0px;
+ }
+
+ul.navtop a:hover {
+  color: #ffff;
+  background-color: #535353;
+}
+
+
+/* CSS Partial Home Index */
+
+.photoindex{
+  background-image: url("/img/amisdeperconabkg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgb(30, 212, 236);
+  height:642px ;
+  width: 100%;
+  margin-top: -85px;
+  padding: 0;
+  position: static;
+}
+
+.blogphotoslidearticle{
+  background-image: url("/img/blogphotoslidesingle.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgb(30, 212, 236);
+  background-position: center center;
+  height: 238px; ;
+  width: 100%;
+  margin-top: -85px;
+  padding-top: 0;
+  position: static;
+}
+
+.blogphotoslidelist{
+  background-image: url("/img/blogphotoslidelist.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0px;
+  height: 238px; ;
+  width: 100%;
+  margin-top: -85px;
+  padding-top: 0;
+  position: static;
+}
+
+.slidetitleh1{
+font-family: "Montserrat", "sans-serif";
+color: white;
+text-align: center;
+font-weight: bold;
+font-size: 5rem;
+line-height: 0%;
+padding-top: 250px;
+text-shadow: black;
+}
+   
+@media (max-width: 350px) {
+  .slidetitleh1 {
+   display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .slidetitleh1 {
+  font-size: 2rem;
+  }
+}
+
+
+.slidetitlesinglelisth1{
+  font-family: "Montserrat", "sans-serif";
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 5rem;
+  line-height: 0%;
+  padding-top: 100px;
+  text-shadow: black;
+  }
+
+  @media (max-width: 350px) {
+    .slidetitlesinglelisth1 {
+     display: none;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .slidetitlesinglelisth1 {
+    font-size: 2rem;
+    }
+  }
+  
+
+  .slidetitleh2{
+    font-family: "Roboto", sans-serif;
+     font-weight: bold;
+     color: white;
+     text-align: center;
+     font-size: 2rem;
+     line-height: 0%;
+     }
+   
+   @media (max-width: 350px) {
+     .slidetitleh2 {
+   display: none;
+     }
+   }
+   
+   @media (max-width: 965px) {
+     .slidetitleh2 {
+     font-size: 1rem;
+     }
+   }
+
+
+   
+
+/* CSS Recent Post */
+.home-post {
+  font-family: "Roboto", sans-serif;
+  font-size: small;
+  padding: 25px 25px;
+  margin-top: -25px;
+  position: static;
+  top: 772px;
+  text-align: justify;
+  padding: 50px;
+ }
+
+ /* CSS Single Post */
+.single-post {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  padding: 25px 25px;
+  margin-top: -25px;
+  position: static;
+  top: 772px;
+  text-align: justify;
+ }
+
+/* CSS list template */
+ .listtemplate {
+  padding: 0px 0px;
+  margin-top: -25px;
+  position: static;
+  text-align: justify;
+
+ }
+
+/* CSS Pagination */
+ .pagination{
+margin-left: auto;
+margin-right: auto;
+width: 300px;
+height: 50px;
+display: flex;
+justify-content: space-around;
+list-style: none;
+ }
+
+.pagination a {
+padding-top: 12px;
+width: 50px;
+height: 30px;
+color: rgb(158, 147, 147);
+float: left;
+text-decoration: none;
+border: 2px solid #acafaf;
+text-align: center;
+background-color: #cccccc;
+
+ }
+
+.pagination a:hover {
+width: 50px;
+height: 30px;
+color:white;
+float: left;
+text-decoration: none;
+border: 2px solid #1e1f1f;
+text-align: center;
+background-color: #1e1f1f;
+}
+
+.pagination li:first-child a {
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;
+  }
+
+.pagination li:last-child a  {
+border-top-right-radius: 5px;
+border-bottom-right-radius: 5px;
+  }
+
+/* CSS FOOTER */
+footer {
+  color: white;
+  background-color: #157315;
+  width: 100%;
+  text-align: center;
+  position: static;
+  height: 25px;
+  padding-top: 10px;
+  margin-top: -20px;
+}
+
