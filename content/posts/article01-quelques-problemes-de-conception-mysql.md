@@ -7,7 +7,6 @@ tags = ['mysql']
 Categories = ["Article de Percona"]
 featured_image = "posts/article01/Bad-Design-MySQL-367x205.png"
 slug = "article01-quelques-problemes-de-conception-mysql"
-toc = true
 +++
 
 MySQL dispose certainement plusieurs atouts particuliers, sinon, ce ne serait pas la base de données Open Source la plus populaire au monde (selon [DB-Engines](https://db-engines.com/en/ranking)). Cependant, je vois des décisions ou des comportements qui sont dus à des mauvaises conceptions. Beaucoup d’entre eux reposent sur de nombreux raisonnements historiques et sont peut-être toujours là parce que les ressources allouées au nettoyage du code sont insuffisantes.
