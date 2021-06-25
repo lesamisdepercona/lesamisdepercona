@@ -1,7 +1,7 @@
 +++
 title = "MySQL - Quelques problèmes de conception"
 description = "Quelques problèmes liés à la conception de MySQL"
-author = "Jamko"
+author = "Francis"
 date = 2021-04-08T11:43:01+04:00
 tags = ['mysql']
 Categories = ["Article de Percona"]

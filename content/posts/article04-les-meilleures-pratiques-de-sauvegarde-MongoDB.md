@@ -35,7 +35,9 @@ MongoDB propose ci-dessous l&#39;utilitaire pour effectuer les sauvegardes logiq
 
 **Mongodump** : prend le vidage / sauvegarde des bases de données dans &quot;. bson &quot;qui peut être restauré ultérieurement en rejouant les mêmes instructions logiques capturées dans les fichiers de vidage dans les bases de données.
 
-``` mongodump --host=mongodb1.example.net --port=27017 --username=user --authenticationDatabase=admin --db=demo --collection=events --out=/opt/backup/mongodump-2011-10-24 ```
+```
+mongodump --host=mongodb1.example.net --port=27017 --username=user --authenticationDatabase=admin --db=demo --collection=events --out=/opt/backup/mongodump-2011-10-24
+```
 
 **Remarque** : Si nous ne spécifions pas explicitement le nom de la base de données ou le nom de la collection dans la syntaxe « mongodump » ci-dessus, la sauvegarde sera effectuée pour la base de données entière ou les collections respectivement. Si «autorisation» est activée, nous devons spécifier « authenticationDatabase »
 
