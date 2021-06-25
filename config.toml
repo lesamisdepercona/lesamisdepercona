@@ -1,0 +1,35 @@
+baseURL = "https://www.lesamisdepercona.fr/"
+languageCode = "fr"
+title = "Les amis de Percona"
+theme = "ananke"
+
+
+[params]
+    show_reading_time = true
+    background_color_class = "bg-dark-blue"
+    site_logo = "/img/logo.png"
+    favicon = "/img/favicon.png"
+
+[menu]
+
+  [[menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    url = "/posts/"
+    weight = -110
+
+  [[menu.main]]
+    name = "About Us"
+    url = "/about/"
+    weight = 100
+
+  [[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 200
+
+[sitemap]
+  changefreq = "weekly"
+  filename = "sitemap.xml"
+  priority = 0.5
+
