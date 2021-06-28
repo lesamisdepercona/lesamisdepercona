@@ -1,7 +1,7 @@
 ---
-title: "About Us"
-description: "A few years ago, while visiting or, rather, rummaging about Notre-Dame, the author of this book found, in an obscure nook of one of the towers, the following word, engraved by hand upon the wall: —ANANKE."
+title: "Qui sommes Nous?"
+description: "Les amis de Percona est constitué des utilisateurs de base des données et qui ont eu recours au Percona pour résoudre leur problème. Nous sommes ravis de partager dans ce blog, la version française des articles pour rendre votre base de donnée beaucoup plus performante."
 featured_image: ''
 ---
 
-_The Hunchback of Notre-Dame_ (French: _Notre-Dame de Paris_) is a French Romantic/Gothic novel by Victor Hugo, published in 1831. The original French title refers to Notre Dame Cathedral, on which the story is centered. English translator Frederic Shoberl named the novel The Hunchback of Notre Dame in 1833 because at the time, Gothic novels were more popular than Romance novels in England. The story is set in Paris, France in the Late Middle Ages, during the reign of Louis XI.
+Etablir une base de donnée est indispensable pour les fournisseurs de services afin de mettre en place une politique de fidelisation client. Cette base de donnée peut être à usage interne ou accessible à la clientèle. Il y a rien de plus decevant pour un client qu'un traitement lent ou erronnée de ses données. Cela genère une perte très importante pour toute opération en ligne. Nous avons connu de tel problème dans le passé et nous nous sommes adressés aux experts de Percona pour resoudre nos problemes. Depuis ce temps, nous sommes devenus "les amis de Percona" et nous ésperons que notre partage pourrait vous aider. Notre blog s'adresse à la fois aux cadres d'entreprise et entrepreneurs à la recherche des experts en base de donnée et également aux ingenieurs concepteurs, programmeurs, developpeurs, codeurs, administrateur de base de donnée OpenSource en particulier MySQL, PostgreSQL, MongoDB et MariaB.

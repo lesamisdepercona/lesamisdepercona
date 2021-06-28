@@ -3,7 +3,6 @@ languageCode = "fr"
 title = "Les amis de Percona"
 theme = "ananke"
 
-
 [params]
     show_reading_time = true
     background_color_class = "bg-dark-blue"
@@ -13,13 +12,13 @@ theme = "ananke"
 [menu]
 
   [[menu.main]]
-    identifier = "posts"
-    name = "Posts"
+    identifier = "Articles"
+    name = "Articles"
     url = "/posts/"
-    weight = -110
+    weight = 1
 
   [[menu.main]]
-    name = "About Us"
+    name = "Qui Sommes Nous?"
     url = "/about/"
     weight = 100
 
