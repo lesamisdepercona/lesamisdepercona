@@ -1,6 +1,6 @@
 ---
 title: "Qui sommes Nous?"
-description: "Les amis de Percona est constitué des utilisateurs de base des données et qui ont eu recours au Percona pour résoudre leur problème. Nous sommes ravis de partager dans ce blog, la version française des articles pour rendre votre base de donnée beaucoup plus performante."
+description: "Les amis de Percona est constitué des utilisateurs de base des données qui ont eu recours au Percona pour résoudre leur problème. Nous sommes ravis de partager dans ce blog, la version française des articles pour rendre votre base de donnée beaucoup plus performante."
 featured_image: ''
 ---
 
