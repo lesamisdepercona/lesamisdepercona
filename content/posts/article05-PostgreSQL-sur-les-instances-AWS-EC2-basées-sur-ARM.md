@@ -89,7 +89,7 @@ Nous pourrions voir un gain de performance de **19%** sur ARM.
 | --- | --- |
 | ARM (tps) | 34409 |
 
-![image 01](/images/article05/p05_image01.png)
+![image 01](/posts/article05/p05_image01.png)
 ### Lecture- écriture avec somme de contrôle (Checksum)
 
 Nous étions curieux de savoir si le calcul de la somme de contrôle avait un impact sur les performances en raison de la différence d&#39;architecture si la somme de contrôle de niveau PostgreSQL est activée. Sur PostgreSQL 12 et les versions ultérieures, la somme de contrôle peut être activée à l&#39;aide de l&#39;utilitaire pg\_checksum comme suit :
@@ -103,7 +103,7 @@ pg_checksums -e -D $PGDATA
 | --- | --- |
 | ARM (tps) | 34701 |
 
-![image 02](/images/article05/p05_image02.png)
+![image 02](/posts/article05/p05_image02.png)
 
 À notre grande surprise, les résultats étaient légèrement meilleurs! Comme la différence n&#39;est que de 1,7%, nous considérons cela comme un bruit. Au moins, nous pensons qu&#39;il est acceptable de conclure que l&#39;activation de la somme de contrôle n&#39;entraîne aucune dégradation notable des performances sur ces processeurs modernes.
 
@@ -115,7 +115,7 @@ Les charges en lecture seule devraient être centrées sur le processeur. Étant
 | --- | --- |
 | ARM (tps) | 288867.44 |
 
-![image 03](/images/article05/p05_image03.png)
+![image 03](/posts/article05/p05_image03.png)
 
 Les résultats ont montré un gain de **30%** en tps pour l&#39;ARM par rapport à l&#39;instance x86 .
 
@@ -127,7 +127,7 @@ Nous voulions vérifier si nous pouvions observer un changement de tps si la som
 | --- | --- |
 | ARM (tps) | 279753.1082 |
 
-![image 04](/images/article05/p05_image04.png)
+![image 04](/posts/article05/p05_image04.png)
 
 Les résultats sont très proches du précédent, avec des gains de 26,5%.
 
@@ -150,7 +150,7 @@ Chaque série de tests comportait quelques étapes :
 
 ### En mémoire, 16 threads :
 
-![image 05](/images/article05/p05_image05.png)
+![image 05](/posts/article05/p05_image05.png)
 
 Avec cette charge modérée, l&#39;instance ARM affiche des performances environ **15,5%** meilleures que l&#39;instance x86. Ici et après, la différence en pourcentage est basée sur la valeur moyenne du tps.
 
@@ -158,25 +158,25 @@ Vous vous demandez peut-être pourquoi il y a une baisse soudaine des performanc
 
 ### En mémoire , 32 threads :
 
-![image 06](/images/article05/p05_image06.png)
+![image 06](/posts/article05/p05_image06.png)
 
 Lorsque la simultanéité est passée à 32, la différence de performances a été réduite à près de **8 %**.
 
 ### En mémoire, 64 threads :
 
-![image 07](/images/article05/p05_image07.png)
+![image 07](/posts/article05/p05_image07.png)
 
 En poussant les instances près de leur point de saturation (rappelez-vous, les deux sont des instances à 32 processeurs), nous voyons la différence se réduire encore à **4,5%**.
 
 ### En mémoire , 128 threads :
 
-![image 08](/images/article05/p05_image08.png)
+![image 08](/posts/article05/p05_image08.png)
 
 Lorsque les deux instances ont dépassé leur point de saturation, la différence de performances devient négligeable, bien qu&#39;elle soit toujours là à **1,4%.** De plus, nous avons pu observer une baisse de **6 à 7%** du débit ( tps ) pour ARM et une baisse de **4%** pour x86 en cas de concurrence augmenté de 64 à 128 sur ces 32 machines vCPU.
 
 Tout ce que nous avons mesuré n&#39;est pas favorable à l&#39;instance basée sur Graviton2. Dans les tests liés aux E/S (ensemble de données ~ 200G, 200 entrepôts, distribution uniforme), nous avons vu moins de différence entre les deux instances, et à 64 et 128 threads, l&#39;instance m5d standard a mieux fonctionné. Vous pouvez le voir sur les graphiques combinés ci-dessous.
 
-![image 09](/images/article05/p05_image09.png)
+![image 09](/posts/article05/p05_image09.png)
 
 Une raison possible à cela, en particulier l&#39;effondrement important à 128 threads pour m6gd.8xlarge, est qu&#39;il lui manque le deuxième lecteur que m5d.8xlarge possède. Il n&#39;y a actuellement aucun couple d&#39;instances parfaitement comparables disponibles, nous considérons donc cela comme une comparaison équitable; chaque type d&#39;instance a un avantage. Davantage de tests et de profils sont nécessaires pour identifier correctement la cause, car nous nous attendions à ce que les disques locaux affectent de manière négligeable les tests. Des tests liés aux E/S avec EBS peuvent potentiellement être effectués pour essayer de supprimer les disques locaux de l&#39;équation.
 
