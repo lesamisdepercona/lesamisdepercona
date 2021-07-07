@@ -309,4 +309,4 @@ Pour les systèmes très volumineux, c&#39;est-à-dire une fois que vous avez at
 
 **_Telecharger gratuitement [Percona Backup pour MongoDB](https://www.percona.com/software/mongodb/percona-backup-for-mongodb) si vous souhaitez l&#39;essayer_**
 
-_Page source : https://www.percona.com/blog/2020/09/18/mongodb-backup-best-practices/_
+_Page source : https://www.percona.com/blog/2020/09/18/mongodb-backup-best-practices/
