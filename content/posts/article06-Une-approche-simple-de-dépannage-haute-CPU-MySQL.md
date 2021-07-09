@@ -1,6 +1,6 @@
 +++
-title = "Une approche simple de dépannage usage elevé de CPU sur MySQL"
-description = "Une approche simple de dépannage usage elevé de CPU sur MySQL par Par Juan Arruti et Leonardo Bacchi Fernandes"
+title = "Une approche simple de dépannage : usage elevé de CPU sur MySQL"
+description = "Une approche simple de dépannage : usage elevé de CPU sur MySQL par Juan Arruti et Leonardo Bacchi Fernandes"
 author = "Francis"
 date = 2021-07-09T11:43:01+04:00
 tags = ['MySQL']
