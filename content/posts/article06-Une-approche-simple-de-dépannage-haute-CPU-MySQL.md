@@ -24,7 +24,7 @@ Pour résoudre les problèmes de CPU, nous pouvons utiliser plusieurs outils, te
 
 La commande est pidstat -t -p \&lt; mysqld\_pid \&gt; 1 :   
 
-``
+```
 shell> pidstat -t -p 31258 1
 03:31:06 PM   UID      TGID       TID    %usr %system  %guest    %CPU   CPU  Command
 [...]
@@ -47,11 +47,11 @@ shell> pidstat -t -p 31258 1
 03:31:07 PM 10014         -      4282    4.00    1.00    0.00    5.00     2  |__mysqld
 03:31:07 PM 10014         -     35261    0.00    0.00    0.00    0.00     4  |__mysqld
 03:31:07 PM 10014         -     36153    0.00    0.00    0.00    0.00     5  |__mysqld
-``
+```
 
 Nous pouvons voir que le thread 32053 consomme le plus de CPU de loin, et nous nous sommes assurés de vérifier que la consommation est constante sur plusieurs échantillons de pidstat . En utilisant ces informations, nous pouvons nous connecter à la base de données et utiliser la requête suivante pour savoir quel thread MySQL est le fautif:  
 
-``
+```
 mysql > select * from performance_schema.threads where THREAD_OS_ID = 32053 \G
 *************************** 1. row ***************************
           THREAD_ID: 686
@@ -72,11 +72,11 @@ PROCESSLIST_COMMAND: Query
     CONNECTION_TYPE: SSL/TLS
        THREAD_OS_ID: 32053
 1 row in set (0.00 sec)
-``
+```
 
 C&#39;est parti ! Nous savons maintenant que la consommation élevée du processeur provient d&#39;une requête dans la table joinit , exécutée par l&#39;utilisateur msandbox depuis localhost dans le test de la base de données. En utilisant ces informations, nous pouvons dépanner la requête et vérifier le plan d&#39;exécution avec la commande EXPLAIN pour voir s&#39;il y a place à amélioration.  
 
-``
+```
 mysql > explain select * from test.joinit where b = 'a a eveniet ut.' \G
 *************************** 1. row ***************************
            id: 1
@@ -92,19 +92,19 @@ possible_keys: NULL
      filtered: 10.00
         Extra: Using where
 1 row in set, 1 warning (0.00 sec)
-``
+```
 
 Dans ce cas, c&#39;était un simple index qui manquait !  
 
-``
+```
 mysql > alter table test.joinit add index (b) ;
 Query OK, 0 rows affected (15.18 sec)
 Records: 0  Duplicates: 0  Warnings: 0
-``
+```
 
 Après avoir créé l&#39;index, nous ne voyons plus de pics de processeur :  
 
-``
+```
 shell> pidstat -t -p 31258 1
 03:37:53 PM   UID      TGID       TID    %usr %system  %guest    %CPU   CPU  Command
 [...]
@@ -127,7 +127,7 @@ shell> pidstat -t -p 31258 1
 03:37:54 PM 10014         -      4282   25.00    6.00    0.00   31.00    10  |__mysqld
 03:37:54 PM 10014         -     35261    0.00    0.00    0.00    0.00     4  |__mysqld
 03:37:54 PM 10014         -     36153    0.00    0.00    0.00    0.00     5  |__mysqld
-``
+```
 
 Pourquoi ne pas utiliser cette approche pour résoudre les problèmes d&#39;E/S et de mémoire ?
 
