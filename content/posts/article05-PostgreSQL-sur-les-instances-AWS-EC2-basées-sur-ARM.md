@@ -22,37 +22,38 @@ Pour ce test, nous avons sélectionné deux instances similaires. L&#39;un est l
 Spécifications et tarification à la demande des instances selon les [informations de tarification AWS](https://aws.amazon.com/ec2/pricing/on-demand/) pour Linux dans la région de Virginie du Nord. Avec les prix actuellement affichés, m6gd.8xlarge est 25% moins cher.
 
 ##### Instance Graviton2 (ARM)
-`` Instance : m6gd.8xlarge 	
+```
+Instance : m6gd.8xlarge 	
 Virtual CPUs : 32
 RAM  : 128 GiB 	
 Storage : 1 x 1900 NVMe SSD (1.9 TiB)
 Price : $1.4464 per Hour
-``
+```
 ##### Instance Régulière (x86)
-``
+```
 Instance : m5d.8xlarge
 Virtual CPUs : 32
 RAM : 128 GiB
 Storage : 2 x 600 NVMe SSD (1.2 TiB)
 Price : $1.808 per Hour
-``
+```
 ### Configuration du système d&#39;exploitation (OS) et de PostgreSQL
 
 Nous avons sélectionné les AMI Ubuntu 20.04.1 LTS pour les instances et n&#39;avons rien changé du côté du système d&#39;exploitation. Sur l&#39;instance m5d.8xlarge, deux disques NVMe locaux ont été unifiés dans un seul périphérique raid0. PostgreSQL a été installé à l&#39;aide de .deb disponibles dans le repository PGDG.
 
 La chaîne de version de PostgreSQL confirme l&#39;architecture du système d&#39;exploitation
-``
+```
 postgres=# select version();
                                                                 version                                                                 
 ----------------------------------------------------------------------------------------------------------------------------------------
  PostgreSQL 13.1 (Ubuntu 13.1-1.pgdg20.04+1) on aarch64-unknown-linux-gnu, compiled by gcc (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0, 64-bit
 (1 row)
-``
+```
 
 \*\* aarch64 signifie architecture ARM 64 bits
 
 La configuration PostgreSQL suivante a été utilisée pour les tests.
-``
+```
 max_connections = '200'
 shared_buffers = '32GB'
 checkpoint_timeout = '1h'
@@ -69,14 +70,14 @@ bgwriter_lru_multiplier = '10.0'
 wal_compression = 'ON'
 log_checkpoints = 'ON'
 log_autovacuum_min_duration = '0'
-``
+```
 
 ## Tests pgbench
 
 Tout d&#39;abord, une première série de tests est effectuée à l&#39;aide de pgbench, l&#39;outil de micro-benchmarking disponible avec PostgreSQL. Cela nous permet de tester avec une combinaison différente d&#39;un certain nombre de clients et d&#39;emplois comme :
-``
+```
 pgbench -c 16 -j 16 -T 600 -r
-``
+```
 Où 16 connexions client et 16 tâches pgbench alimentant les connexions client sont utilisées.
 
 ### Lecture-écriture sans somme de contrôle (Checksum)
@@ -94,9 +95,9 @@ Nous pourrions voir un gain de performance de **19%** sur ARM.
 
 Nous étions curieux de savoir si le calcul de la somme de contrôle avait un impact sur les performances en raison de la différence d&#39;architecture si la somme de contrôle de niveau PostgreSQL est activée. Sur PostgreSQL 12 et les versions ultérieures, la somme de contrôle peut être activée à l&#39;aide de l&#39;utilitaire pg\_checksum comme suit :
 
-``
+```
 pg_checksums -e -D $PGDATA
-``
+```
 
 
 | x86 (tps) | 29402 |
