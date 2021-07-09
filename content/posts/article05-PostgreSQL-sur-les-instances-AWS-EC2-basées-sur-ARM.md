@@ -9,7 +9,7 @@ featured_image = ""
 slug = "PostgreSQL-sur-les-instances-AWS-EC2-basées-sur-ARM"
 +++
 
-La croissance attendue des processeurs ARM dans les centres de données est au centre de sujet de discussion depuis un certain temps, et nous étions curieux de voir comment cela fonctionnait avec PostgreSQL. La disponibilité générale des serveurs basés sur ARM pour les tests et l&#39;évaluation était un obstacle majeur. Le brise-glace a eu lieu lorsqu&#39;AWS a [annoncé son offre de processeurs basés sur ARM](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://aws.amazon.com/about-aws/whats-new/2018/11/introducing-amazon-ec2-a1-instances/) dans son cloud en 2018. Mais nous n&#39;avons pas pu voir beaucoup d&#39;enthousiasme dans l&#39;immédiat, car beaucoup considéraient qu&#39;il s&#39;agissait de choses plus «expérimentales». Nous étions également prudents quant à sa recommandation pour une utilisation critique et n&#39;avons jamais fait assez d&#39;efforts pour l&#39;évaluer. Mais lorsque la deuxième génération d&#39;[instances basées sur Graviton2 a été annoncée en mai 2020](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://aws.amazon.com/blogs/aws/new-m6g-ec2-instances-powered-by-arm-based-aws-graviton2/), nous l&#39;avions considéré davantage. Nous avons décidé de jeter un regard indépendant sur le rapport prix/performances des nouvelles instances du point de vue de l&#39;exécution de PostgreSQL.
+La croissance attendue des processeurs ARM dans les centres de données est au centre de sujet de discussion depuis un certain temps, et nous étions curieux de voir comment cela fonctionnait avec PostgreSQL. La disponibilité générale des serveurs basés sur ARM pour les tests et l&#39;évaluation était un obstacle majeur. Le brise-glace a eu lieu lorsqu&#39;AWS a [annoncé son offre de processeurs basés sur ARM](https://aws.amazon.com/about-aws/whats-new/2018/11/introducing-amazon-ec2-a1-instances/) dans son cloud en 2018. Mais nous n&#39;avons pas pu voir beaucoup d&#39;enthousiasme dans l&#39;immédiat, car beaucoup considéraient qu&#39;il s&#39;agissait de choses plus «expérimentales». Nous étions également prudents quant à sa recommandation pour une utilisation critique et n&#39;avons jamais fait assez d&#39;efforts pour l&#39;évaluer. Mais lorsque la deuxième génération d&#39;[instances basées sur Graviton2 a été annoncée en mai 2020](https://aws.amazon.com/blogs/aws/new-m6g-ec2-instances-powered-by-arm-based-aws-graviton2/), nous l&#39;avions considéré davantage. Nous avons décidé de jeter un regard indépendant sur le rapport prix/performances des nouvelles instances du point de vue de l&#39;exécution de PostgreSQL.
 
 **Important** : Notez que même s&#39;il est tentant d&#39;appeler cette comparaison de PostgreSQL sur x86 vs arm, ce ne serait pas correct. Ces tests comparent PostgreSQL sur deux instances de cloud virtuel, et cela inclut bien plus de pièces mobiles qu&#39;un simple processeur. Nous nous concentrons principalement sur le rapport qualité-prix de deux instances AWS EC2 particulières basées sur deux architectures différentes.
 
@@ -19,7 +19,7 @@ Pour ce test, nous avons sélectionné deux instances similaires. L&#39;un est l
 
 ### Instances
 
-Spécifications et tarification à la demande des instances selon les [informations de tarification AWS](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://aws.amazon.com/ec2/pricing/on-demand/) pour Linux dans la région de Virginie du Nord. Avec les prix actuellement affichés, m6gd.8xlarge est 25% moins cher.
+Spécifications et tarification à la demande des instances selon les [informations de tarification AWS](https://aws.amazon.com/ec2/pricing/on-demand/) pour Linux dans la région de Virginie du Nord. Avec les prix actuellement affichés, m6gd.8xlarge est 25% moins cher.
 
 ##### Instance Graviton2 (ARM)
 `` Instance : m6gd.8xlarge 	
@@ -139,7 +139,7 @@ _PostgreSQL calcule et écrit la somme de contrôle des pages lorsqu&#39;elles s
 
 ## Test avec sysbench-tpcc
 
-Nous avons décidé d&#39;effectuer des tests plus détaillés en utilisant [sysbench-tpcc](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://github.com/Percona-Lab/sysbench-tpcc) . Nous nous sommes principalement intéressés au cas où la base de données s&#39;insère dans la mémoire. En passant, alors que PostgreSQL sur le serveur arm n&#39;a montré aucun problème, sysbench était beaucoup plus capricieux que celui de x86.
+Nous avons décidé d&#39;effectuer des tests plus détaillés en utilisant [sysbench-tpcc](https://github.com/Percona-Lab/sysbench-tpcc) . Nous nous sommes principalement intéressés au cas où la base de données s&#39;insère dans la mémoire. En passant, alors que PostgreSQL sur le serveur arm n&#39;a montré aucun problème, sysbench était beaucoup plus capricieux que celui de x86.
 
 Chaque série de tests comportait quelques étapes :
 
@@ -180,7 +180,7 @@ Tout ce que nous avons mesuré n&#39;est pas favorable à l&#39;instance basée 
 
 Une raison possible à cela, en particulier l&#39;effondrement important à 128 threads pour m6gd.8xlarge, est qu&#39;il lui manque le deuxième lecteur que m5d.8xlarge possède. Il n&#39;y a actuellement aucun couple d&#39;instances parfaitement comparables disponibles, nous considérons donc cela comme une comparaison équitable; chaque type d&#39;instance a un avantage. Davantage de tests et de profils sont nécessaires pour identifier correctement la cause, car nous nous attendions à ce que les disques locaux affectent de manière négligeable les tests. Des tests liés aux E/S avec EBS peuvent potentiellement être effectués pour essayer de supprimer les disques locaux de l&#39;équation.
 
-Plus de détails sur la configuration de test, les résultats des tests, des scripts utilisés, et les données générées au cours de l&#39;essai sont disponibles sur [ce](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://github.com/arronax/scratch/tree/master/performance/graviton2-postgres)[GitHub](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://github.com/arronax/scratch/tree/master/performance/graviton2-postgres)[repo](https://translate.google.com/translate?hl=en&amp;prev=_t&amp;sl=en&amp;tl=fr&amp;u=https://github.com/arronax/scratch/tree/master/performance/graviton2-postgres) .
+Plus de détails sur la configuration de test, les résultats des tests, des scripts utilisés, et les données générées au cours de l&#39;essai sont disponibles sur [ce](https://github.com/arronax/scratch/tree/master/performance/graviton2-postgres)[GitHub](https://github.com/arronax/scratch/tree/master/performance/graviton2-postgres)[repo](https://github.com/arronax/scratch/tree/master/performance/graviton2-postgres) .
 
 ### Résumé
 
