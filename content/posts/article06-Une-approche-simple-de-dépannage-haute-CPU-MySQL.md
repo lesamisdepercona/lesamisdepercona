@@ -23,7 +23,7 @@ Utilisons un exemple :
 Pour résoudre les problèmes de CPU, nous pouvons utiliser plusieurs outils, tels que top ou pidstat (nécessite le package sysstat ). Dans l&#39;exemple suivant, nous utiliserons pidstat . L&#39;outil a une option (-t) qui change sa vue de processus (la valeur par défaut) en threads, où il affiche les threads associés au sein d&#39;un processus donné. Nous pouvons l&#39;utiliser pour savoir quel thread consomme le plus de CPU sur notre serveur. Ajout du paramètre -p avec l&#39;identifiant du processus mysql afin que l&#39;outil n&#39;affiche que les threads MySQL, ce qui nous permet de résoudre plus facilement les problèmes. Le dernier paramètre (1) est d&#39;afficher un échantillon par seconde :
 
 La commande est pidstat -t -p \&lt; mysqld\_pid \&gt; 1 :   
-
+--
 ```
 shell> pidstat -t -p 31258 1
 03:31:06 PM   UID      TGID       TID    %usr %system  %guest    %CPU   CPU  Command
@@ -48,7 +48,7 @@ shell> pidstat -t -p 31258 1
 03:31:07 PM 10014         -     35261    0.00    0.00    0.00    0.00     4  |__mysqld
 03:31:07 PM 10014         -     36153    0.00    0.00    0.00    0.00     5  |__mysqld
 ```
-
+--
 Nous pouvons voir que le thread 32053 consomme le plus de CPU de loin, et nous nous sommes assurés de vérifier que la consommation est constante sur plusieurs échantillons de pidstat . En utilisant ces informations, nous pouvons nous connecter à la base de données et utiliser la requête suivante pour savoir quel thread MySQL est le fautif:  
 
 ```
