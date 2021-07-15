@@ -10,11 +10,11 @@ slug = "gestion-des-valeurs-null-dans-postgresql"
 +++
 
 
-Qu'est-ce que NULL ?
+** Qu'est-ce que NULL ? **
 
 Il y a souvent une certaine confusion à propos de la valeur NULL, car elle est traitée différemment dans différents langages. Il y a donc un besoin évident de clarifier ce qu'est NULL, comment cela fonctionne dans différentes langages et quelle est la valeur réelle derrière le NULL. Avant d'entrer dans les détails, il est également nécessaire de comprendre le concept de logique à trois valeurs [1] et de logique à deux valeurs dite bivalente[2]. Le bivalent est un concept de valeur booléenne où la valeur peut être vraie ou fausse, mais contrairement au bivalent, la logique à trois valeurs peut être vraie, fausse ou (valeur intermédiaire) inconnue. Maintenant, revenons à NULL. Dans certains langages, NULL agit comme bivalent, et dans d'autres, la logique à trois valeurs (en particulier dans les bases de données).
 
-C/C++
+** C/C++ **
 
 Dans « C/C++ », le NULL est défini comme 0 dans le « stddef.h » qui est inclus `<cstddef>` dans le cas de C++ et stdlib.h dans le cas de C.
 ```
@@ -51,7 +51,7 @@ void main()
 ```
 Le output du programme ci-dessus sera "NULL est 0", il est donc tout à fait évident que NULL est défini comme "0" en langage C.
 
-Java
+** Java **
 
 Contrairement à C où NULL vaut 0, en Java, NULL signifie que les références de variables ont une valeur. La valeur peut être testée par rapport à NULL par des opérateurs d'égalité. Lorsque nous imprimons la valeur nulle, il imprimera la valeur nulle. En Java, null est sensible à la casse et il doit être en minuscules comme "null".
 
@@ -66,7 +66,7 @@ public class Test
 Null is: null
 ```
 
-PostgreSQL
+** PostgreSQL **
 
 Dans PostgreSQL , NULL signifie aucune valeur. En d'autres termes, la colonne NULL n'a aucune valeur. Il n'est pas égal à 0, à une chaîne vide ou à des espaces. La valeur NULL ne peut pas être testée à l'aide d'un opérateur d'égalité tel que "=" "!=" etc. Il existe des instructions spéciales pour tester la valeur par rapport à NULL, mais à part cela, aucune instruction ne peut être utilisée pour tester la valeur NULL.
 
@@ -123,11 +123,11 @@ postgres=# SELECT NULL * 10 is NULL result;
  t
 (1 row)
 ```
-Comment utiliser NULL
+** Comment utiliser NULL **
 
 Par conséquent, il est prouvé que NULL ne peut être comparé à aucune valeur utilisant des opérateurs d'égalité. Alors comment pouvons-nous utiliser le NULL si nous ne pouvons pas utiliser d'opérateur ou d'opération mathématique ? PostgreSQL fournit des instructions et des fonctions spéciales pour vérifier et tester les valeurs par rapport à NULL. Il existe un seul moyen d'utiliser le NULL dans PostgreSQL .
 
-EST NULL/N'EST PAS NULL
+** EST NULL/N'EST PAS NULL **
 
 Utilisation de Comparaison NULL
 ```
@@ -147,14 +147,14 @@ postgres=# SELECT NULL is NOT NULL result;
 (1 row)
 ```
 
-COALESCE
+** COALESCE **
 
 PostgreSQL a un nom de fonction « COALESCE » [3]. La fonction prend n nombre d'arguments et renvoie les premiers arguments, non nuls. Vous pouvez tester votre expression par rapport à NULL en utilisant la fonction.
 ```
  COALESCE (NULL, 2 , 1);
 ```
 
-NULLIF
+** NULLIF **
 
 Il existe une autre fonction appelée « NULLIF »[3], renvoie NULL si le premier et le deuxième arguments sont égaux, sinon renvoie le premier argument. Voici l'exemple où nous comparons 10 avec 10 et nous savons déjà qu'ils sont égaux, donc cela renvoie NULL. Dans le deuxième exemple, nous comparons 10 avec 100 et dans ce cas, il renverra 10 la première valeur.
 
@@ -173,7 +173,7 @@ nullif
 (1 row)
 ```
 
-Utilisation de NULL
+** Utilisation de NULL **
 
 Si NULL n'a aucune valeur, alors quel est l'avantage de NULL ? Voici quelques exemples de son utilisation:
 
@@ -251,7 +251,7 @@ postgres=# SELECT * FROM students_mark WHERE marks = 0;
 (1 row)
 ```
 
-Conclusion
+** Conclusion **
 
 Le but de ce blog est d'être clair sur le fait que chaque langue a sa propre signification de NULL. Par conséquent, soyez prudent lorsque vous utilisez NULL, sinon vous obtiendrez des résultats erronés. Dans les bases de données ( PostgreSQL ), NULL a des concepts différents, alors soyez prudent lorsque vous écrivez des requêtes impliquant NULL.
 
