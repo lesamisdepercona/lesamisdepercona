@@ -6,7 +6,7 @@ date = 2021-07-22T11:43:01+04:00
 tags = ['PostgreSQL']
 Categories = ["Article de Percona"]
 featured_image = "posts/article08/image01.png"
-slug = "gestion-des-valeurs-null-dans-postgresql"
+slug = "solutions-de-replication-multi-maitres-pour-postgresql"
 +++
 
 **Solutions de réplication multi-master pour PostgreSQL**
