@@ -1,15 +1,15 @@
-﻿+++
-title = "Solutions de réplication multi-master pour PostgreSQL"
-description = "Traduit à partir de l'article de Ibrar Ahmed intitulé, Multi-Master Replication Solutions for PostgreSQL, disponible sur le blog de Percona"
++++
+title = "Solutions de réplication multi-source pour PostgreSQL"
+description = "Traduit à partir de l'article de Ibrar Ahmed intitulé, Multi-Source Replication Solutions for PostgreSQL, disponible sur le blog de Percona"
 author = "Francis"
 date = 2021-07-22T11:43:01+04:00
 tags = ['PostgreSQL']
 Categories = ["Article de Percona"]
 featured_image = "posts/article08/image01.png"
-slug = "solutions-de-replication-multi-maitres-pour-postgresql"
+slug = "solutions-de-replication-multi-sources-pour-postgresql"
 +++
 
-**Solutions de réplication multi-master pour PostgreSQL**
+**Solutions de réplication multi-source pour PostgreSQL**
 
 Par [Ibrar Ahmed](https://www.percona.com/blog/author/ibrar-ahmed/)
 
@@ -17,7 +17,7 @@ En raison de l'immense génération de données, l’évolutivité est devenue l
 
 En raison du coût du matériel et de la limite d’ajout du nouveau matériel dans le nœud existant, il n’est pas toujours possible d’ajouter du nouveau matériel. Par conséquent, une évolutivité horizontale est requise, ce qui signifie ajouter plus de nœuds aux nœuds de réseau existants au lieu d’améliorer la capacité du nœud existant.
 
-Contrairement à l’évolutivité verticale, l’évolutivité horizontale est difficile à mettre en œuvre. Il demande plus d’efforts de développement et demande plus de travail de mise en place. PostgreSQL fournit un ensemble de fonctionnalités assez riche pour l’évolutivité verticale et l’évolutivité horizontale. Il prend en charge les machines avec plusieurs processeurs et beaucoup de mémoire et fournit des paramètres de configuration pour gérer l’utilisation de ces ressources. Les nouvelles fonctionnalités de parallélisme de PostgreSQL rendent l’évolutivité verticale plus importante, mais elle ne manque pas non plus d’évolutivité horizontale. La réplication est le pilier crucial de l’évolutivité horizontale, et PostgreSQL prend en charge la réplication maître-esclave unidirectionnelle, ce qui est suffisant pour de nombreux cas d’utilisation.
+Contrairement à l’évolutivité verticale, l’évolutivité horizontale est difficile à mettre en œuvre. Il demande plus d’efforts de développement et demande plus de travail de mise en place. PostgreSQL fournit un ensemble de fonctionnalités assez riche pour l’évolutivité verticale et l’évolutivité horizontale. Il prend en charge les machines avec plusieurs processeurs et beaucoup de mémoire et fournit des paramètres de configuration pour gérer l’utilisation de ces ressources. Les nouvelles fonctionnalités de parallélisme de PostgreSQL rendent l’évolutivité verticale plus importante, mais elle ne manque pas non plus d’évolutivité horizontale. La réplication est le pilier crucial de l’évolutivité horizontale, et PostgreSQL prend en charge la réplication source-esclave unidirectionnelle, ce qui est suffisant pour de nombreux cas d’utilisation.
 
 Concepts clés
 
@@ -27,39 +27,39 @@ La réplication de base de données réplique les données sur d’autres serveu
 
 **Réplication synchrone**
 
-Il existe deux stratégies lors de l’écriture des données sur le disque, **synchrone** et **asynchrone.** La réplication synchrone signifie que les données sont écrites simultanément sur le maître et l’esclave, en d’autres termes, la « réplication synchrone » signifie que la validation attend l’écriture/le vidage du côté distant. La réplication synchrone est utilisée dans l’environnement transactionnel haut de gamme avec des exigences de basculement instantané.
+Il existe deux stratégies lors de l’écriture des données sur le disque, **synchrone** et **asynchrone.** La réplication synchrone signifie que les données sont écrites simultanément sur le source et l’esclave, en d’autres termes, la « réplication synchrone » signifie que la validation attend l’écriture/le vidage du côté distant. La réplication synchrone est utilisée dans l’environnement transactionnel haut de gamme avec des exigences de basculement instantané.
 
 **Réplication asynchrone**
 
-Asynchrone signifie que les données sont d’abord écrites sur le maître, puis répliquées sur l’esclave. En cas de panne, une perte de données peut se produire, mais la réplication asynchrone fournit très peu de surcharge et est donc acceptable dans la plupart des cas. Cela ne surcharge pas le maître. Le basculement du primaire au secondaire prend plus de temps qu’avec la réplication synchrone.
+Asynchrone signifie que les données sont d’abord écrites sur le source, puis répliquées sur l’esclave. En cas de panne, une perte de données peut se produire, mais la réplication asynchrone fournit très peu de surcharge et est donc acceptable dans la plupart des cas. Cela ne surcharge pas le source. Le basculement du primaire au secondaire prend plus de temps qu’avec la réplication synchrone.
 
-En un mot, la principale différence entre synchrone et asynchrone réside dans le moment où les données sont écrites sur le maître et l’esclave.
+En un mot, la principale différence entre synchrone et asynchrone réside dans le moment où les données sont écrites sur le source et l’esclave.
 
-**Réplication maître (Master) unique**
+**Réplication source (Source) unique**
 
-La réplication maître unique signifie que les données ne peuvent être modifiées que sur un seul nœud, et ces modifications sont répliquées sur un ou plusieurs nœuds. La mise à jour et l’insertion des données ne sont possibles que sur le nœud maître. Dans ce cas, les applications nécessitent d’acheminer le trafic vers le maître, ce qui ajoute une certaine complexité à l’application. En raison des maîtres uniques, il n’y a aucune chance de conflits. La plupart du temps, la réplication à maître unique est suffisante pour l’application car elle est moins compliquée à configurer et à gérer. Mais dans certains cas, la réplication à maître unique ne suffit pas et vous avez besoin d’une réplication à maîtres multiples.
+La réplication source unique signifie que les données ne peuvent être modifiées que sur un seul nœud, et ces modifications sont répliquées sur un ou plusieurs nœuds. La mise à jour et l’insertion des données ne sont possibles que sur le nœud source. Dans ce cas, les applications nécessitent d’acheminer le trafic vers la source, ce qui ajoute une certaine complexité à l’application. En raison des sources uniques, il n’y a aucune chance de conflits. La plupart du temps, la réplication à source unique est suffisante pour l’application car elle est moins compliquée à configurer et à gérer. Mais dans certains cas, la réplication à source unique ne suffit pas et vous avez besoin d’une réplication à sources multiples.
 
-**Réplication multimaître (multimaster)**
+**Réplication multisource**
 
-Les réplications multi-maîtres signifient qu’il y a plus d’un nœud qui fait office de nœuds maîtres. Les données sont répliquées entre les nœuds et les mises à jour et l’insertion peut être possible sur un groupe de nœuds maîtres. Dans ce cas, il existe plusieurs copies des données. Le système est également responsable de la résolution de tout conflit survenant entre des modifications simultanées. Il y a deux raisons principales d’avoir une réplication à plusieurs maîtres : l’un est HA, et le second est la performance. Dans la plupart des cas, certains nœuds sont dédiés à l’opération d’écriture intensive et certains nœuds sont dédiés à certains nœuds ou pour le basculement.
+Les réplications multi-sources signifient qu’il y a plus d’un nœud qui fait office de nœuds sources. Les données sont répliquées entre les nœuds et les mises à jour et l’insertion peut être possible sur un groupe de nœuds sources. Dans ce cas, il existe plusieurs copies des données. Le système est également responsable de la résolution de tout conflit survenant entre des modifications simultanées. Il y a deux raisons principales d’avoir une réplication à plusieurs sources : l’un est HA, et le second est la performance. Dans la plupart des cas, certains nœuds sont dédiés à l’opération d’écriture intensive et certains nœuds sont dédiés à certains nœuds ou pour le basculement.
 
-Voici les avantages et les inconvénients de la réplication multi-maîtres
+Voici les avantages et les inconvénients de la réplication multi-sources
 
 **Avantages:**
 
-- En cas de défaillance d’un maître, l’autre maître est là pour effectuer la mise à jour et l’insertion.
-- Les nœuds maîtres sont situés à plusieurs endroits différents, de sorte que les risques de défaillance de tous les maîtres sont très minimes.
+- En cas de défaillance d’une source, l’autre source est là pour effectuer la mise à jour et l’insertion.
+- Les nœuds sources sont situés à plusieurs endroits différents, de sorte que les risques de défaillance de toutes les sources sont très minimes.
 - Les mises à jour des données sont possibles sur plusieurs serveurs.
-- L’application ne nécessite pas de router le trafic vers un seul maître.
+- L’application ne nécessite pas de router le trafic vers une seule source.
 
 **Les inconvénients:**
 
-- Le principal inconvénient de la réplication multi-maîtres est sa complexité.
+- Le principal inconvénient de la réplication multi-sources est sa complexité.
 - La résolution des conflits est très difficile car des écritures simultanées sur plusieurs nœuds sont possibles.
 - Parfois, une intervention manuelle est nécessaire en cas de conflit.
 - Risque d’incohérence des données .
 
-Comme nous l’avons déjà évoqué, la réplication Single-Master est suffisante dans la plupart des cas et fortement recommandée, mais il existe néanmoins des cas où la réplication Multi-Master est requise. PostgreSQL a une réplication à maître unique intégrée, mais malheureusement, il n’y a pas de réplication à maîtres multiples dans PostgreSQL principal. Certaines solutions de réplication multimaître sont disponibles, certaines d’entre elles sont sous forme d’applications et d’autres sont des forks PostgreSQL. Ces forks ont leurs propres petites communautés et sont principalement gérés par une seule entreprise, mais pas par la communauté PostgreSQL principale.
+Comme nous l’avons déjà évoqué, la réplication Single-Source est suffisante dans la plupart des cas et fortement recommandée, mais il existe néanmoins des cas où la réplication Multi-Source est requise. PostgreSQL a une réplication à source unique intégrée, mais malheureusement, il n’y a pas de réplication à sources multiples dans PostgreSQL principal. Certaines solutions de réplication multisource sont disponibles, certaines d’entre elles sont sous forme d’applications et d’autres sont des forks PostgreSQL. Ces forks ont leurs propres petites communautés et sont principalement gérés par une seule entreprise, mais pas par la communauté PostgreSQL principale.
 
  ![image 01](/posts/article08/image01.png)
 
@@ -78,7 +78,7 @@ Voici quelques caractéristiques clés de toutes les solutions de réplication
 
 1- BDR (Réplication Bidirectionnelle)
 
-[BDR](https://www.2ndquadrant.com/en/resources/postgres-bdr-2ndquadrant/?fbclid=IwAR2BUPuFPFAeZX_G_VrI1zsUc6qCWR-sPCwd1uoCThKJgrUfQUblYXON3m0) est une solution de réplication multi-maîtres, et il existe différentes versions. Les premières versions de BDR sont open source mais sa dernière version est fermée. Cette solution est [développée par 2ndQuadrant](https://www.2ndquadrant.com/en/) et l’une des solutions Multimaster les plus élégantes à ce jour. BDR fournit une réplication logique multimaître asynchrone. Ceci est basé sur la fonctionnalité de décodage logique de PostgreSQL . Étant donné que BDR applique essentiellement rejoue la transaction sur les autres nœuds, l’opération de relecture peut échouer s’il y a un conflit entre une transaction appliquée et une transaction qui a été validée sur le nœud de réception.
+[BDR](https://www.2ndquadrant.com/en/resources/postgres-bdr-2ndquadrant/?fbclid=IwAR2BUPuFPFAeZX_G_VrI1zsUc6qCWR-sPCwd1uoCThKJgrUfQUblYXON3m0) est une solution de réplication multi-sources, et il existe différentes versions. Les premières versions de BDR sont open source mais sa dernière version est fermée. Cette solution est [développée par 2ndQuadrant](https://www.2ndquadrant.com/en/) et l’une des solutions Multisource les plus élégantes à ce jour. BDR fournit une réplication logique multisource asynchrone. Ceci est basé sur la fonctionnalité de décodage logique de PostgreSQL . Étant donné que BDR applique essentiellement rejoue la transaction sur les autres nœuds, l’opération de relecture peut échouer s’il y a un conflit entre une transaction appliquée et une transaction qui a été validée sur le nœud de réception.
 
  ![image 03](/posts/article08/image03.png)
 
@@ -111,14 +111,14 @@ _Remarque : Tous les logiciels PostgreSQL XC/XC2/XL sont considérés comme des 
 
 5 – Rubyrep
 
-Il s’agit d’une réplication maître-maître (master-master) asynchrone développée par Arndt Lehmann. Il revendique la configuration et l’installation les plus simples et fonctionne sur toutes les plates-formes, y compris Windows. Il fonctionne toujours sur deux serveurs, qui sont référencés comme « gauche » et « droite » dans la terminologie Rubyrep. Il est donc logique de l’appeler une configuration « 2 maîtres » plutôt que « multi-maîtres ».
+Il s’agit d’une réplication source-source asynchrone développée par Arndt Lehmann. Il revendique la configuration et l’installation les plus simples et fonctionne sur toutes les plates-formes, y compris Windows. Il fonctionne toujours sur deux serveurs, qui sont référencés comme « gauche » et « droite » dans la terminologie Rubyrep. Il est donc logique de l’appeler une configuration « 2 sources » plutôt que « multi-sources ».
 
 - Le rubyrep peut reproduire en continu les changements entre les bases de données de gauche et de droite.
 - Configure automatiquement les déclencheurs nécessaires, les tables de journal, etc.
 - Détecte automatiquement les tables nouvellement ajoutées et synchronise le contenu de la table
 - Reconfigure automatiquement les séquences pour éviter les conflits de clés en double
 - Suit les modifications apportées aux colonnes de clé primaire
-- Peut mettre en œuvre à la fois la réplication maître-esclave et maître-maître
+- Peut mettre en œuvre à la fois la réplication source-esclave et source-source
 - Méthodes de résolution des conflits pré-construites disponibles : victoires gauche/droite ; le changement plus tôt / plus tard gagne
 - Résolution de conflit personnalisée spécifiable via des extraits de code ruby
 - Les décisions de réplication peuvent éventuellement être enregistrées dans la table du journal des événements rubyrep
@@ -137,6 +137,6 @@ _Remarque : – Ce projet n’a pas été actif depuis trois ans, en termes de d
 
 **Conclusion**
 
-La plupart des cas de réplication à maître unique suffisent, et il a été observé que les gens configurent la réplication multi-maître (multi-master) et compliquent excessivement leur conception. Il est fortement recommandé de concevoir le système et d’essayer d’éviter la réplication multi-maître et de ne l’utiliser que là où il n’y a aucun moyen de concevoir le système sans cela. Il y a deux raisons : la première est que cela rend le système trop complexe et difficile à déboguer, et deuxièmement, vous n’obtiendrez aucun support de la communauté PostgreSQL car il n’y a pas de réplications multi-maîtres gérées par la communauté.
+La plupart des cas de réplication à source unique suffisent, et il a été observé que les gens configurent la réplication multi-source et compliquent excessivement leur conception. Il est fortement recommandé de concevoir le système et d’essayer d’éviter la réplication multi-source et de ne l’utiliser que là où il n’y a aucun moyen de concevoir le système sans cela. Il y a deux raisons : la première est que cela rend le système trop complexe et difficile à déboguer, et deuxièmement, vous n’obtiendrez aucun support de la communauté PostgreSQL car il n’y a pas de réplications multi-sources gérées par la communauté.
 
-Source : [Blog Percona](https://www.percona.com/blog/2020/06/09/multi-master-replication-solutions-for-postgresql/)
+Source : [Blog Percona]( https://www.percona.com/blog/2020/06/09/multi-master-replication-solutions-for-postgresql/)
