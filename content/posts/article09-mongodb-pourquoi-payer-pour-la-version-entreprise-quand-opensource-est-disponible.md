@@ -96,7 +96,7 @@ Ils ont des fonctionnalités très similaires et permettent aux utilisateurs de 
 
 Une autre considération importante en matière de sécurité de MongoDB est la rédaction des journaux. Souvent, il est nécessaire de supprimer les messages d’un événement de journal avant de se connecter. Cela empêchera les journaux de contenir des informations potentiellement sensibles telles que les informations personnelles dans le journal de diagnostic. Les métadonnées telles que les codes d’erreur ou d’opération, les numéros de ligne et les noms de fichiers source restent visibles dans les journaux.
 
-Il s’agit d’une [fonctionnalité réservée aux entreprises du côté de MongoDB, Inc.](https://docs.mongodb.com/manual/reference/parameters/%23param.redactClientLogData#param.redactClientLogData) , [Percona Server pour MongoDB offre une fonctionnalité de rédaction de journaux](https://www.percona.com/doc/percona-server-for-mongodb/3.4/log-redaction.html) dans sa version open source. Il est important de noter que même si cette fonctionnalité augmente la sécurité, elle peut rendre le dépannage plus difficile.
+Il s’agit d’une [fonctionnalité réservée aux entreprises du côté de MongoDB, Inc.](https://docs.mongodb.com/manual/reference/parameters/#param.redactClientLogData) , [Percona Server pour MongoDB offre une fonctionnalité de rédaction de journaux](https://www.percona.com/doc/percona-server-for-mongodb/3.4/log-redaction.html) dans sa version open source. Il est important de noter que même si cette fonctionnalité augmente la sécurité, elle peut rendre le dépannage plus difficile.
 
 ## Derniers Points
 
