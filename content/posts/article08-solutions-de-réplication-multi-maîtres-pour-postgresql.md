@@ -6,6 +6,7 @@ date = 2021-07-22T11:43:01+04:00
 tags = ['PostgreSQL']
 Categories = ["Article de Percona"]
 featured_image = "posts/article08/image01.png"
+images = ["posts/article08/image01.png"]
 slug = "solutions-de-replication-multi-sources-pour-postgresql"
 +++
 

@@ -6,6 +6,7 @@ date = 2021-07-15T11:43:01+04:00
 tags = ['PostgreSQL']
 Categories = ["Article de Percona"]
 featured_image = "posts/article07/postgresql.png"
+images = ["posts/article07/postgresql.png"]
 slug = "gestion-des-valeurs-null-dans-postgresql"
 +++
 

@@ -6,6 +6,7 @@ date = 2021-04-08T11:43:01+04:00
 tags = ['mysql']
 Categories = ["Article de Percona"]
 featured_image = "posts/article01/Bad-Design-MySQL-367x205.png"
+images = ["thumbnail/amisdepercona21-001.jpg"]
 slug = "article01-quelques-problemes-de-conception-mysql"
 +++
 

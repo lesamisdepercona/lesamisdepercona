@@ -1,11 +1,12 @@
 +++
-title = "PostgreSQL sur les instances AWS EC2 basées sur ARM c'est bien"
+title = "PostgreSQL sur les instances AWS EC2 basées sur ARM"
 description = "un regard indépendant sur le rapport prix/performances des nouvelles instances du point de vue de l'exécution de PostgreSQL"
 author = "Francis"
 date = 2021-07-04T11:43:01+04:00
 tags = ['PostgreSQL']
 Categories = ["Article de Percona"]
 featured_image = ""
+images = ["thumbnail/amisdepercona21-005.jpg"]
 slug = "PostgreSQL-sur-les-instances-AWS-EC2-basées-sur-ARM"
 +++
 

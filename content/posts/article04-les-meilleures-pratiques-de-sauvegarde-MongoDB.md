@@ -6,6 +6,7 @@ date = 2021-06-01T11:43:01+04:00
 tags = ['MongoDB']
 Categories = ["Article de Percona"]
 featured_image = ""
+images = ["thumbnail/amisdepercona21-004.jpg"]
 slug = "les-meilleures-pratiques-de-sauvegarde-MongoDB"
 +++
 
@@ -309,4 +310,4 @@ Pour les systèmes très volumineux, c&#39;est-à-dire une fois que vous avez at
 
 **_Telecharger gratuitement [Percona Backup pour MongoDB](https://www.percona.com/software/mongodb/percona-backup-for-mongodb) si vous souhaitez l&#39;essayer_**
 
-_Page source : https://www.percona.com/blog/2020/09/18/mongodb-backup-best-practices/
+_Page source :[Percona](https://www.percona.com/blog/2020/09/18/mongodb-backup-best-practices/)

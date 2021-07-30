@@ -6,6 +6,7 @@ date = 2021-04-10T11:43:01+04:00
 tags = ['mysql']
 Categories = ["Article de Percona"]
 featured_image = "posts/article02/18astuces.png"
+images = ["thumbnail/amisdepercona21-002.jpg"]
 slug = "article02-mysql-18astuces-heure-de-pointe-part1"
 +++
 

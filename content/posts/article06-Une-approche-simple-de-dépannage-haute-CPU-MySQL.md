@@ -6,6 +6,7 @@ date = 2021-07-09T11:43:01+04:00
 tags = ['MySQL']
 Categories = ["Article de Percona"]
 featured_image = ""
+images = ["thumbnail/amisdepercona21-006.jpg"]
 slug = "Une-approche-simple-de-dépannage-usage-CPU-MySQL"
 +++
 
