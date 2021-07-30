@@ -5,8 +5,8 @@ author = "Francis"
 date = 2021-07-29T11:43:01+04:00
 tags = ['MongoDB']
 Categories = ["Article de Percona"]
-featured_image = "posts/article09/img-article09"
-images = "posts/article09/img-article09.png"
+images = ["posts/article09/img-article09.png"]
+featured_image = "posts/article09/img-article09.png"
 slug = "mongodb-pourquoi-payer-pour-la-version-entreprise-quand-opensource-est-disponible"
 +++
 
