@@ -3,4 +3,5 @@
   <div class="{{ .Site.Params.background_color_class | default "bg-black" }}">
     {{ partial "site-navigation.html" . }}
   </div>
+  {{ template "_internal/google_analytics.html" . }} 
 </header>
