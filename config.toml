@@ -2,7 +2,6 @@ baseURL = "https://www.lesamisdepercona.fr/"
 languageCode = "fr"
 title = "Les amis de Percona"
 theme = "ananke"
-googleAnalytics = "G-QZRXTY970R"
 
 [params]
     env = "production"
