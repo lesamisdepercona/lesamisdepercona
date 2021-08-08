@@ -10,6 +10,8 @@ images = ["thumbnail/amisdepercona21-00010.jpg"]
 slug = "un-defi-mise-a-niveau-vers-MySQL8"
 +++
 
+![image 10](/thumbnail/amisdepercona21-00010.jpg)
+
 Personne n’aime le changement, surtout quand ce changement peut être difficile. Face à un défi technique, j’essaie de me souvenir de ce commentaire de Theodore Roosevelt : « _Rien au monde ne vaut la peine d’avoir ou de valoir la peine d’être fait sans effort, douleur, difficulté._» Bien que ce soit un peu exagéré, dans ce cas, le concept principal est toujours valable. Nous ne devrions pas nous éloigner d’un chemin de mise à niveau car cela peut être difficile.
 
 **MySQL 8.0 arrive à maturité et se stabilise**. Il y a de nouvelles fonctionnalités (trop nombreuses pour être énumérées ici) et des améliorations de performances. De plus en plus d’organisations mettent à niveau vers MySQL 8 et l’exécutent en production, ce qui accélère la stabilisation. Bien qu’il y ait encore une piste importante sur 5.7 et qu’elle soit définitivement stable (EOL prévue pour octobre 2023), les organisations doivent se préparer à faire le saut si elles ne l’ont pas déjà fait.
