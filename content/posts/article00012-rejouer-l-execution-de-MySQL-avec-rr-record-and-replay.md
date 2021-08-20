@@ -42,15 +42,15 @@ L'objectif principal à cette étape est de prouver et d'identifier où la mise 
 
 Avec ces informations, nous avons exécuté MySQL sous RR et réexécuté la sauvegarde jusqu'à ce que nous voyions le même problème lors de la préparation. Nous pouvons maintenant rejouer l'exécution de MySQL et vérifier comment ça se présente. Notre idée est de : 
 
-1. Lire les [LSN](https://dev.mysql.com/doc/refman/8.0/en/glossary.html%23glos_lsn#glos_lsn) pour cette même page avant/après chaque préparation de sauvegarde
+1. Lire les [LSN](https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_lsn) pour cette même page avant/après chaque préparation de sauvegarde
 1. Identifier toutes les modifications apportées à m\_space = 4294967294 & m\_page\_no = 5 sur mysqld
 
 Avant d'aller plus loin, nous tenons à expliquer quelques points :
 
-1. m\_space = 4294967294 correspond au dictionnaire de données MySQL (mysql.ibd) – [dict0dict.h:1146](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/dict0dict.h%23L1146#L1146)
-1. Sur la page du disque, LSN est stocké au 16e octet de la page avec une taille de 8 octets – [fil0types.h:66](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/fil0types.h%23L66#L66) 
+1. m\_space = 4294967294 correspond au dictionnaire de données MySQL (mysql.ibd) – [dict0dict.h:1146](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/dict0dict.h#L1146)
+1. Sur la page du disque, LSN est stocké au 16e octet de la page avec une taille de 8 octets – [fil0types.h:66](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/fil0types.h#L66) 
 1. Les pages sont écrites séquentiellement sur le disque, par exemple, pour la taille de page par défaut de 16 ko, à partir d’octet 1 à 16384 auront les données de la page 0. Celle de l'octet entre 16385 et 32768, les données seront dans la page 1, et ainsi de suite.
-1. Le Frame est une donnée brute d'une page – [buf0buf.h:1358](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/buf0buf.h%23L1358#L1358)
+1. Le Frame est une donnée brute d'une page – [buf0buf.h:1358](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/buf0buf.h#L1358)
 
 **Rejouer l'exécution**
 
@@ -349,7 +349,7 @@ $4 =   {[0x0] = 0x0,
   [0x6] = 0x0,
   [0x7] = 0x2}
 ```
-Vous vous demandez peut-être d'où vient le 66? Cela vient de l'examen de la position [FIL_PAGE_DATA](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/fil0types.h%23L114#L114) + [PAGE_INDEX_ID](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/page0types.h%23L83#L83) . Cela nous a donné l'ID d'index 2. C'est en dessous de 1024, qui est réservé aux tables du [dictionnaire de données](https://github.com/percona/percona-xtrabackup/blob/8.0/storage/innobase/include/dict0dd.h%23L82#L82). En vérifiant la deuxième table de cette liste, nous pouvons voir qu'il s'agit de [innodb_dynamic_metadata](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/dict0dd.h%23L276#L276) . Avec toutes ces informations résumées, nous pouvons regarder ce que fait le serveur à l'arrêt, et le problème devient beaucoup plus évident : [srv0start.cc:3965](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/srv/srv0start.cc%23L3965#L3965)
+Vous vous demandez peut-être d'où vient le 66? Cela vient de l'examen de la position [FIL_PAGE_DATA](https://www.percona.com/blog/2021/04/12/replay-the-execution-of-mysql-with-rr-record-and-replay/) + [PAGE_INDEX_ID](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/page0types.h#L83) . Cela nous a donné l'ID d'index 2. C'est en dessous de 1024, qui est réservé aux tables du [dictionnaire de données](https://github.com/percona/percona-xtrabackup/blob/8.0/storage/innobase/include/dict0dd.h#L82). En vérifiant la deuxième table de cette liste, nous pouvons voir qu'il s'agit de [innodb_dynamic_metadata](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/include/dict0dd.h#L276) . Avec toutes ces informations résumées, nous pouvons regarder ce que fait le serveur à l'arrêt, et le problème devient beaucoup plus évident : [srv0start.cc:3965](https://github.com/percona/percona-server/blob/Percona-Server-8.0.22-13/storage/innobase/srv/srv0start.cc#L3965)
 
 ```
 /** Shut down the InnoDB database. */
@@ -361,7 +361,7 @@ void srv_shutdown() {
 . . .
 }
 ```
-Dans le cadre du processus d'arrêt, nous conservons les métadonnées modifiées dans la table DD Buffer ( innodb\_dynamic\_metadata ), ce qui est faux. Ces modifications seront probablement conservées par le serveur et enregistrées à nouveau une fois que le serveur aura effectué un point de contrôle. En outre, beaucoup de données peuvent être fusionnées selon le moment où la sauvegarde a été effectuée et lorsque le serveur lui-même conserve ces données dans les tables DD. Ceci est le résultat de la mise en œuvre de [WL#7816](https://dev.mysql.com/worklog/task/%3Fid%3D7816) et [WL#6204](https://dev.mysql.com/worklog/task/%3Fid%3D6204) qui a obligé Percona XtraBackup à modifier la façon dont il gère ces types d'enregistrements de rétablissement.
+Dans le cadre du processus d'arrêt, nous conservons les métadonnées modifiées dans la table DD Buffer ( innodb\_dynamic\_metadata ), ce qui est faux. Ces modifications seront probablement conservées par le serveur et enregistrées à nouveau une fois que le serveur aura effectué un point de contrôle. En outre, beaucoup de données peuvent être fusionnées selon le moment où la sauvegarde a été effectuée et lorsque le serveur lui-même conserve ces données dans les tables DD. Ceci est le résultat de la mise en œuvre de [WL#7816](https://dev.mysql.com/worklog/task/?id=7816) et [WL#6204](https://dev.mysql.com/worklog/task/?id=6204) qui a obligé Percona XtraBackup à modifier la façon dont il gère ces types d'enregistrements de rétablissement.
 
 **Résumé**
 
