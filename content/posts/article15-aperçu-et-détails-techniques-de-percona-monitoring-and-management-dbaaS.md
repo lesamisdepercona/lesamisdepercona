@@ -5,8 +5,8 @@ author = "Francis"
 date = 2021-09-10T11:43:01+04:00
 tags = ['PMM']
 Categories = ["Article de Percona"]
-featured_image = "thumbnail/article13.jpg"
-images = ["thumbnail/article15-aperçu-et-details-techniques-pmm-dbaaS.jpg"]
+featured_image = "thumbnail/article15-pmm-dbaaS.jpg"
+images = ["thumbnail/article15-pmm-dbaaS.jpg"]
 slug = "article15-aperçu-et-détails-techniques-de-percona-monitoring-and-management-dbaaS"
 +++
 
