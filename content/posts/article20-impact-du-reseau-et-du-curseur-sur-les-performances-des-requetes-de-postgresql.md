@@ -7,7 +7,7 @@ tags = ['PostgreSQL']
 Categories = ["Article de Percona"]
 featured_image = "thumbnail/article20-PostgreSQL.jpg"
 images = ["thumbnail/article20-PostgreSQL.jpg"]
-slug = "impact-du-réseau-et-du-curseur-sur-les performances-des-requêtes-de-PostgreSQL"
+slug = "impact-du-reseau-et-du-curseur-sur-les-performances-des-requetes-de-postgresql"
 +++
 
 Plusieurs fois, nous voyons les utilisateurs de PostgreSQL se perdre sur la durée des requêtes/instructions signalée dans les journaux PostgreSQL. D'autres outils PostgreSQL comme pgBadger présentent les mêmes données basées sur le fichier journal, ce qui augmente encore la confusion. Connaître l'impact total de la surcharge et des curseurs liés au réseau est important non seulement pour atténuer la confusion, mais également pour obtenir les meilleures performances.
