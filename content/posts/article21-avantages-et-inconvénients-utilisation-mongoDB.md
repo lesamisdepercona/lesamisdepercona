@@ -1,13 +1,13 @@
 ﻿+++
-title = "Fonctionnalité et limite de MongoDB dans la gestion de vos base de données"
-description = "Utiliser MongoDB pour gérer vos base de données: avanatages et incovénients "
+title = "Fonctionnalité et limite de MongoDB dans la gestion de votre base de données"
+description = "Utiliser MongoDB pour gérer vos base de données: avantages et incovénients "
 author = "Francis"
 date = 2021-10-22T11:43:01+04:00
 tags = ['MongoDB']
 Categories = ["Article de Percona"]
 featured_image = "thumbnail/thumbnailarticle21.jpg"
 images = ["thumbnail/thumbnailarticle21.jpg"]
-slug = "avantages-et-inconvénients-quand-vous-devriez-et-ne-devriez-pas-utiliser-mongoDB"
+slug = "avantages-et-inconvenients-quand-vous-devriez-et-ne-devriez-pas-utiliser-mongoDB"
 +++
 
 Assez souvent, nous voyons que le stockage opérationnel principal est utilisé en conjonction avec certains services supplémentaires, par exemple, pour la mise en cache ou la recherche en texte intégral.
@@ -45,7 +45,7 @@ Voici une liste de sujets dont je parlerai plus loin dans cet article :
 1. ***Évolutivité***
 1. ***Administration***
 
-## \1. Expérience et préférences de l'équipe
+## 1. Expérience et préférences de l'équipe
 
 Avant de plonger dans MongoDB, le plus important est de prendre en compte l'expérience et les préférences de l'équipe.
 
@@ -62,7 +62,7 @@ Les requêtes simples sont moins susceptibles de causer des problèmes. Néanmoi
 
 Il existe d'excellents cours gratuits disponibles à l'[Université MongoDB](https://university.mongodb.com/) qui peuvent sans aucun doute aider à développer les connaissances de l'équipe. Néanmoins, il est important de garder à l'esprit que le sommet de la courbe d'apprentissage peut prendre un certain temps à atteindre si l'équipe ne le connaît pas entièrement.
 
-## \2. Approche de développement et cycle de vie des applications
+## 2. Approche de développement et cycle de vie des applications
 
 Si nous parlons d'applications où MongoDB est utilisé, elles se concentrent principalement sur un développement rapide car vous pouvez tout changer à tout moment. Vous n'avez pas à vous soucier du format strict du document.
 
@@ -77,7 +77,7 @@ Un point de vue du cycle de développement d'applications peut être représent�
 - *Il est clair comment évoluer davantage*
 - *Solutions prédéterminées simples*
 
-## \3. Modèle de données
+## 3. Modèle de données
 
 Comme mentionné dans le premier sujet, le modèle de données dépend fortement de l'application et de l'expérience de l'équipe.
 
@@ -241,7 +241,7 @@ GROUP  BY city;
 
 Mais si nous faisons des choses plus complexes comme GROUP BY dans MongoDB, le framework d'agrégation sera nécessaire. Il s'agit d'une interface plus complexe qui montre comment nous voulons filtrer, comment nous voulons regrouper, etc.
 
-## \4. Transactions et cohérence (ACID)
+## 4. Transactions et cohérence (ACID)
 
 La raison pour laquelle ce sujet est abordé est que, **selon les besoins de l'entreprise** , la solution de base de données **peut devoir être compatible avec ACID** . Dans ce jeu, les bases de données relationnelles **sont loin devant.** Un excellent exemple d'exigences ACID est les opérations impliquant de l'argent.
 
@@ -256,7 +256,7 @@ Cela signifie que, du point de vue d'**un document, l'opération sera atomique**
 - **Dans la version 4.0** , MongoDB prend en charge les transactions multi-documents sur les jeux de réplicas.
 - **Dans la version 4.2** , MongoDB introduit les transactions distribuées, qui ajoute la prise en charge des transactions multi-documents sur les clusters partitionnés et intègre la prise en charge existante des transactions multi-documents sur une Replica Set
 
-## \5. Évolutivité
+## 5. Évolutivité
 
 Qu'est-ce que l'évolutivité dans ce contexte? C'est la facilité avec laquelle vous pouvez prendre une petite application et la faire évoluer vers des millions, voire des milliards d'utilisateurs.
 
@@ -274,7 +274,7 @@ Le sharding MongoDB a quelques limitations : toutes les opérations ne fonctionn
 
 Avec la sortie de **MongoDB 5.0** , une fonctionnalité de [repartitionnement ou resharding](https://docs.mongodb.com/v5.0/core/sharding-reshard-a-collection/#std-label-sharding-resharding) a été récemment introduite. Comme pour toute nouvelle fonctionnalité, ma recommandation est de tester de manière approfondie avant toute utilisation en production. Si, à un moment donné, vous envisagez des approches **pour affiner votre clé de partition,** puis **repartir** avec la nouvelle fonctionnalité, l'article [**Affiner les clés de partition dans MongoDB 4.4 et plus](https://www.percona.com/blog/refining-shard-keys-in-mongodb-4-4-and-above/)** peut vous guider pour un meilleur choix.
 
-## \6. Adminsitration
+## 6. Adminsitration
 
 L'administration est toutes ces choses auxquelles les développeurs ne pensent pas. Du moins, ce n'est pas leur première priorité. L'administration est tout au sujet de la nécessité de sauvegarder, mettre à jour, surveiller, restaurer une application en cas de panne.
 
