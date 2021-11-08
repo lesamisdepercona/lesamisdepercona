@@ -58,7 +58,7 @@ Si votre équipe est aux prises avec un ensemble de données qui explose, l' [é
 
 **Percona Distribution for MySQL est la solution MySQL open source la plus complète, stable, évolutive et sécurisée disponible, offrant des environnements de base de données de niveau entreprise pour les applications les plus critiques… et son utilisation est gratuite !**
 
-## Télécharger Percona Distribution for MySQL
+## [Télécharger Percona Distribution for MySQL](https://www.percona.com/software/mysql-database)
 
-Source : [Blog Percona](https://www.percona.com/software/mysql-database)
+Source : [Blog Percona](https://www.percona.com/blog/horizontal-scalability-for-mysql/)
 
