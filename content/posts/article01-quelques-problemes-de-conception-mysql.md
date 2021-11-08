@@ -1,6 +1,6 @@
 +++
-title = "MySQL - Quelques problèmes de conception"
-description = "Quelques problèmes liés à la conception de MySQL"
+title = "Base de données MySQL - Quelques problèmes de conception"
+description = "Atouts et faiblese de la base de donnée open source MySQL"
 author = "Francis"
 date = 2021-04-08T11:43:01+04:00
 tags = ['mysql']

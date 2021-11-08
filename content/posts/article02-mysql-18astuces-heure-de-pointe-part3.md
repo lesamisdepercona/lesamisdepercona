@@ -1,6 +1,6 @@
 +++
-title = "Les 18 astuces pour mettre au point votre base de données MySQL en heure de pointe (Partie 03)"
-description = "Astuces pour améliorer la performance de votre base de donnée MySQL en heure de pointe"
+title = "Base de données open source : Améliorer la performance de  MySQL (Partie 03)"
+description = "Guide pour améliorer la performance de votre base de donnée MySQL en heure de pointe"
 author = "Francis"
 date = 2021-04-30T11:43:01+04:00
 tags = ['mysql']

@@ -1,6 +1,6 @@
 +++
-title = "MongoDB est il le nouvel oracle?"
-description = "Traduit à partir de l'article de Matt Yonkovit intitulé, MongoDB est il le nouvel oracle?, disponible sur le blog de Percona"
+title = "Difference entre MongoDB vs Oracle"
+description = "MongoDB est il le nouvel oracle? "
 author = "Francis"
 date = 2021-05-15T11:43:01+04:00
 tags = ['MongoDB']
