@@ -119,7 +119,7 @@ CREATE USER 'replication'@'%' IDENTIFIED BY 'repl_password';
 GRANT REPLICATION SLAVE ON *.* to 'replication'@'%';
 FLUSH PRIVILEGES;
 ```
-2. Effectuez la sauvegarde de la base de données MySQL à l'aide de l'outil XtraBackup et chargez-la dans le compartiment S3.
+3. Effectuez la sauvegarde de la base de données MySQL à l'aide de l'outil XtraBackup et chargez-la dans le compartiment S3.
 ```
 # export aws credentials
 export AWS_ACCESS_KEY_ID=XXXXXX
