@@ -28,19 +28,19 @@ Nous avons donc la configuration suivante :
 
 ## Les composants suivants sont utilisés :
 
-\1. Base de données MySQL 8.0.23 (dans mon cas, il s'agit de [Percona Server for MySQL](https://www.percona.com/software/mysql-database/percona-server) ) qui est déployée dans DO (en tant que source) et [Percona XtraBackup](https://www.percona.com/software/mysql-database/percona-xtrabackup) pour la sauvegarde. Dans mon déploiement de test, j'utilise un seul serveur comme source pour simplifier le déploiement. Selon votre topologie de déploiement de base de données, vous pouvez utiliser plusieurs serveurs pour utiliser le mécanisme de basculement de connexion synchrone du côté de l'opérateur.
+1. Base de données MySQL 8.0.23 (dans mon cas, il s'agit de [Percona Server for MySQL](https://www.percona.com/software/mysql-database/percona-server) ) qui est déployée dans DO (en tant que source) et [Percona XtraBackup](https://www.percona.com/software/mysql-database/percona-xtrabackup) pour la sauvegarde. Dans mon déploiement de test, j'utilise un seul serveur comme source pour simplifier le déploiement. Selon votre topologie de déploiement de base de données, vous pouvez utiliser plusieurs serveurs pour utiliser le mécanisme de basculement de connexion synchrone du côté de l'opérateur.
 
-\2. Le cluster Google Kubernetes Engine (GKE) où [Percona Distribution for MySQL Operator](https://www.percona.com/doc/kubernetes-operator-for-pxc/index.html) est déployé avec le cluster PXC (en tant que cible).
+2. Le cluster Google Kubernetes Engine (GKE) où [Percona Distribution for MySQL Operator](https://www.percona.com/doc/kubernetes-operator-for-pxc/index.html) est déployé avec le cluster PXC (en tant que cible).
 
-\3. Le compartiment AWS S3 est utilisé pour enregistrer la sauvegarde à partir de la base de données MySQL, puis pour restaurer le cluster PXC dans k8s.
+3. Le compartiment AWS S3 est utilisé pour enregistrer la sauvegarde à partir de la base de données MySQL, puis pour restaurer le cluster PXC dans k8s.
 
 ## Les étapes suivantes doivent être effectuées pour effectuer la procédure de migration
 
-\1. Effectuez la sauvegarde de la base de données MySQL à l'aide de [Percona XtraBackup](https://www.percona.com/software/mysql-database/percona-xtrabackup) et chargez-la dans le compartiment S3 à l'aide de [xbcloud](https://www.percona.com/doc/percona-xtrabackup/LATEST/xbcloud/xbcloud.html).
+1. Effectuez la sauvegarde de la base de données MySQL à l'aide de [Percona XtraBackup](https://www.percona.com/software/mysql-database/percona-xtrabackup) et chargez-la dans le compartiment S3 à l'aide de [xbcloud](https://www.percona.com/doc/percona-xtrabackup/LATEST/xbcloud/xbcloud.html).
 
-\2. Effectuez la restauration de la base de données MySQL depuis le compartiment S3 dans le cluster PXC qui est déployé dans k8s.
+2. Effectuez la restauration de la base de données MySQL depuis le compartiment S3 dans le cluster PXC qui est déployé dans k8s.
 
-\3. Configurez la réplication asynchrone entre le serveur MySQL et le cluster PXC géré par l'opérateur k8s
+3. Configurez la réplication asynchrone entre le serveur MySQL et le cluster PXC géré par l'opérateur k8s
 
 En conséquence, nous avons une réplication asynchrone entre le serveur MySQL et le cluster PXC dans k8s qui est en mode lecture seule.
 
@@ -48,7 +48,7 @@ En conséquence, nous avons une réplication asynchrone entre le serveur MySQL e
 
 ## Configurez le cluster PXC cible géré par l'opérateur k8s
 
-\1. Déployez Percona Distribution for MySQL Operator sur Kubernetes (j'ai utilisé GKE 1.20).
+1. Déployez Percona Distribution for MySQL Operator sur Kubernetes (j'ai utilisé GKE 1.20).
 
 ```
 # clone the git repository
@@ -59,7 +59,7 @@ cd percona-xtradb-cluster-operator
 kubectl apply -f deploy/bundle.yaml
 ```
 
-\2. Créez un cluster PXC à l'aide du manifeste de ressource personnalisé (CR) par défaut.
+2. Créez un cluster PXC à l'aide du manifeste de ressource personnalisé (CR) par défaut.
 
 ```
 # create my-cluster-secrets secret (do no use default passwords for production systems)
@@ -69,7 +69,7 @@ kubectl apply -f deploy/secrets.yaml
 kubectl apply -f deploy/cr.yaml
 ```
 
-\3. Créez le secret avec les informations d'identification pour le compartiment AWS S3 qui sera utilisé pour accéder au compartiment S3 pendant la procédure de restauration.
+3. Créez le secret avec les informations d'identification pour le compartiment AWS S3 qui sera utilisé pour accéder au compartiment S3 pendant la procédure de restauration.
 
 ```
 # create S3-secret.yaml file with following content, and use correct credentials instead of XXXXXX
@@ -91,7 +91,7 @@ kubectl apply -f S3-secret.yaml
 
 ## Configurer le serveur MySQL source
 
-\1. Installez Percona Server pour MySQL 8.0.23 et Percona XtraBackup pour la sauvegarde. Reportez-vous aux chapitres [Installation de Percona Server pour MySQL](https://www.percona.com/doc/percona-server/LATEST/installation/yum_repo.html) et [Installation de Percona XtraBackup](https://www.percona.com/doc/percona-xtrabackup/8.0/installation.html#installing-percona-xtrabackup-from-repositories) dans la documentation pour les instructions d'installation.
+1. Installez Percona Server pour MySQL 8.0.23 et Percona XtraBackup pour la sauvegarde. Reportez-vous aux chapitres [Installation de Percona Server pour MySQL](https://www.percona.com/doc/percona-server/LATEST/installation/yum_repo.html) et [Installation de Percona XtraBackup](https://www.percona.com/doc/percona-xtrabackup/8.0/installation.html#installing-percona-xtrabackup-from-repositories) dans la documentation pour les instructions d'installation.
 
 *REMARQUE :* 
 
@@ -103,7 +103,7 @@ enforce_gtid_consistency=ON
 gtid_mode=ON
 ```
 
-\2. Créez tous les utilisateurs nécessaires qui seront utilisés par l'opérateur k8s, le mot de passe doit être le même que dans deploy/secrets.yaml . Veuillez également noter que le mot de passe de l'utilisateur root doit être le même que dans le fichier `deploy/secrets.yaml` pour k8s the secret. Dans mon cas, j'ai utilisé nos mots de passe par défaut du fichier `deploy/secrets.yaml`
+2. Créez tous les utilisateurs nécessaires qui seront utilisés par l'opérateur k8s, le mot de passe doit être le même que dans deploy/secrets.yaml . Veuillez également noter que le mot de passe de l'utilisateur root doit être le même que dans le fichier `deploy/secrets.yaml` pour k8s the secret. Dans mon cas, j'ai utilisé nos mots de passe par défaut du fichier `deploy/secrets.yaml`
 ```
 CREATE USER 'monitor'@'%' IDENTIFIED BY 'monitory' WITH MAX_USER_CONNECTIONS 100;
 GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'monitor'@'%';
@@ -119,7 +119,7 @@ CREATE USER 'replication'@'%' IDENTIFIED BY 'repl_password';
 GRANT REPLICATION SLAVE ON *.* to 'replication'@'%';
 FLUSH PRIVILEGES;
 ```
-\2. Effectuez la sauvegarde de la base de données MySQL à l'aide de l'outil XtraBackup et chargez-la dans le compartiment S3.
+2. Effectuez la sauvegarde de la base de données MySQL à l'aide de l'outil XtraBackup et chargez-la dans le compartiment S3.
 ```
 # export aws credentials
 export AWS_ACCESS_KEY_ID=XXXXXX
@@ -134,7 +134,7 @@ Maintenant, tout est prêt pour effectuer la restauration de la sauvegarde sur l
 
 Si vous avez une base de données source complètement propre (sans aucune donnée), vous pouvez ignorer les points liés à la sauvegarde et à la restauration de la base de données. Sinon, procédez comme suit :
 
-\1. Restaurez la sauvegarde à partir du compartiment S3 à l'aide du manifeste suivant :
+1. Restaurez la sauvegarde à partir du compartiment S3 à l'aide du manifeste suivant :
 ```
 # create restore.yml file with following content
 
@@ -156,7 +156,7 @@ kubectl apply -f restore.yml
 ```
 En conséquence, vous aurez un cluster PXC avec des données de la base de données source. Maintenant, tout est prêt pour configurer la réplication.
 
-\2. Modifiez le manifeste de ressource personnalisé `deploy/cr.yaml` pour configurer la section section `spec.pxc.replicationChannels`
+2. Modifiez le manifeste de ressource personnalisé `deploy/cr.yaml` pour configurer la section section `spec.pxc.replicationChannels`
 ```
 spec:
   ...
@@ -249,7 +249,7 @@ Vous pouvez également vérifier la réplication en vérifiant que les données 
 
 Dès que vous êtes prêt (votre application a été reconfigurée et prête à fonctionner avec la nouvelle base de données) pour arrêter la réplication et promouvoir le cluster PXC dans k8s en tant que base de données principale, vous devez effectuer les actions simples suivantes :
 
-\1. Modifiez le `deploy/cr.yaml` et commentez les replicationChannels
+1. Modifiez le `deploy/cr.yaml` et commentez les replicationChannels
 ```
 spec:
   ...
@@ -263,11 +263,11 @@ spec:
     #      port: 3306
     #      weight: 100
 ```
-\2. Arrêtez le service mysqld sur le serveur source pour vous assurer qu'aucune nouvelle donnée n'est écrite.
+2. Arrêtez le service mysqld sur le serveur source pour vous assurer qu'aucune nouvelle donnée n'est écrite.
 ```
  systemctl stop mysqld
 ```
-\3. Appliquez un nouvel opérateur CR pour k8s.
+3. Appliquez un nouvel opérateur CR pour k8s.
 ```
 # apply CR
 kubectl apply -f deploy/cr.yaml
