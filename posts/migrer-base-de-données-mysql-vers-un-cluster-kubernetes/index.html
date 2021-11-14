@@ -1,0 +1,156 @@
+<!doctype html><html lang=fr><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Migration d'une base de données MySQL vers un cluster Kubernetes | Les amis de Percona</title><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="Migrer une base de données MySQL vers un cluster Kubernetes à l'aide de la réplication asynchrone s'avère de plus en plus facile en considérant les derniers changements importants : migrez la base de données vers le cluster PXC qui présente certaines particularités et, bien sûr, Kubernetes lui-même."><meta name=generator content="Hugo 0.80.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel=stylesheet href=/ananke/css/main.min.css><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><meta property="og:title" content="Migration d'une base de données MySQL vers un cluster Kubernetes"><meta property="og:description" content="Migrer une base de données MySQL vers un cluster Kubernetes à l'aide de la réplication asynchrone s'avère de plus en plus facile en considérant les derniers changements importants : migrez la base de données vers le cluster PXC qui présente certaines particularités et, bien sûr, Kubernetes lui-même."><meta property="og:type" content="article"><meta property="og:url" content="https://www.lesamisdepercona.fr/posts/migrer-base-de-donn%C3%A9es-mysql-vers-un-cluster-kubernetes/"><meta property="og:image" content="https://www.lesamisdepercona.fr/thumbnail/thumbnailarticle24.jpg"><meta property="article:published_time" content="2021-11-14T11:43:01+04:00"><meta property="article:modified_time" content="2021-11-14T11:43:01+04:00"><meta itemprop=name content="Migration d'une base de données MySQL vers un cluster Kubernetes"><meta itemprop=description content="Migrer une base de données MySQL vers un cluster Kubernetes à l'aide de la réplication asynchrone s'avère de plus en plus facile en considérant les derniers changements importants : migrez la base de données vers le cluster PXC qui présente certaines particularités et, bien sûr, Kubernetes lui-même."><meta itemprop=datePublished content="2021-11-14T11:43:01+04:00"><meta itemprop=dateModified content="2021-11-14T11:43:01+04:00"><meta itemprop=wordCount content="1536"><meta itemprop=image content="https://www.lesamisdepercona.fr/thumbnail/thumbnailarticle24.jpg"><meta itemprop=keywords content="MySQL,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://www.lesamisdepercona.fr/thumbnail/thumbnailarticle24.jpg"><meta name=twitter:title content="Migration d'une base de données MySQL vers un cluster Kubernetes"><meta name=twitter:description content="Migrer une base de données MySQL vers un cluster Kubernetes à l'aide de la réplication asynchrone s'avère de plus en plus facile en considérant les derniers changements importants : migrez la base de données vers le cluster PXC qui présente certaines particularités et, bien sûr, Kubernetes lui-même."><script async src="https://www.googletagmanager.com/gtag/js?id=G-W9SYN1YL24"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-W9SYN1YL24');</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-203534013-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-203534013-1');</script></head><body class="ma0 avenir bg-near-white"><header><div class=bg-dark-blue><nav class="pv3 ph3 ph4-ns" role=navigation><div class="flex-l justify-between items-center center"><a href=/ class="f3 fw2 hover-white no-underline white-90 dib"><img src=/img/logo.png class="w100 mw5-ns" alt="Les amis de Percona"></a><div class="flex-l items-center"><ul class="pl0 mr3"><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/posts/ title="Articles page">Articles</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/about/ title="Qui Sommes Nous? page">Qui Sommes Nous?</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/tags/ title="Tags page">Tags</a></li></ul></div></div></nav></div></header><main class=pb7 role=main><article class="flex-l flex-wrap justify-between mw8 center ph3"><header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked">POSTS</aside><div id=sharing class=mt3><a href="https://www.facebook.com/sharer.php?u=https://www.lesamisdepercona.fr/posts/migrer-base-de-donn%C3%A9es-mysql-vers-un-cluster-kubernetes/" class="facebook no-underline" aria-label="share on Facebook"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765 50.32h6.744V33.998h4.499l.596-5.624h-5.095l.007-2.816c0-1.466.14-2.253 2.244-2.253h2.812V17.68h-4.5c-5.405.0-7.307 2.729-7.307 7.317v3.377h-3.369v5.625h3.369V50.32zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd"/></svg></a><a href="https://twitter.com/share?url=https://www.lesamisdepercona.fr/posts/migrer-base-de-donn%C3%A9es-mysql-vers-un-cluster-kubernetes/&text=Migration%20d%27une%20base%20de%20donn%c3%a9es%20MySQL%20vers%20un%20cluster%20Kubernetes" class="twitter no-underline" aria-label="share on Twitter"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167 22.283c-2.619.953-4.274 3.411-4.086 6.101l.063 1.038-1.048-.127c-3.813-.487-7.145-2.139-9.974-4.915l-1.383-1.377-.356 1.017c-.754 2.267-.272 4.661 1.299 6.271.838.89.649 1.017-.796.487-.503-.169-.943-.296-.985-.233-.146.149.356 2.076.754 2.839.545 1.06 1.655 2.097 2.871 2.712l1.027.487-1.215.021c-1.173.0-1.215.021-1.089.467.419 1.377 2.074 2.839 3.918 3.475l1.299.444-1.131.678c-1.676.976-3.646 1.526-5.616 1.568C19.775 43.256 19 43.341 19 43.405c0 .211 2.557 1.397 4.044 1.864 4.463 1.377 9.765.783 13.746-1.568 2.829-1.673 5.657-5 6.978-8.221.713-1.716 1.425-4.851 1.425-6.354.0-.975.063-1.102 1.236-2.267.692-.678 1.341-1.419 1.467-1.631.21-.403.188-.403-.88-.043-1.781.636-2.033.551-1.152-.402.649-.678 1.425-1.907 1.425-2.267.0-.063-.314.042-.671.233-.377.212-1.215.53-1.844.72l-1.131.361-1.027-.7c-.566-.381-1.361-.805-1.781-.932C39.766 21.902 38.131 21.944 37.167 22.283zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a><a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.lesamisdepercona.fr/posts/migrer-base-de-donn%C3%A9es-mysql-vers-un-cluster-kubernetes/&title=Migration%20d%27une%20base%20de%20donn%c3%a9es%20MySQL%20vers%20un%20cluster%20Kubernetes" class="linkedin no-underline" aria-label="share on LinkedIn"><svg height="32" style="enable-background:new 0 0 65 65" viewBox="0 0 65 65" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M50.837 48.137V36.425c0-6.275-3.35-9.195-7.816-9.195-3.604.0-5.219 1.983-6.119 3.374V27.71h-6.79c.09 1.917.0 20.427.0 20.427h6.79V36.729c0-.609.044-1.219.224-1.655.49-1.22 1.607-2.483 3.482-2.483 2.458.0 3.44 1.873 3.44 4.618v10.929H50.837zM22.959 24.922c2.367.0 3.842-1.57 3.842-3.531-.044-2.003-1.475-3.528-3.797-3.528s-3.841 1.524-3.841 3.528c0 1.961 1.474 3.531 3.753 3.531H22.959zM34 64C17.432 64 4 50.568 4 34 4 17.431 17.432 4 34 4s30 13.431 30 30C64 50.568 50.568 64 34 64zM26.354 48.137V27.71h-6.789v20.427H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a></div><h1 class="f1 athelas mt3 mb1">Migration d'une base de données MySQL vers un cluster Kubernetes</h1><p class=tracked>By <strong>Francis</strong></p><time class="f6 mv4 dib tracked" datetime=2021-11-14T11:43:01+04:00>November 14, 2021</time>
+<span class="f6 mv4 dib tracked">- 8 minutes read</span>
+<span class="f6 mv4 dib tracked">- 1536 words</span></header><div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-100-l"><p>De nos jours, de plus en plus d&rsquo;entreprises réfléchissent à la migration de leur infrastructure vers Kubernetes. Les bases de données ne font pas exception. De nombreux opérateurs k8s ont été créés pour simplifier les différents types de déploiements et également pour effectuer des tâches quotidiennes de routine telles que les sauvegardes, le renouvellement des certificats, etc. Si, il y a quelques années, personne ne voulait même entendre parler de l&rsquo;exécution de bases de données dans Kubernetes, tout a changé maintenant.</p><p>Chez Percona, nous avons créé quelques opérateurs k8s très fonctionnels pour Percona Server pour les bases de données MongoDB, PostgreSQL et MySQL. Aujourd&rsquo;hui, nous allons parler de l&rsquo;utilisation de la <a href=https://www.percona.com/doc/kubernetes-operator-for-pxc/replication.html#set-up-percona-xtradb-cluster-cross-site-replication>réplication inter-sites</a> - une nouvelle fonctionnalité qui a été ajoutée à la dernière version de <a href=https://www.percona.com/software/percona-kubernetes-operators>Percona Distribution for MySQL Operator</a> . Cette fonctionnalité est basée sur <a href=https://dev.mysql.com/doc/refman/8.0/en/replication-asynchronous-connection-failover.html>un mécanisme de basculement de connexion synchrone</a> .</p><p>La réplication inter-sites implique la configuration d&rsquo;un cluster Percona XtraDB ou d&rsquo;un/plusieurs serveurs MySQL en tant que source, et d&rsquo;un autre cluster Percona XtraDB (PXC) en tant que réplique pour permettre une réplication asynchrone entre eux. Si un opérateur dispose de plusieurs sources en ressource personnalisée ( <a href=https://github.com/percona/percona-xtradb-cluster-operator/blob/v1.9.0/deploy/cr.yaml#L53-L55>CR</a> ), il gérera automatiquement les échecs de connexion de la base de données source.</p><p>Cette fonctionnalité de réplication intersites n&rsquo;est prise en charge que depuis MySQL 8.0.23, mais vous pouvez en savoir plus sur la migration de MySQL de versions antérieures dans cet <a href=https://www.percona.com/blog/2021/06/14/migrating-into-kubernetes-running-the-percona-distribution-for-mysql-operator/https://www.percona.com/blog/2021/06/14/migrating-into-kubernetes-running-the-percona-distribution-for-mysql-operator/>article de blog</a>. </p><h2 id=le-but>Le but</h2><p>Migrer la base de données MySQL, qui est déployée sur site ou dans le cloud, vers l&rsquo;opérateur Percona Distribution for MySQL à l&rsquo;aide de la réplication asynchrone. Cette approche vous aide à réduire les temps d&rsquo;arrêt et la perte de données pour votre application.</p><p>Nous avons donc la configuration suivante :</p><p><img src=/posts/article24/img01.png alt=image01></p><h2 id=les-composants-suivants-sont-utilisés->Les composants suivants sont utilisés :</h2><p>\1. Base de données MySQL 8.0.23 (dans mon cas, il s&rsquo;agit de <a href=https://www.percona.com/software/mysql-database/percona-server>Percona Server for MySQL</a> ) qui est déployée dans DO (en tant que source) et <a href=https://www.percona.com/software/mysql-database/percona-xtrabackup>Percona XtraBackup</a> pour la sauvegarde. Dans mon déploiement de test, j&rsquo;utilise un seul serveur comme source pour simplifier le déploiement. Selon votre topologie de déploiement de base de données, vous pouvez utiliser plusieurs serveurs pour utiliser le mécanisme de basculement de connexion synchrone du côté de l&rsquo;opérateur.</p><p>\2. Le cluster Google Kubernetes Engine (GKE) où <a href=https://www.percona.com/doc/kubernetes-operator-for-pxc/index.html>Percona Distribution for MySQL Operator</a> est déployé avec le cluster PXC (en tant que cible).</p><p>\3. Le compartiment AWS S3 est utilisé pour enregistrer la sauvegarde à partir de la base de données MySQL, puis pour restaurer le cluster PXC dans k8s.</p><h2 id=les-étapes-suivantes-doivent-être-effectuées-pour-effectuer-la-procédure-de-migration>Les étapes suivantes doivent être effectuées pour effectuer la procédure de migration</h2><p>\1. Effectuez la sauvegarde de la base de données MySQL à l&rsquo;aide de <a href=https://www.percona.com/software/mysql-database/percona-xtrabackup>Percona XtraBackup</a> et chargez-la dans le compartiment S3 à l&rsquo;aide de <a href=https://www.percona.com/doc/percona-xtrabackup/LATEST/xbcloud/xbcloud.html>xbcloud</a>.</p><p>\2. Effectuez la restauration de la base de données MySQL depuis le compartiment S3 dans le cluster PXC qui est déployé dans k8s.</p><p>\3. Configurez la réplication asynchrone entre le serveur MySQL et le cluster PXC géré par l&rsquo;opérateur k8s</p><p>En conséquence, nous avons une réplication asynchrone entre le serveur MySQL et le cluster PXC dans k8s qui est en mode lecture seule.</p><h2 id=migration>Migration</h2><h2 id=configurez-le-cluster-pxc-cible-géré-par-lopérateur-k8s>Configurez le cluster PXC cible géré par l&rsquo;opérateur k8s</h2><p>\1. Déployez Percona Distribution for MySQL Operator sur Kubernetes (j&rsquo;ai utilisé GKE 1.20).</p><pre><code># clone the git repository
+git clone -b v1.9.0 https://github.com/percona/percona-xtradb-cluster-operator
+cd percona-xtradb-cluster-operator
+
+# deploy the operator
+kubectl apply -f deploy/bundle.yaml
+</code></pre><p>\2. Créez un cluster PXC à l&rsquo;aide du manifeste de ressource personnalisé (CR) par défaut.</p><pre><code># create my-cluster-secrets secret (do no use default passwords for production systems)
+kubectl apply -f deploy/secrets.yaml
+
+# create cluster by default it will be PXC 8.0.23
+kubectl apply -f deploy/cr.yaml
+</code></pre><p>\3. Créez le secret avec les informations d&rsquo;identification pour le compartiment AWS S3 qui sera utilisé pour accéder au compartiment S3 pendant la procédure de restauration.</p><pre><code># create S3-secret.yaml file with following content, and use correct credentials instead of XXXXXX
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-s3-secret
+type: Opaque
+data:
+  AWS_ACCESS_KEY_ID: XXXXXX
+  AWS_SECRET_ACCESS_KEY: XXXXXX
+</code></pre><pre><code># create secret
+kubectl apply -f S3-secret.yaml
+</code></pre><h2 id=configurer-le-serveur-mysql-source>Configurer le serveur MySQL source</h2><p>\1. Installez Percona Server pour MySQL 8.0.23 et Percona XtraBackup pour la sauvegarde. Reportez-vous aux chapitres <a href=https://www.percona.com/doc/percona-server/LATEST/installation/yum_repo.html>Installation de Percona Server pour MySQL</a> et <a href=https://www.percona.com/doc/percona-xtrabackup/8.0/installation.html#installing-percona-xtrabackup-from-repositories>Installation de Percona XtraBackup</a> dans la documentation pour les instructions d&rsquo;installation.</p><p><em>REMARQUE :</em></p><p><em>vous devez ajouter les options suivantes à my.cnf pour activer la prise en charge de <a href=https://dev.mysql.com/doc/refman/8.0/en/replication-options-gtids.html#sysvar_gtid_mode>GTID</a>; sinon, la réplication ne fonctionnera pas car elle est utilisée par défaut par le cluster PXC</em></p><pre><code>[mysqld]
+enforce_gtid_consistency=ON
+gtid_mode=ON
+</code></pre><p>\2. Créez tous les utilisateurs nécessaires qui seront utilisés par l&rsquo;opérateur k8s, le mot de passe doit être le même que dans deploy/secrets.yaml . Veuillez également noter que le mot de passe de l&rsquo;utilisateur root doit être le même que dans le fichier <code>deploy/secrets.yaml</code> pour k8s the secret. Dans mon cas, j&rsquo;ai utilisé nos mots de passe par défaut du fichier <code>deploy/secrets.yaml</code></p><pre><code>CREATE USER 'monitor'@'%' IDENTIFIED BY 'monitory' WITH MAX_USER_CONNECTIONS 100;
+GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO 'monitor'@'%';
+GRANT SERVICE_CONNECTION_ADMIN ON *.* TO 'monitor'@'%';
+
+CREATE USER 'operator'@'%' IDENTIFIED BY 'operatoradmin';
+GRANT ALL ON *.* TO 'operator'@'%' WITH GRANT OPTION;
+
+CREATE USER 'xtrabackup'@'%' IDENTIFIED BY 'backup_password';
+GRANT ALL ON *.* TO 'xtrabackup'@'%';
+
+CREATE USER 'replication'@'%' IDENTIFIED BY 'repl_password';
+GRANT REPLICATION SLAVE ON *.* to 'replication'@'%';
+FLUSH PRIVILEGES;
+</code></pre><p>\2. Effectuez la sauvegarde de la base de données MySQL à l&rsquo;aide de l&rsquo;outil XtraBackup et chargez-la dans le compartiment S3.</p><pre><code># export aws credentials
+export AWS_ACCESS_KEY_ID=XXXXXX
+export AWS_SECRET_ACCESS_KEY=XXXXXX
+
+#make the backup
+xtrabackup --backup --stream=xbstream --target-dir=/tmp/backups/ --extra-lsndirk=/tmp/backups/  --password=root_password | xbcloud put --storage=s3 --parallel=10 --md5 --s3-bucket=&quot;mysql-testing-bucket&quot; &quot;db-test-1&quot;
+</code></pre><p>Maintenant, tout est prêt pour effectuer la restauration de la sauvegarde sur la base de données cible. Revenons donc à notre cluster k8s.</p><h2 id=configurer-la-réplication-asynchrone-sur-le-cluster-pxc-cible>Configurer la réplication asynchrone sur le cluster PXC cible</h2><p>Si vous avez une base de données source complètement propre (sans aucune donnée), vous pouvez ignorer les points liés à la sauvegarde et à la restauration de la base de données. Sinon, procédez comme suit :</p><p>\1. Restaurez la sauvegarde à partir du compartiment S3 à l&rsquo;aide du manifeste suivant :</p><pre><code># create restore.yml file with following content
+
+apiVersion: pxc.percona.com/v1
+kind: PerconaXtraDBClusterRestore
+metadata:
+  name: restore1
+spec:
+  pxcCluster: cluster1
+  backupSource:
+    destination: s3://mysql-testing-bucket/db-test-1
+    s3:
+      credentialsSecret: aws-s3-secret
+      region: us-east-1
+</code></pre><pre><code># trigger the restoration procedure
+kubectl apply -f restore.yml
+</code></pre><p>En conséquence, vous aurez un cluster PXC avec des données de la base de données source. Maintenant, tout est prêt pour configurer la réplication.</p><p>\2. Modifiez le manifeste de ressource personnalisé <code>deploy/cr.yaml</code> pour configurer la section section <code>spec.pxc.replicationChannels</code></p><pre><code>spec:
+  ...
+  pxc:
+    ...
+    replicationChannels:
+    - name: ps_to_pxc1
+      isSource: false
+      sourcesList:
+        - host: &lt;source_ip&gt;
+          port: 3306
+          weight: 100
+</code></pre><pre><code># apply CR
+kubectl apply -f deploy/cr.yaml
+</code></pre><h2 id=vérifier-la-réplication>Vérifier la réplication</h2><p>Afin de vérifier la réplication, vous devez vous connecter au nœud PXC et exécuter les commandes suivantes:</p><pre><code>kubectl exec -it cluster1-pxc-0 -c pxc -- mysql -uroot -proot_password -e &quot;show replica status \G&quot;
+*************************** 1. row ***************************
+               Slave_IO_State: Waiting for master to send event
+                  Master_Host: &lt;ip-of-source-db&gt;
+                  Master_User: replication
+                  Master_Port: 3306
+                Connect_Retry: 60
+              Master_Log_File: binlog.000004
+          Read_Master_Log_Pos: 529
+               Relay_Log_File: cluster1-pxc-0-relay-bin-ps_to_pxc1.000002
+                Relay_Log_Pos: 738
+        Relay_Master_Log_File: binlog.000004
+             Slave_IO_Running: Yes
+            Slave_SQL_Running: Yes
+              Replicate_Do_DB:
+          Replicate_Ignore_DB:
+           Replicate_Do_Table:
+       Replicate_Ignore_Table:
+      Replicate_Wild_Do_Table:
+  Replicate_Wild_Ignore_Table:
+                   Last_Errno: 0
+                   Last_Error:
+                 Skip_Counter: 0
+          Exec_Master_Log_Pos: 529
+              Relay_Log_Space: 969
+              Until_Condition: None
+               Until_Log_File:
+                Until_Log_Pos: 0
+           Master_SSL_Allowed: No
+           Master_SSL_CA_File:
+           Master_SSL_CA_Path:
+              Master_SSL_Cert:
+            Master_SSL_Cipher:
+               Master_SSL_Key:
+        Seconds_Behind_Master: 0
+Master_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 0
+                Last_IO_Error:
+               Last_SQL_Errno: 0
+               Last_SQL_Error:
+  Replicate_Ignore_Server_Ids:
+             Master_Server_Id: 1
+                  Master_UUID: 9741945e-148d-11ec-89e9-5ee1a3cf433f
+             Master_Info_File: mysql.slave_master_info
+                    SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+      Slave_SQL_Running_State: Slave has read all relay log; waiting for more updates
+           Master_Retry_Count: 3
+                  Master_Bind:
+      Last_IO_Error_Timestamp:
+     Last_SQL_Error_Timestamp:
+               Master_SSL_Crl:
+           Master_SSL_Crlpath:
+           Retrieved_Gtid_Set: 9741945e-148d-11ec-89e9-5ee1a3cf433f:1-2
+            Executed_Gtid_Set: 93f1e7bf-1495-11ec-80b2-06e6016a7c3d:1,
+9647dc03-1495-11ec-a385-7e3b2511dacb:1-7,
+9741945e-148d-11ec-89e9-5ee1a3cf433f:1-2
+                Auto_Position: 1
+         Replicate_Rewrite_DB:
+                 Channel_Name: ps_to_pxc1
+           Master_TLS_Version:
+       Master_public_key_path:
+        Get_master_public_key: 0
+            Network_Namespace:
+</code></pre><p>Vous pouvez également vérifier la réplication en vérifiant que les données changent.</p><h2 id=promouvoir-le-cluster-pxc-en-tant-que-principal>Promouvoir le cluster PXC en tant que principal</h2><p>Dès que vous êtes prêt (votre application a été reconfigurée et prête à fonctionner avec la nouvelle base de données) pour arrêter la réplication et promouvoir le cluster PXC dans k8s en tant que base de données principale, vous devez effectuer les actions simples suivantes :</p><p>\1. Modifiez le <code>deploy/cr.yaml</code> et commentez les replicationChannels</p><pre><code>spec:
+  ...
+  pxc:
+    ...
+    #replicationChannels:
+    #- name: ps_to_pxc1
+    #  isSource: false
+    #  sourcesList:
+    #    - host: &lt;source_ip&gt;
+    #      port: 3306
+    #      weight: 100
+</code></pre><p>\2. Arrêtez le service mysqld sur le serveur source pour vous assurer qu&rsquo;aucune nouvelle donnée n&rsquo;est écrite.</p><pre><code> systemctl stop mysqld
+</code></pre><p>\3. Appliquez un nouvel opérateur CR pour k8s.</p><pre><code># apply CR
+kubectl apply -f deploy/cr.yaml
+</code></pre><p>Par conséquent, la réplication est arrêtée et le mode lecture seule est désactivé pour le cluster PXC.</p><h2 id=conclusion>Conclusion</h2><p>Les technologies évoluent si vite qu&rsquo;une procédure de migration vers le cluster k8s, en apparence très complexe à première vue, s&rsquo;avère être ni difficile ni chronophage. Mais vous devez garder à l&rsquo;esprit que des changements importants ont été apportés. Tout d&rsquo;abord, vous migrez la base de données vers le cluster PXC qui présente certaines particularités et, bien sûr, Kubernetes lui-même. Si vous êtes prêt, vous pouvez commencer votre voyage vers Kubernetes dès maintenant.</p><p>L&rsquo;équipe Percona est prête à vous guider tout au long de cette expérience. Si vous avez des questions, veuillez soulever le sujet dans le <a href=https://forums.percona.com/c/mysql-mariadb/percona-kubernetes-operator-for-mysql/28>forum de communauté</a> .</p><p><strong>Les opérateurs Percona Kubernetes automatisent la création, la modification ou la suppression de membres dans votre environnement Percona Distribution for MySQL, MongoDB ou PostgreSQL.</strong></p><p><a href=https://www.percona.com/software/percona-kubernetes-operators>En savoir plus sur les opérateurs Percona Kubernetes</a></p><ul class=pa0><li class=list><a href=/tags/mysql class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">MySQL</a></li></ul><div class="mt6 instapaper_ignoref"></div></div></article></main><footer class="bg-dark-blue bottom-0 w-100 pa3" role=contentinfo><div class="flex justify-between"><a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://www.lesamisdepercona.fr/>&copy; Les amis de Percona 2021</a><div></div></div></footer></body></html>
