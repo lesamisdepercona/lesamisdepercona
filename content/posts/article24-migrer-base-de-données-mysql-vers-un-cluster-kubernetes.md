@@ -284,3 +284,4 @@ L'équipe Percona est prête à vous guider tout au long de cette expérience. S
 
 [En savoir plus sur les opérateurs Percona Kubernetes](https://www.percona.com/software/percona-kubernetes-operators)
 
+Source : [Percona](https://www.percona.com/blog/migration-of-a-mysql-database-to-a-kubernetes-cluster-using-asynchronous-replication/)
