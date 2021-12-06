@@ -23,10 +23,10 @@ Il existe deux manières de migrer la base de données :
 
 1. Prenez la sauvegarde et restaurez-la. 
 
- - Cette option est la plus simple, mais s'accompagne malheureusement d'un temps d'arrêt. Plus la base de données est volumineuse, plus le temps de récupération est long.
+   Cette option est la plus simple, mais s'accompagne malheureusement d'un temps d'arrêt. Plus la base de données est volumineuse, plus le temps de récupération est long.
 
 2. Répliquez les données sur le nouveau site et basculez l'application une fois les réplicas synchronisés. 
-   – Cela permet à l'utilisateur d'effectuer la migration et de basculer l'application avec zéro ou peu de temps d'arrêt.
+   Cela permet à l'utilisateur d'effectuer la migration et de basculer l'application avec zéro ou peu de temps d'arrêt.
 
 Cet article de blog explique comment migrer le jeu de réplicas MongoDB vers Kubernetes avec des capacités de réplication. 
 
