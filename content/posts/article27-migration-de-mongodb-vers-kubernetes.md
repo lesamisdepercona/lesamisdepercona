@@ -23,9 +23,9 @@ Il existe deux manières de migrer la base de données :
 
 1. Prenez la sauvegarde et restaurez-la. 
 
-– Cette option est la plus simple, mais s'accompagne malheureusement d'un temps d'arrêt. Plus la base de données est volumineuse, plus le temps de récupération est long.
+- Cette option est la plus simple, mais s'accompagne malheureusement d'un temps d'arrêt. Plus la base de données est volumineuse, plus le temps de récupération est long.
 
-1. Répliquez les données sur le nouveau site et basculez l'application une fois les réplicas synchronisés. 
+2. Répliquez les données sur le nouveau site et basculez l'application une fois les réplicas synchronisés. 
    – Cela permet à l'utilisateur d'effectuer la migration et de basculer l'application avec zéro ou peu de temps d'arrêt.
 
 Cet article de blog explique comment migrer le jeu de réplicas MongoDB vers Kubernetes avec des capacités de réplication. 
@@ -34,9 +34,9 @@ Cet article de blog explique comment migrer le jeu de réplicas MongoDB vers Kub
 
 
 1. Nous avons un cluster MongoDB quelque part (la Source). Cela peut être sur site ou sur une machine virtuelle. À des fins de démonstration, je vais utiliser un nœud de jeu de réplicas autonome. La procédure de migration d'un jeu de réplicas avec plusieurs nœuds ou cluster partitionné est presque identique.
-1. Nous avons un cluster Kubernetes avec Percona Operator (la cible). L'opérateur déploie 3 nœuds MongoDB autonomes en mode non managé (nous en parlerons ci-dessous).
-1. Chaque nœud est exposé afin que les nœuds de la Source puissent les atteindre.
-1. Nous allons répliquer les données sur les nœuds cibles en les ajoutant au jeu de réplicas.
+2. Nous avons un cluster Kubernetes avec Percona Operator (la cible). L'opérateur déploie 3 nœuds MongoDB autonomes en mode non managé (nous en parlerons ci-dessous).
+3. Chaque nœud est exposé afin que les nœuds de la Source puissent les atteindre.
+4. Nous allons répliquer les données sur les nœuds cibles en les ajoutant au jeu de réplicas.
 
 Comme toujours, tous les scripts d'articles de blog et les fichiers de configuration sont disponibles publiquement dans [ce référentiel Github](https://github.com/spron-in/blog-data/tree/master/mongodb-to-kubernetes). 
 
