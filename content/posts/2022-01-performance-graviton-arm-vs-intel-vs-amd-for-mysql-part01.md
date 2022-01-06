@@ -1,13 +1,13 @@
 ﻿+++
-title = "Comparer la performance de Graviton (ARM) vs celle d'Intel et AMD pour MySQL"
+title = "Comparer la performance de Graviton (ARM) vs celle d'Intel et AMD pour MySQL - Partie 01"
 description = "Voici le resultat de nos recherches sur les performances de Graviton, en le comparant avec d'autres processeurs (Intel et AMD) directement pour MySQL."
 author = "Francis"
-date = 2022-01-06
+date = 2022-01-05
 tags = ['MySQL']
 Categories = ["Article de Percona"]
 featured_image = "thumbnail2022/article01-01.jpg"
 images = ["thumbnail2022/article01-01.jpg"]
-slug = "performance-graviton-arm-vs-intel-vs-amd-for-mysql"
+slug = "performance-graviton-arm-vs-intel-vs-amd-for-mysql-part01"
 +++
 
 
