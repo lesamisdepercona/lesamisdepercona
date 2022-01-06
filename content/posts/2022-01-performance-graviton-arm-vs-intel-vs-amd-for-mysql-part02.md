@@ -10,7 +10,7 @@ images = ["thumbnail2022/article01-02.jpg"]
 slug = "performance-graviton-arm-vs-intel-vs-amd-for-mysql-part02"
 +++
 
-Récemment, nous avons [publié la première partie de la recherche comparant Graviton (ARM) avec AMD et Intel CPU sur AWS](https://www.lesamisdepercona.fr/posts/performance-graviton-arm-vs-intel-vs-amd-for-mysql/) . Dans la première partie, nous avons sélectionné des instances EC2 à usage général avec les mêmes configurations (quantité de vCPU). L'objectif principal était de voir la tendance et de faire une comparaison générale des types de processeurs sur la plate-forme AWS uniquement pour MySQL. Nous ne nous sommes pas fixé pour objectif de comparer les performances de différents types de processeurs. Notre expertise réside dans le réglage des performances MySQL. Nous partageons la recherche « telle quelle » avec tous les scripts, et toute personne intéressée peut la réexécuter et la reproduire. Tous les scripts, journaux bruts et tracés supplémentaires sont disponibles sur GitHub : ( [2021_10_arm_cpu_comparison_c5](https://github.com/Percona-Lab-results/2021_10_arm_cpu_comparison_c5) , [csv_file_with_all_data](https://github.com/Percona-Lab-results/2021_10_arm_cpu_comparison_c5/blob/83bcff23ada279ff9a09890b79e2f6cca2b31573/report/oltp_test_result.csv) ).
+Récemment, nous avons [publié la première partie de la recherche comparant Graviton (ARM) avec AMD et Intel CPU sur AWS](https://www.lesamisdepercona.fr/posts/performance-graviton-arm-vs-intel-vs-amd-for-mysql-part01/) . Dans la première partie, nous avons sélectionné des instances EC2 à usage général avec les mêmes configurations (quantité de vCPU). L'objectif principal était de voir la tendance et de faire une comparaison générale des types de processeurs sur la plate-forme AWS uniquement pour MySQL. Nous ne nous sommes pas fixé pour objectif de comparer les performances de différents types de processeurs. Notre expertise réside dans le réglage des performances MySQL. Nous partageons la recherche « telle quelle » avec tous les scripts, et toute personne intéressée peut la réexécuter et la reproduire. Tous les scripts, journaux bruts et tracés supplémentaires sont disponibles sur GitHub : ( [2021_10_arm_cpu_comparison_c5](https://github.com/Percona-Lab-results/2021_10_arm_cpu_comparison_c5) , [csv_file_with_all_data](https://github.com/Percona-Lab-results/2021_10_arm_cpu_comparison_c5/blob/83bcff23ada279ff9a09890b79e2f6cca2b31573/report/oltp_test_result.csv) ).
 
 Nous avons été heureux de voir les réactions de nos lecteurs du blog Percona à notre recherche, et nous sommes ouverts à tout commentaire. Si quelqu'un a des idées sur la mise à jour de notre méthodologie, nous serions heureux de les corriger.
 
@@ -42,20 +42,20 @@ La prochaine fois, nous partagerons nos découvertes sur l'efficacité économiq
 
 ### Prérequis:
 
-\1. Créez une base de données avec 10 tables et 10 000 000 lignes par table
+1. Créez une base de données avec 10 tables et 10 000 000 lignes par table
 
 ```
 sysbench oltp_read_only --threads=10 --mysql-user=sbtest --mysql-password=sbtest --table-size=10000000 --tables=10 --db-driver=mysql --mysql-db=sbtest prepare
 
 ```
 
-\2. Chargez toutes les données dans LOAD\_buffer
+2. Chargez toutes les données dans LOAD\_buffer
 
 ```
 sysbench oltp_read_only --time=300 --threads=10 --table-size=1000000 --mysql-user=sbtest --mysql-password=sbtest --db-driver=mysql --mysql-db=sbtest run
 ```
 
-\3. Test :
+3. Test :
 
 Exécuter en boucle pour le même scénario mais une simultanéité différente THREAD (1,2,4,8,16,32,64,128) sur chaque EC2
 

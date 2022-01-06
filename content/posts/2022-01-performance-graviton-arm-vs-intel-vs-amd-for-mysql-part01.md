@@ -193,7 +193,7 @@ APERÇU:
 1. Ce serait une bonne idée d'essayer d'utiliser EC2 avec Graviton pour une vraie base de données à forte concurrence.
 1. Il semble qu'il faut exécuter des scénarios supplémentaires avec 256 et 512 threads pour vérifier l'hypothèse selon laquelle Graviton pourrait mieux fonctionner lorsque les threads sont supérieurs à vCPU.
 
-[Découvrez la deuxième partie de nos tests !](https://www.percona.com/blog/comparing-graviton-arm-performance-to-intel-and-amd-for-mysql-part-2/)
+[Découvrez la deuxième partie de resultat de nos tests !](https://www.lesamisdepercona.fr/posts/performance-graviton-arm-vs-intel-vs-amd-for-mysql-part02/)
 
 
 
