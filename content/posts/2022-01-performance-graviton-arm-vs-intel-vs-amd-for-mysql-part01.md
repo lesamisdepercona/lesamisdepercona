@@ -5,10 +5,11 @@ author = "Francis"
 date = 2022-01-06
 tags = ['MySQL']
 Categories = ["Article de Percona"]
-featured_image = "thumbnail2022/article01-01.jpg"
-images = ["thumbnail2022/article01-01.jpg"]
+featured_image = "/thumbnail2022/article01-01.jpg"
+images = ["/thumbnail2022/article01-01.jpg"]
 slug = "performance-graviton-arm-vs-intel-vs-amd-for-mysql"
 +++
+
 
 Récemment, AWS a présenté sa propre architecture CPU sur ARM pour les solutions serveur.
 
