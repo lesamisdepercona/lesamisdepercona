@@ -1,13 +1,13 @@
 +++
-title = "Base de données MySQL - Quelques problèmes de conception"
-description = "Atouts et faiblese de la base de donnée open source MySQL"
+title = "MySQL : Les instructions SHOW"
+description = "Analyse de l'instruction SHOW ENGINE INNODB STATUS dans la base de donnée open source MySQL"
 author = "Francis"
 date = 2021-04-08T11:43:01+04:00
 tags = ['mysql']
 Categories = ["Article de Percona"]
 featured_image = "posts/article01/Bad-Design-MySQL-367x205.png"
 images = ["thumbnail/amisdepercona21-001.jpg"]
-slug = "article01-quelques-problemes-de-conception-mysql"
+slug = "mysql-show-engine-innodb-status"
 +++
 
 MySQL dispose certainement plusieurs atouts particuliers, sinon, ce ne serait pas la base de données Open Source la plus populaire au monde (selon [DB-Engines](https://db-engines.com/en/ranking)). Cependant, je vois des décisions ou des comportements qui sont dus à des mauvaises conceptions. Beaucoup d’entre eux reposent sur de nombreux raisonnements historiques et sont peut-être toujours là parce que les ressources allouées au nettoyage du code sont insuffisantes.
