@@ -1,6 +1,6 @@
 ﻿+++
 title = "MyDumper 0.10.5 est maintenant disponible"
-description = "Traduit à partir de l'article de David Ducos intitulé, MyDumper 0.10.5 is Now Available"
+description = "Nouvelles fonctionnalités, Documentation, Correction des bugs et refactorisation"
 author = "Francis"
 date = 2021-09-02T11:43:01+04:00
 tags = ['MySQL']

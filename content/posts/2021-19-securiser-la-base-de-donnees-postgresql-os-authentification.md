@@ -1,6 +1,6 @@
 ﻿+++
 title = "Sécurité de la base de données PostgreSQL : OS - Authentification"
-description = "Traduit à partir de l'article de Ibrar Ahmed intitulé, PostgreSQL Database Security: OS – Authentication"
+description = "Qulques méthodes d'authentification de base impliquant le serveur PostgreSQL, le noyau et le serveur d'identification"
 author = "Francis"
 date = 2021-10-10T11:43:01+04:00
 tags = ['PostgreSQL']

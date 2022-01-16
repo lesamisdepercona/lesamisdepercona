@@ -1,13 +1,13 @@
 +++
 title = "Une approche simple de dépannage usage elevé de CPU sur MySQL"
-description = "Une approche simple de dépannage usage elevé de CPU sur MySQL par Juan Arruti et Leonardo Bacchi Fernandes"
+description = "Methode de dépannage au cas où la base de donnée MySQL fait usage elevé de CPU"
 author = "Francis"
 date = 2021-07-09T11:43:01+04:00
 tags = ['MySQL']
 Categories = ["Article de Percona"]
 featured_image = ""
 images = ["thumbnail/amisdepercona21-006.jpg"]
-slug = "Une-approche-simple-de-dépannage-usage-CPU-MySQL"
+slug = "Une-approche-simple-de-depannage-usage-CPU-MySQL"
 +++
 
 

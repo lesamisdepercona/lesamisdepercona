@@ -1,6 +1,6 @@
 ﻿+++
 title = "Aperçu et détails techniques de Percona Monitoring and Management DBaaS"
-description = "Traduit à partir de l'article de Denys Kondratenko intitulé, Percona Monitoring and Management DBaaS Overview and Technical Details"
+description = "Gérer les bases de données dans Kubernetes clusters grace aux composants de Percona Monitoring and Management PMM DBaaS de Percona XtraDB Cluster PXC et Percona Server pour MongoDB PSMDB"
 author = "Francis"
 date = 2021-09-10T11:43:01+04:00
 tags = ['PMM']

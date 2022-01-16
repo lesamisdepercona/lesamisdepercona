@@ -1,6 +1,6 @@
 ﻿+++
 title = "Gérer les utilisateurs MySQL avec Kubernetes"
-description = "Traduit à partir de l'article de Sergey Pronin intitulé, Manage MySQL Users with Kubernetes"
+description = "Guide simplifié de la gestion des utilisateurs MongoDB et MySQL avec des opérateurs"
 author = "Francis"
 date = 2021-08-26T11:43:01+04:00
 tags = ['MySQL']

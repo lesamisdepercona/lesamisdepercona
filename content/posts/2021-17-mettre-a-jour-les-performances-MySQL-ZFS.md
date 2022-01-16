@@ -1,6 +1,6 @@
 ﻿+++
 title = "Mise à jour des performances MySQL/ZFS"
-description = "Traduit à partir de l'article de Yves Trudeau intitulé, MySQL/ZFS Performance Update"
+description = "Les avantages de l'utilisation de ZFS par rapport à ext4 en termes de performances"
 author = "Francis"
 date = 2021-09-24T11:43:01+04:00
 tags = ['MySQL']

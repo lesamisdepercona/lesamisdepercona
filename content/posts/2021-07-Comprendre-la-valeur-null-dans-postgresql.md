@@ -1,6 +1,6 @@
 +++
 title = "Gestion des valeurs NULL dans PostgreSQL"
-description = "Traduit à partir de l'article de Ibrar Ahmed intitulé, Handling NULL Values in PostgreSQL, disponible sur le blog de Percona"
+description = "Guide complet d'utilisation de valeur NULL en Postgres"
 author = "Francis"
 date = 2021-07-15T11:43:01+04:00
 tags = ['PostgreSQL']

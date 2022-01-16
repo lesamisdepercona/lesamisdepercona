@@ -1,6 +1,6 @@
 ﻿+++
 title = "Migration d'une base de données MySQL vers un cluster Kubernetes"
-description = "Migrer une base de données MySQL vers un cluster Kubernetes à l'aide de la réplication asynchrone s'avère de plus en plus facile en considérant les derniers changements importants : migrez la base de données vers le cluster PXC qui présente certaines particularités et, bien sûr, Kubernetes lui-même."
+description = "La réplication asynchrone facilite la migration d'une base de données MySQL vers un cluster Kubernetes"
 author = "Francis"
 date = 2021-11-14T11:43:01+04:00
 tags = ['MySQL']

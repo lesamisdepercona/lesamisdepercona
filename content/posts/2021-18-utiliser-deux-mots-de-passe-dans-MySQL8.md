@@ -1,6 +1,6 @@
 ﻿+++
 title = "Utilisation de deux mots de passe MySQL 8"
-description = "Traduit à partir de l'article de Brian Sumpter intitulé, Using MySQL 8 Dual Passwords"
+description = "Exemple d'utilisation de deux mots de passe en MySQL 8"
 author = "Francis"
 date = 2021-09-30T11:43:01+04:00
 tags = ['MySQL']

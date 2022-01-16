@@ -1,6 +1,6 @@
 ﻿+++
 title = "Fonctionnalité et limite de MongoDB dans la gestion de votre base de données"
-description = "Utiliser MongoDB pour gérer vos base de données: avantages et incovénients "
+description = "Avantages et incovénients de l'utilisation de MongoDB pour gérer vos base de données"
 author = "Francis"
 date = 2021-10-22T11:43:01+04:00
 tags = ['MongoDB']

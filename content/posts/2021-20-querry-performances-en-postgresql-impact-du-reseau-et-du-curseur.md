@@ -1,6 +1,6 @@
 ﻿+++
 title = "Impact du réseau et du curseur sur les performances des requêtes de PostgreSQL"
-description = "Traduit à partir de l'article de Jobin Augustine intitulé, Impact of Network and Cursor on Query Performance of PostgreSQL"
+description = "Transfert d'une grande quantité de données d'un hôte de base de données vers un hôte d'application"
 author = "Francis"
 date = 2021-10-17T11:43:01+04:00
 tags = ['PostgreSQL']

@@ -1,6 +1,6 @@
 ﻿+++
 title = "MySQL Traitement de donnée volumineux et Partage horizontal "
-description = "Astuces MySQL pour traiter des données volumineux. Face à un ensemble de données qui explose, l' équipe des services professionnels de Percona peut vous aider à concevoir une solution plus flexible et évolutive."
+description = "Solution plus flexible et évolutive pour traiter des données volumineux en MySQL"
 author = "Francis"
 date = 2021-11-07T11:43:01+04:00
 tags = ['MySQL']

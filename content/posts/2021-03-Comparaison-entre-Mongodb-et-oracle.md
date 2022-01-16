@@ -1,6 +1,6 @@
 +++
-title = "Difference entre MongoDB vs Oracle"
-description = "MongoDB est il le nouvel oracle? "
+title = "Difference entre MongoDB et Oracle"
+description = "Est ce que le MongoDB est il le nouvel oracle?"
 author = "Francis"
 date = 2021-05-15T11:43:01+04:00
 tags = ['MongoDB']

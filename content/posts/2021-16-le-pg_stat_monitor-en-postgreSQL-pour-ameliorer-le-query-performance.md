@@ -1,6 +1,6 @@
 ﻿+++
 title = "Améliorer PostgreSQL Query Performance Insights avec pg_stat_monitor"
-description = "Traduit à partir de l'article de Ibrar Ahmed intitulé, Improve PostgreSQL Query Performance Insights with pg_stat_monitor"
+description = "Utiliser l'extension pg_stat_monitor pour avoir une image plus globale des informations sur les performances requêtes"
 author = "Francis"
 date = 2021-09-19T11:43:01+04:00
 tags = ['PostgreSQL']

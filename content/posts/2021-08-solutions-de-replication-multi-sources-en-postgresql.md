@@ -1,6 +1,6 @@
 +++
 title = "Solutions de réplication multi-source pour PostgreSQL"
-description = "Traduit à partir de l'article de Ibrar Ahmed intitulé, Multi-Source Replication Solutions for PostgreSQL, disponible sur le blog de Percona"
+description = "Decouvrez dans quel cas doit-on faire recours à une replication multisource au lieu de replication à source unique en Postgres!"
 author = "Francis"
 date = 2021-07-22T11:43:01+04:00
 tags = ['PostgreSQL']

@@ -1,6 +1,6 @@
 ﻿+++
 title = "Migrer une base de données PostgreSQL vers Kubernetes"
-description = "Migration des bases de données pour les entreprises. Cas d'une base de données PostgreSQL vers Kubernetes avec Percona Distribution for PostgreSQL Operator"
+description = "Utlisation de Percona Distribution for PostgreSQL Operator pour migrer des bases de données PostgreSQL vers Kubernetes"
 author = "Francis"
 date = 2021-11-01T11:43:01+04:00
 tags = ['PostgreSQL']

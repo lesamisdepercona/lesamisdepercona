@@ -1,6 +1,6 @@
 ﻿+++
 title = "Mise à niveau vers MySQL 8 : relever le défi"
-description = "Traduit à partir de l'article de Mike Benshoof intitulé, Upgrading to MySQL 8 - Embrace the Challenge"
+description = "Mieux comprendre le MySQL 8 et Passer à un niveau superieur"
 author = "Francis"
 date = 2021-08-08T11:43:01+04:00
 tags = ['MySQL']

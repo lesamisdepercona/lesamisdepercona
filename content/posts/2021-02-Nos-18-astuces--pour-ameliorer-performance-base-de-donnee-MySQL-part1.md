@@ -1,5 +1,5 @@
 +++
-title = "Base de données open source : Améliorer la performance de  MySQL (Partie 01)"
+title = "Améliorer la performance de  votre base de donnée MySQL (Partie 01)"
 description = "Astuces et conseils pour améliorer la performance de votre base de donnée MySQL en heure de pointe"
 author = "Francis"
 date = 2021-04-10T11:43:01+04:00
@@ -7,7 +7,7 @@ tags = ['mysql']
 Categories = ["Article de Percona"]
 featured_image = "posts/article02/18astuces.png"
 images = ["thumbnail/amisdepercona21-002.jpg"]
-slug = "article02-mysql-18astuces-heure-de-pointe-part1"
+slug = "ameliorer-performance-de-base-de-donnee-MySQL-part01"
 +++
 
 ### Les 18 choses que vous pouvez faire pour supprimer les goulots d’étranglement MySQL causés par un trafic élevé (Partie 01)

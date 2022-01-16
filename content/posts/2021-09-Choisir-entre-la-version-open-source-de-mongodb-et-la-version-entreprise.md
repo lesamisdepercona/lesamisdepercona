@@ -1,6 +1,6 @@
 ﻿+++
-title = "MongoDB : Pourquoi payer pour la version entreprise quand la version Open Source est-elle disponible?"
-description = "Traduit à partir de l'article de Barrett Chambers intitulé, A Spotlight on the Security of Your MongoDB Database"
+title = "Pourquoi payer pour la version entreprise de MongoDB quand la version Open Source est-elle disponible?"
+description = "Les raisons de choisir Percona Distribution pour MongoDB au lieu de la version entreprise de MongoDB"
 author = "Francis"
 date = 2021-07-29T11:43:01+04:00
 tags = ['MongoDB']

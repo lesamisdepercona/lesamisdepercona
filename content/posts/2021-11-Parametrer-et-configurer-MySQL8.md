@@ -1,13 +1,13 @@
 ﻿+++
 title = "Mis au point des paramètres de configuration MySQL 8"
-description = "Traduit à partir de l'article de Brian Sumpter intitulé, Easily Validate Configuration Settings in MySQL 8"
+description = "Apprendre à optimiser la configuration de MySQL 8"
 author = "Francis"
 date = 2021-08-13T11:43:01+04:00
 tags = ['MySQL']
 Categories = ["Article de Percona"]
 featured_image = "thumbnail/amisdepercona21-00011.jpg"
 images = ["thumbnail/amisdepercona21-00011.jpg"]
-slug = "mis-au-point-des-paramètres-de-configuration-mysql8"
+slug = "parametrer-et-configurer-mysql8"
 +++
 
 

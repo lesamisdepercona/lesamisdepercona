@@ -1,6 +1,6 @@
 +++
 title = "Pourquoi faire des sauvegardes?"
-description = "Traduit à partir de l'article de Divyanshu Soni intitulé, MongoDB Backup Best Practices"
+description = "Pratique et Conseil pour avoir une sauvegarde de base de donnée avec MongoDB"
 author = "Francis"
 date = 2021-06-01T11:43:01+04:00
 tags = ['MongoDB']

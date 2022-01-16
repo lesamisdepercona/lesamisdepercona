@@ -1,13 +1,13 @@
 ﻿+++
 title = "Relire l'exécution de MySQL avec Record and Replay"
-description = "Traduit à partir de l'article de Marcelo Altmann intitulé, Replay the Execution of MySQL With Record and Replay"
+description = "Analyse d'un bug MySQL et identification de la cause principale en rejouant l'exécution du serveur source avec Record and Replay"
 author = "Francis"
 date = 2021-08-20T11:43:01+04:00
 tags = ['MySQL']
 Categories = ["Article de Percona"]
 featured_image = "thumbnail/amisdepercona21-00012.jpg"
 images = ["thumbnail/amisdepercona21-00012.jpg"]
-slug = "relire-l-execution-de-MySQL-avec-rr-record-and-replay"
+slug = "MySQL-rr-record-and-replay"
 +++
 
 
