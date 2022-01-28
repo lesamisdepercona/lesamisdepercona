@@ -10,6 +10,7 @@ images = ["thumbnail2022/article01-01.jpg"]
 slug = "performance-graviton-arm-vs-intel-vs-amd-for-mysql-part01"
 +++
 
+![thumbnail](/thumbnail2022/article01-01.jpg)
 
 Récemment, AWS a présenté sa propre architecture CPU sur ARM pour les solutions serveur.
 
