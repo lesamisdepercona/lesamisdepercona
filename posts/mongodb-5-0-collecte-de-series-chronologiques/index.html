@@ -1,0 +1,295 @@
+<!doctype html><html lang=fr><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>MongoDB 5.0 : Collecte de séries chronologiques | Les amis de Percona</title><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="Definir le Collecte de séries chronologiques avec un exemple type en MongoDB selon les requêtes habituelles"><meta name=generator content="Hugo 0.80.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel=stylesheet href=/ananke/css/main.min.css><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><meta property="og:title" content="MongoDB 5.0 : Collecte de séries chronologiques"><meta property="og:description" content="Definir le Collecte de séries chronologiques avec un exemple type en MongoDB selon les requêtes habituelles"><meta property="og:type" content="article"><meta property="og:url" content="https://www.lesamisdepercona.fr/posts/mongodb-5-0-collecte-de-series-chronologiques/"><meta property="og:image" content="https://www.lesamisdepercona.fr/thumbnail2022/article03.jpg"><meta property="article:published_time" content="2022-02-01T11:43:01+04:00"><meta property="article:modified_time" content="2022-02-01T11:43:01+04:00"><meta itemprop=name content="MongoDB 5.0 : Collecte de séries chronologiques"><meta itemprop=description content="Definir le Collecte de séries chronologiques avec un exemple type en MongoDB selon les requêtes habituelles"><meta itemprop=datePublished content="2022-02-01T11:43:01+04:00"><meta itemprop=dateModified content="2022-02-01T11:43:01+04:00"><meta itemprop=wordCount content="2341"><meta itemprop=image content="https://www.lesamisdepercona.fr/thumbnail2022/article03.jpg"><meta itemprop=keywords content="MongoDB,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://www.lesamisdepercona.fr/thumbnail2022/article03.jpg"><meta name=twitter:title content="MongoDB 5.0 : Collecte de séries chronologiques"><meta name=twitter:description content="Definir le Collecte de séries chronologiques avec un exemple type en MongoDB selon les requêtes habituelles"><script async src="https://www.googletagmanager.com/gtag/js?id=G-W9SYN1YL24"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-W9SYN1YL24');</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-203534013-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-203534013-1');</script></head><body class="ma0 avenir bg-near-white"><header><div class=bg-dark-blue><nav class="pv3 ph3 ph4-ns" role=navigation><div class="flex-l justify-between items-center center"><a href=/ class="f3 fw2 hover-white no-underline white-90 dib"><img src=/img/logo.png class="w100 mw5-ns" alt="Les amis de Percona"></a><div class="flex-l items-center"><ul class="pl0 mr3"><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/posts/ title="Articles page">Articles</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/about/ title="Qui Sommes Nous? page">Qui Sommes Nous?</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/tags/ title="Tags page">Tags</a></li></ul></div></div></nav></div></header><main class=pb7 role=main><article class="flex-l flex-wrap justify-between mw8 center ph3"><header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked">POSTS</aside><div id=sharing class=mt3><a href="https://www.facebook.com/sharer.php?u=https://www.lesamisdepercona.fr/posts/mongodb-5-0-collecte-de-series-chronologiques/" class="facebook no-underline" aria-label="share on Facebook"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765 50.32h6.744V33.998h4.499l.596-5.624h-5.095l.007-2.816c0-1.466.14-2.253 2.244-2.253h2.812V17.68h-4.5c-5.405.0-7.307 2.729-7.307 7.317v3.377h-3.369v5.625h3.369V50.32zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd"/></svg></a><a href="https://twitter.com/share?url=https://www.lesamisdepercona.fr/posts/mongodb-5-0-collecte-de-series-chronologiques/&text=MongoDB%205.0%20:%20Collecte%20de%20s%c3%a9ries%20chronologiques" class="twitter no-underline" aria-label="share on Twitter"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167 22.283c-2.619.953-4.274 3.411-4.086 6.101l.063 1.038-1.048-.127c-3.813-.487-7.145-2.139-9.974-4.915l-1.383-1.377-.356 1.017c-.754 2.267-.272 4.661 1.299 6.271.838.89.649 1.017-.796.487-.503-.169-.943-.296-.985-.233-.146.149.356 2.076.754 2.839.545 1.06 1.655 2.097 2.871 2.712l1.027.487-1.215.021c-1.173.0-1.215.021-1.089.467.419 1.377 2.074 2.839 3.918 3.475l1.299.444-1.131.678c-1.676.976-3.646 1.526-5.616 1.568C19.775 43.256 19 43.341 19 43.405c0 .211 2.557 1.397 4.044 1.864 4.463 1.377 9.765.783 13.746-1.568 2.829-1.673 5.657-5 6.978-8.221.713-1.716 1.425-4.851 1.425-6.354.0-.975.063-1.102 1.236-2.267.692-.678 1.341-1.419 1.467-1.631.21-.403.188-.403-.88-.043-1.781.636-2.033.551-1.152-.402.649-.678 1.425-1.907 1.425-2.267.0-.063-.314.042-.671.233-.377.212-1.215.53-1.844.72l-1.131.361-1.027-.7c-.566-.381-1.361-.805-1.781-.932C39.766 21.902 38.131 21.944 37.167 22.283zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a><a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.lesamisdepercona.fr/posts/mongodb-5-0-collecte-de-series-chronologiques/&title=MongoDB%205.0%20:%20Collecte%20de%20s%c3%a9ries%20chronologiques" class="linkedin no-underline" aria-label="share on LinkedIn"><svg height="32" style="enable-background:new 0 0 65 65" viewBox="0 0 65 65" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M50.837 48.137V36.425c0-6.275-3.35-9.195-7.816-9.195-3.604.0-5.219 1.983-6.119 3.374V27.71h-6.79c.09 1.917.0 20.427.0 20.427h6.79V36.729c0-.609.044-1.219.224-1.655.49-1.22 1.607-2.483 3.482-2.483 2.458.0 3.44 1.873 3.44 4.618v10.929H50.837zM22.959 24.922c2.367.0 3.842-1.57 3.842-3.531-.044-2.003-1.475-3.528-3.797-3.528s-3.841 1.524-3.841 3.528c0 1.961 1.474 3.531 3.753 3.531H22.959zM34 64C17.432 64 4 50.568 4 34 4 17.431 17.432 4 34 4s30 13.431 30 30C64 50.568 50.568 64 34 64zM26.354 48.137V27.71h-6.789v20.427H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a></div><h1 class="f1 athelas mt3 mb1">MongoDB 5.0 : Collecte de séries chronologiques</h1><p class=tracked>By <strong>Francis</strong></p><time class="f6 mv4 dib tracked" datetime=2022-02-01T11:43:01+04:00>February 1, 2022</time>
+<span class="f6 mv4 dib tracked">- 11 minutes read</span>
+<span class="f6 mv4 dib tracked">- 2341 words</span></header><div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-100-l"><p><img src=/thumbnail2022/article03.jpg alt=thumbnail></p><p>Dans un précédent article, j&rsquo;ai testé <a href=https://www.percona.com/blog/resharding-in-mongodb-5-0/>une nouvelle fonctionnalité de MongoDB 5.0 : le resharding </a>. Aujourd&rsquo;hui, je découvre une autre nouveauté : les collections Time Series.</p><p>La collection Time Series est une nouvelle fonctionnalité étonnante disponible dans MongoDB 5.0. D&rsquo;après les premiers tests que j&rsquo;ai effectués, la prise en charge des séries chronologiques offre des performances comparables à l&rsquo;utilisation d&rsquo;index sur des collections régulières, mais économise beaucoup d&rsquo;espace disque et mémoire. Les pipelines d&rsquo;agrégation, qui sont des requêtes courantes que vous pouvez exécuter sur des données de séries chronologiques, peuvent obtenir encore plus d&rsquo;avantages.</p><p>Commençons les tests.</p><h2 id=quest-ce-quune-base-de-données-de-séries-chronologiques>Qu&rsquo;est-ce qu&rsquo;une base de données de séries chronologiques ?</h2><p>De manière générale, une base de données Time Series est une base de données spécialisée conçue pour stocker efficacement les données générées à partir d&rsquo;un flux continu de valeurs associées à un horodatage. Le cas d&rsquo;utilisation typique est celui où vous avez besoin de stocker des données provenant d&rsquo;un équipement sensoriel qui transmet des points de données à intervalles fixes, mais qui sont désormais utilisées pour prendre en charge une gamme d&rsquo;applications beaucoup plus large.</p><p>Les cas typiques sont :</p><ul><li>Données IoT</li><li>Surveillance des services Web, des applications et de l&rsquo;infrastructure</li><li>Prévision des ventes</li><li>Compréhension tendances financières</li><li>Traitement des données de la voiture autonome ou d&rsquo;autres appareils physiques</li></ul><p>Une base de données spécialisée dans les séries chronologiques utilise des algorithmes de compression pour minimiser l&rsquo;espace requis et fournit également des chemins d&rsquo;accès pour creuser plus efficacement dans les données. Cela améliore les performances de récupération des données en fonction des filtres de plage de temps et de l&rsquo;agrégation des données. Ils sont plus efficaces que l&rsquo;utilisation d&rsquo;une base de données relationnelle commune.</p><p>Habituellement, les valeurs d&rsquo;une série chronologique ne doivent pas changer une fois enregistrées, elles sont définies comme INSERT uniquement, également appelées points de données immuables. Une fois les données stockées, l&rsquo;opération de mise à jour est vraiment rare.</p><p>Une autre caractéristique des séries chronologiques est que chaque élément doit avoir une valeur unique (une seule température, un cours de bourse, etc.).</p><p>Les bases de données de séries chronologiques populaires sont <a href=https://www.influxdata.com/>InfluxDB </a>, <a href=https://prometheus.io/>Prometheus </a>, <a href=https://github.com/graphite-project/graphite-web>Graphite </a>. Il y en a aussi beaucoup d&rsquo;autres. <a href=https://victoriametrics.com/>VictoriaMetrics </a>en particulier est un fork populaire de Prometheus et est utilisé dans notre logiciel <a href=https://www.percona.com/software/database-tools/percona-monitoring-and-management>Percona Monitoring and Management </a>Percona .</p><h2 id=les-nouvelles-collections-de-séries-chronologiques-dans-mongodb-50>Les nouvelles collections de séries chronologiques dans MongoDB 5.0</h2><p>MongoDB, ainsi que les bases de données relationnelles, est largement utilisé depuis des années pour stocker les données de température des capteurs, les cours des actions et tout autre type de données immuables dans le temps. MongoDB version 5.0 promet que cela peut être fait plus efficacement, alors regardons comment cela fonctionne.</p><p>Une collection Time Series apparaît comme une collection normale et les opérations que vous pouvez effectuer sont exactement les mêmes : insérer, mettre à jour, rechercher, supprimer, agréger. La principale différence est derrière le rideau. MongoDB stocke les données dans un format de stockage optimisé lors de l&rsquo;insertion. Par rapport à une collection normale, une série chronologique est plus petite et offre une plus grande efficacité des requêtes.</p><p>MongoDB traite les collections Time Series comme des vues inscriptibles non matérialisées. Les données sont stockées plus efficacement, économisant de l&rsquo;espace disque, et un index interne créé automatiquement classe les données dans le temps. Par défaut, les données sont compressées à l&rsquo;aide de l&rsquo;algorithme <strong>zstd</strong> au lieu de <strong>snappy</strong> . La nouvelle compression offre un rapport plus élevé, moins d&rsquo;exigences en matière de CPU et convient bien aux données de séries chronologiques où il y a peu de variations d&rsquo;un document à l&rsquo;autre. Vous pouvez éventuellement changer l&rsquo;algorithme de compression, mais ce n&rsquo;est pas vraiment recommandé.</p><p>Une collection de séries chronologiques n&rsquo;est pas implicitement créée lorsque vous insérez un document, comme les collections normales. Vous devez le créer explicitement.</p><p>Faisons quelques tests.</p><h2 id=créer-une-collection-de-séries-chronologiques-pour-stocker-les-cours-des-actions>Créer une collection de séries chronologiques pour stocker les cours des actions</h2><p>Nous devons utiliser la méthode createCollection(), en fournissant certains paramètres.</p><pre><code>[direct: mongos] timeseries&gt; db.createCollection( 
+&quot;stockPrice1week&quot;, { 
+  timeseries: { 
+    timeField: &quot;timestamp&quot;, 
+    metaField: &quot;metadata&quot;, 
+    granularity: &quot;minutes&quot; 
+  }, 
+  expireAfterSeconds: 604800   
+  }
+)
+{ ok: 1 }
+</code></pre><p>Le nom de la collection est <strong>stockPrice1week</strong> et le seul paramètre requis est <strong>timeField</strong> . Les autres paramètres sont facultatifs.</p><p><em>timeField</em> : le nom du champ où la date est stockée. Celle-ci sera automatiquement indexée et utilisée pour récupérer les données.</p><p><em>metaField</em> : le champ contenant les métadonnées. Il peut s&rsquo;agir d&rsquo;une simple valeur scalaire ou d&rsquo;un objet JSON plus complexe. C&rsquo;est facultatif. Ce ne peut pas être le <em>_id</em> ou le même que le <em>timeField .</em> Par exemple, les métadonnées d&rsquo;un capteur de température peuvent être le code du capteur, le type, l&rsquo;emplacement, etc.</p><p><em>granularité</em> : les valeurs possibles sont <em>secondes</em> , <em>minutes</em> et <em>heures</em> . S&rsquo;il n&rsquo;est pas défini, la valeur par défaut est <em>seconds</em> . Si vous spécifiez la correspondance la plus proche entre deux valeurs consécutives, cela aidera MongoDB à stocker les données plus efficacement et à améliorer les performances de la requête.</p><p><em>expireAfterSeconds</em> : vous pouvez supprimer automatiquement les documents après le délai spécifié, de la même manière que l&rsquo;index TTL. S&rsquo;il n&rsquo;est pas spécifié, les documents n&rsquo;expireront pas.</p><p>Insérons quelques données aléatoires pour trois actions : Apple, Orange et Banana. Les données sont collecté une fois par minute.</p><pre><code>[direct: mongos] timeseries&gt; var stockPriceDate = ISODate(&quot;2021-10-13T00:00:00.000Z&quot;)
+
+[direct: mongos] timeseries&gt; var priceApple = 100
+
+[direct: mongos] timeseries&gt; var priceOrange = 50
+
+[direct: mongos] timeseries&gt; var priceBanana = 80
+
+[direct: mongos] timeseries&gt; for (i = 1; i &lt; 100000; i++) { 
+  priceApple = priceApple + Math.random(); 
+  priceOrange = priceOrange + Math.random(); 
+  priceBanana = priceBanana + Math.random(); 
+  db.stockPrice1week.insert({ &quot;timestamp&quot;: stockPriceDate, &quot;metadata&quot;: { &quot;stockName&quot;: &quot;Apple&quot;, &quot;currency&quot;: &quot;Dollar&quot; }, &quot;stockPrice&quot;: priceApple }); 
+  db.stockPrice1week.insert({ &quot;timestamp&quot;: stockPriceDate, &quot;metadata&quot;: { &quot;stockName&quot;: &quot;Orange&quot;, &quot;currency&quot;: &quot;Dollar&quot; }, &quot;stockPrice&quot;: priceOrange }); 
+  db.stockPrice1week.insert({ &quot;timestamp&quot;: stockPriceDate, &quot;metadata&quot;: { &quot;stockName&quot;: &quot;Banana&quot;, &quot;currency&quot;: &quot;Euro&quot; }, &quot;stockPrice&quot;: priceBanana }); 
+  stockPriceDate = new Date(stockPriceDate.getTime() + 1000 * 60); 
+}
+</code></pre><p>Nous pouvons interroger pour vérifier les documents insérés :</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.find().limit(3)
+[
+  {
+    _id: ObjectId(&quot;6166df318f32e5d3ed304fc5&quot;),
+    timestamp: ISODate(&quot;2021-10-13T00:00:00.000Z&quot;),
+    metadata: { stockName: 'Apple', currency: 'Dollar' },
+    stockPrice: 100.6547271930824
+  }, 
+  {
+    _id: ObjectId(&quot;6166df318f32e5d3ed304fc6&quot;),
+    timestamp: ISODate(&quot;2021-10-13T00:00:00.000Z&quot;),
+    metadata: { stockName: 'Orange', currency: 'Dollar' },
+    stockPrice: 50.51709117468818
+  },  
+  {
+    _id: ObjectId(&quot;6166df318f32e5d3ed304fc7&quot;),
+    timestamp: ISODate(&quot;2021-10-13T00:00:00.000Z&quot;),
+    metadata: { stockName: 'Banana', currency: 'Euro' },
+    stockPrice: 80.17611551979255
+  }
+]
+</code></pre><h2 id=vérifiez-la-taille-de-la-collection>Vérifiez la taille de la collection</h2><p>Maintenant, créons une collection régulière ayant exactement les mêmes données.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.find().forEach(function (doc) {
+  db.stockPrice1week_regular.insertOne(doc);
+})
+</code></pre><p>Vérifions la taille totale des deux collections.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.stats().totalSize
+5357568
+[direct: mongos] timeseries&gt; db.stockPrice1week_regular.stats().totalSize
+21934080
+</code></pre><p>Comme prévu, la collection Time Series est quatre fois plus petite que la collection régulière. De plus, considérez que la collection régulière n&rsquo;a pas d&rsquo;index secondaire pour le moment.</p><h2 id=requëtes-des-collections>Requëtes des collections</h2><p>Exécutons une requête simple pour connaître les valeurs de stock pour un horodatage spécifique. Nous testons la requête sur les deux collections.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.find( { &quot;timestamp&quot;: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;) } )
+[
+  { 
+    _id: ObjectId(&quot;6166dfc68f32e5d3ed3100f5&quot;),
+    timestamp: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;),
+    metadata: { stockName: 'Apple', currency: 'Dollar' },
+    stockPrice: 7636.864548363888
+  },
+  {
+    _id: ObjectId(&quot;6166dfc68f32e5d3ed3100f6&quot;),
+    timestamp: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;),
+    metadata: { stockName: 'Orange', currency: 'Dollar' },
+    stockPrice: 7607.03756525094
+  },
+  {
+    _id: ObjectId(&quot;6166dfc68f32e5d3ed3100f7&quot;),
+    timestamp: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;),
+    metadata: { stockName: 'Banana', currency: 'Euro' },
+    stockPrice: 7614.360031277444  
+  }
+]
+[direct: mongos] timeseries&gt; db.stockPrice1week_regular.find( { &quot;timestamp&quot;: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;) } )
+[
+  {
+    _id: ObjectId(&quot;6166dfc68f32e5d3ed3100f5&quot;),
+    timestamp: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;),
+    metadata: { stockName: 'Apple', currency: 'Dollar' },
+    stockPrice: 7636.864548363888
+  }, 
+  {
+    _id: ObjectId(&quot;6166dfc68f32e5d3ed3100f6&quot;),
+    timestamp: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;),
+    metadata: { stockName: 'Orange', currency: 'Dollar' },
+    stockPrice: 7607.03756525094
+  },
+  {
+    _id: ObjectId(&quot;6166dfc68f32e5d3ed3100f7&quot;),
+    timestamp: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;),
+    metadata: { stockName: 'Banana', currency: 'Euro' },
+    stockPrice: 7614.360031277444
+  }
+]
+</code></pre><p>Nous avons le même résultat, mais ce qui est important ici, c&rsquo;est de regarder l' <em>explain( )</em> pour voir le plan d&rsquo;exécution. Voici explain( ) de la collection régulière.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week_regular.find( { &quot;timestamp&quot;: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;) } ).explain(&quot;executionStats&quot;)
+{
+...
+winningPlan: {
+  stage: 'COLLSCAN',
+  filter: {
+    timestamp: { '$eq': ISODate(&quot;2021-10-23T12:00:00.000Z&quot;) }
+  },
+  direction: 'forward'
+...
+...
+executionSuccess: true,
+nReturned: 3,
+executionTimeMillis: 200,
+totalKeysExamined: 0,
+totalDocsExamined: 299997,
+...
+...
+</code></pre><p>Nous n&rsquo;avons créé aucun index secondaire, donc le plan gagnant est un COLLSCAN, tous les documents doivent être examinés. La requête prend 200 millisecondes.</p><p>Ce qui suit est explain() de la collection Time Series à la place.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.find( { &quot;timestamp&quot;: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;) } ).explain(&quot;executionStats&quot;)
+{
+...
+...
+executionStats: {
+  executionSuccess: true,
+  nReturned: 3,
+  executionTimeMillis: 2,
+  totalKeysExamined: 0,
+  totalDocsExamined: 8,
+  executionStages: {
+  stage: 'COLLSCAN',
+    filter: {
+      '$and': [
+        {
+          _id: { '$lte': ObjectId(&quot;6173f940ffffffffffffffff&quot;) }
+        },
+        {
+          _id: { '$gte': ObjectId(&quot;6172a7c00000000000000000&quot;) }
+        },
+      {
+      'control.max.timestamp': {
+        '$_internalExprGte': ISODate(&quot;2021-10-23T12:00:00.000Z&quot;)
+      }
+    },
+    {
+      'control.min.timestamp': {
+        '$_internalExprLte': ISODate(&quot;2021-10-23T12:00:00.000Z&quot;)
+      }
+    }
+  ]
+},
+...
+...
+</code></pre><p>Étonnamment, il s&rsquo;agit d&rsquo;un COLLSCAN, mais avec des numéros différents. Le nombre de documents examinés n&rsquo;est plus que de huit et le temps d&rsquo;exécution est de deux millisecondes.</p><p>Comme déjà mentionné, la série chronologique est une vue non matérialisée. Il fonctionne comme une couche d&rsquo;abstraction. Les données réelles sont stockées dans une autre collection système ( <em>system.buckets.stockPrice1week</em> ) où les documents sont enregistrés dans un format légèrement différent. Ce n&rsquo;est pas le but de cet article de creuser dans les internes, gardez simplement à l&rsquo;esprit que les différents formats de stockage permettent à mongod de récupérer seulement quelques seaux de données au lieu de tout lire, même s&rsquo;il est signalé comme COLLSCAN. C&rsquo;est incroyable.</p><h2 id=que-se-passe-t-il-si-je-crée-un-index-sur-la-collection-régulière>Que se passe-t-il si je crée un index sur la collection régulière ?</h2><p>Allons essayer.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week_regular.createIndex( { &quot;timestamp&quot;: 1 } )
+timestamp_1
+[direct: mongos] timeseries&gt; db.stockPrice1week_regular.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { timestamp: 1 }, name: 'timestamp_1' }
+]
+[direct: mongos] timeseries&gt; db.stockPrice1week_regular.find({&quot;timestamp&quot;: ISODate(&quot;2021-10-23T12:00:00.000Z&quot;)}).explain(&quot;executionStats&quot;)
+{
+...
+...
+winningPlan: {
+  stage: 'FETCH',
+  inputStage: {
+  stage: 'IXSCAN',
+  keyPattern: { timestamp: 1 },
+  indexName: 'timestamp_1',
+...
+...
+executionStats: {
+  nReturned: 3,
+  executionTimeMillis: 2,
+  totalKeysExamined: 3,
+  totalDocsExamined: 3,
+...
+</code></pre><p>Maintenant, le plan gagnant est un IXSCAN, le nouvel index est utilisé. Seulement trois clés examinées, trois documents examinés et trois documents retournés. La requête prend deux millisecondes.</p><p>Ainsi, il est aussi rapide que la collection Time Series. Il n&rsquo;y a pas une si grande différence; l&rsquo;ordre de grandeur est le même.</p><p>Notez également que les mêmes performances se font au prix d&rsquo;une plus grande collection à la fin car nous avons créé un index secondaire.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week_regular.stats().totalSize
+25251840
+[direct: mongos] timeseries&gt; db.stockPrice1week.stats().totalSize
+5357568
+</code></pre><p>Pour obtenir un temps d&rsquo;exécution comparable, la collection régulière est maintenant cinq fois plus grande que la série chronologique.</p><h2 id=une-requête-avec-un-filtre-de-plage-de-temps>Une requête avec un filtre de plage de temps</h2><p>Testons une requête différente à la recherche d&rsquo;une plage d&rsquo;horodatages. Voici les sorties de explain() </p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week_regular.find( { &quot;timestamp&quot;: { $gte: ISODate(&quot;2021-10-20T00:00:00Z&quot;), $lt: ISODate(&quot;2021-10-20T23:59:59Z&quot;) } } ).explain(&quot;executionStats&quot;)
+{
+...
+winningPlan: {
+  stage: 'FETCH',
+  inputStage: {
+    stage: 'IXSCAN',
+    keyPattern: { timestamp: 1 },
+...
+executionStats: {
+  nReturned: 4320,
+  executionTimeMillis: 7,
+  totalKeysExamined: 4320,
+  totalDocsExamined: 4320,
+...
+</code></pre><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.find( { &quot;timestamp&quot;: { $gte: ISODate(&quot;2021-10-20T00:00:00Z&quot;), $lt: ISODate(&quot;2021-10-20T23:59:59Z&quot;) } } ).explain(&quot;executionStats&quot;)
+{
+...
+...
+winningPlan: {
+  stage: 'COLLSCAN',
+  filter: {
+    '$and': [
+    {
+      _id: { '$lt': ObjectId(&quot;6170ad7f0000000000000000&quot;) }
+    },
+    {
+      _id: { '$gte': ObjectId(&quot;616e0a800000000000000000&quot;) }
+    },
+    {
+      'control.max.timestamp': {
+        '$_internalExprGte': ISODate(&quot;2021-10-20T00:00:00.000Z&quot;)
+      }
+    },
+    {
+      'control.min.timestamp': {
+        '$_internalExprLt': ISODate(&quot;2021-10-20T23:59:59.000Z&quot;)
+      }
+    }
+  ]
+},
+...
+...
+executionStats: {
+  executionSuccess: true,
+  nReturned: 6,
+  executionTimeMillis: 6,
+  totalKeysExamined: 0,
+  totalDocsExamined: 11,
+...
+</code></pre><p>La même chose que précédente. Le temps d&rsquo;exécution est fondamentalement le même pour les deux requêtes. Le principal problème reste la taille de la collection régulière qui est nettement plus importante.</p><p>Seuls six documents sont apparemment renvoyés par la série chronologique, mais ce n&rsquo;est pas le cas. Si vous exécutez la requête pour de vrai, vous obtiendrez 4320 documents. Les six documents mentionnés par explain() font référence aux documents qui doivent être renvoyés par la collection réelle sous la vue non matérialisée.</p><h2 id=test-dagrégation>Test d&rsquo;agrégation</h2><p>Sur nos données de séries chronologiques, nous aimerions faire une agrégation. Il s&rsquo;agit d&rsquo;une tâche typique : calculer des moyennes sur une période, trouver des valeurs minimales et maximales et d&rsquo;autres types de statistiques.</p><p>Supposons que nous ayons besoin de calculer quotidiennement le cours moyen des actions. Nous pouvons utiliser le pipeline d’agrégation ci-après par exemple :</p><pre><code>db.stockPrice1week.aggregate([
+{
+  $project: {
+    date: {
+      $dateToParts: { date: &quot;$timestamp&quot; }
+    },
+    stockPrice: 1
+  }
+},
+{
+  $group: {
+    _id: {
+      date: {
+        year: &quot;$date.year&quot;,
+        month: &quot;$date.month&quot;,
+        day: &quot;$date.day&quot;
+      }
+    },
+    avgPrice: { $avg: &quot;$stockPrice&quot; }
+  }
+}
+])
+[
+{
+_id: { date: { year: 2021, month: 12, day: 4 } },
+avgPrice: 37939.782043249594
+},
+{
+_id: { date: { year: 2021, month: 11, day: 22 } },
+avgPrice: 29289.700949196136
+},
+{
+_id: { date: { year: 2021, month: 10, day: 27 } },
+avgPrice: 10531.347070537977
+},
+...
+...
+</code></pre><p>Comme d&rsquo;habitude, examinons explain() de l&rsquo;agrégat par rapport aux deux collections, en nous concentrant uniquement sur le temps d&rsquo;exécution et les documents examinés.</p><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week.explain(&quot;executionStats&quot;).aggregate([ { $project: { date: { $dateToParts: { date: &quot;$timestamp&quot; } }, stockPrice: 1 } }, { $group: { _id: { date: { year: &quot;$date.year&quot;, month: &quot;$date.month&quot;, day: &quot;$date.day&quot; } }, avgPrice: { $avg: &quot;$stockPrice&quot; } } }])
+{
+...
+executionStats: {
+  executionSuccess: true,
+  nReturned: 300,
+  executionTimeMillis: 615,
+  totalKeysExamined: 0,
+  totalDocsExamined: 300,
+  executionStages: {
+  stage: 'COLLSCAN',
+...
+</code></pre><pre><code>[direct: mongos] timeseries&gt; db.stockPrice1week_regular.explain(&quot;executionStats&quot;).aggregate([ { $project: { date: { $dateToParts: { date: &quot;$timestamp&quot; } }, stockPrice: 1 } }, { $group: { _id: { date: { year: &quot;$date.year&quot;, month: &quot;$date.month&quot;, day: &quot;$date.day&quot; } }, avgPrice: { $avg: &quot;$stockPrice&quot; } } }])
+{
+...
+executionStats: {
+  executionSuccess: true,
+  nReturned: 299997,
+  executionTimeMillis: 1022,
+  totalKeysExamined: 0,
+  totalDocsExamined: 299997,
+  executionStages: {
+    stage: 'PROJECTION_DEFAULT',
+...
+</code></pre><p>Le pipeline d&rsquo;agrégation s&rsquo;exécute 40 % plus rapidement avec la collection Time Series. Cela devrait être d&rsquo;autant plus pertinent que la collection est grande.</p><h2 id=conclusion>Conclusion</h2><p>MongoDB 5.0 est une nouvelle version intéressante de la base de données documentaire la plus populaire, et de nouvelles fonctionnalités telles que les collections Time Series et le repartitionnement sont incroyables.</p><p>Quoi qu&rsquo;il en soit, en raison de nombreux changements apportés au cœur de WiredTiger et du serveur principal introduit pour faciliter les nouvelles fonctionnalités, MongoDB 5.0.x est toujours instable. Nous ne recommandons pas de l&rsquo;utiliser pour les environnements de production.</p><p>Consultez la documentation de <a href=https://www.percona.com/doc/percona-server-for-mongodb/5.0/release_notes/5.0.3-2.html>Percona Server pour MongoDB 5.0.3-2 (Release Candidate) </a>.</p><p>Source : <a href=https://www.percona.com/blog/mongodb-5-0-time-series-collections/>Percona Blog</a></p><ul class=pa0><li class=list><a href=/tags/mongodb class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">MongoDB</a></li></ul><div class="mt6 instapaper_ignoref"></div></div></article></main><footer class="bg-dark-blue bottom-0 w-100 pa3" role=contentinfo><div class="flex justify-between"><a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://www.lesamisdepercona.fr/>&copy; Les amis de Percona 2022</a><div></div></div></footer></body></html>
