@@ -15,7 +15,7 @@ slug = "postgresql-utilite-de-linux-hugepages"
 Souvent, les utilisateurs viennent nous voir avec des incidents de plantage de base de données dus à OOM Killer. Le Out Of Memory Killer met fin aux processus PostgreSQL et reste la principale raison de la plupart des plantages de la base de données PostgreSQL qui nous sont signalés. Il peut y avoir plusieurs raisons pour lesquelles une machine hôte peut manquer de mémoire, et les problèmes les plus courants sont :
 
 1. Mémoire mal réglée sur la machine hôte.
-1. Une valeur élevée de work\_mem est spécifiée globalement (au niveau de l'instance). Les utilisateurs sous-estiment souvent l'effet multiplicateur de telles décisions globales.
+1. Une valeur élevée de work_mem est spécifiée globalement (au niveau de l'instance). Les utilisateurs sous-estiment souvent l'effet multiplicateur de telles décisions globales.
 1. Le nombre élevé de connexions. Les utilisateurs ignorent le fait que même une connexion non active peut contenir une bonne quantité d'allocation de mémoire.
 1. D'autres programmes co-hébergés sur la même machine consomment des ressources.
 
@@ -47,7 +47,7 @@ default_pool_size=100
 min_pool_size=80
 server_lifetime=432000
 ```
-Comme nous pouvons le voir, le paramètre server\_lifetime est spécifié à une valeur élevée pour ne pas détruire la connexion du pooler à PostgreSQL. Après PostgreSQL , des modifications de paramètres sont incorporées pour imiter certains des paramètres d'environnement client courants.
+Comme nous pouvons le voir, le paramètre server_lifetime est spécifié à une valeur élevée pour ne pas détruire la connexion du pooler à PostgreSQL. Après PostgreSQL , des modifications de paramètres sont incorporées pour imiter certains des paramètres d'environnement client courants.
 
 ```
 logging_collector = 'on'
@@ -96,12 +96,12 @@ La même chose peut être vérifiée en vérifiant chaque processus PostgreSQL .
 
 ![image04](/posts/2022/article04/img04.png)
 
-Ainsi, la taille totale de PageTable ( **25 Go** ) doit être d'environ cette valeur \* 80 (connexions). Étant donné que ce benchmark synthétique envoie une charge de travail presque similaire à travers toutes les connexions, tous les processus individuels ont des valeurs très proches de ce qui a été capturé ci-dessus.
+Ainsi, la taille totale de PageTable ( **25 Go** ) doit être d'environ cette valeur * 80 (connexions). Étant donné que ce benchmark synthétique envoie une charge de travail presque similaire à travers toutes les connexions, tous les processus individuels ont des valeurs très proches de ce qui a été capturé ci-dessus.
 
 La ligne Shell suivante peut être utilisée pour vérifier le Pss (Proportional set size). Étant donné que PostgreSQL utilise la mémoire partagée Linux, se concentrer sur Rss n'a aucun sens.
 
 ```
-for PID in $(pgrep "postgres|postmaster") ; do awk '/Pss/ {PSS+=$2} END{getline cmd < "/proc/'$PID'/cmdline"; sub("\0", " ", cmd);printf "%.0f --> %s (%s)\n", PSS, cmd, '$PID'}' /proc/$PID/smaps ; done|sort -n
+for PID in $(pgrep "postgres|postmaster") ; do awk '/Pss/ {PSS+=$2} END{getline cmd < "/proc/'$PID'/cmdline"; sub("0", " ", cmd);printf "%.0f --> %s (%s)n", PSS, cmd, '$PID'}' /proc/$PID/smaps ; done|sort -n
 ```
 
 
@@ -145,7 +145,7 @@ postgres=# select 148392404/1024/2;
 (1 row)
 ```
 
-Spécifiez cette valeur dans `/etc/sysctl.conf` pour `vm.nr\_hugepages` , par exemple :
+Spécifiez cette valeur dans `/etc/sysctl.conf` pour `vm.nr_hugepages` , par exemple :
 
 ```
 vm.nr_hugepages = 72457
@@ -169,7 +169,7 @@ Hugepagesize:       2048 kB
 Hugetlb:        148391936 kB
 ```
 
-Si nous démarrons PostgreSQL à ce stade, nous pourrions voir que HugePages\_Rsvd est alloué.
+Si nous démarrons PostgreSQL à ce stade, nous pourrions voir que HugePages_Rsvd est alloué.
 
 ```
 $ grep ^Huge /proc/meminfo
@@ -191,7 +191,7 @@ La modification ci-dessus nécessite un redémarrage de l' instance PostgreSQL .
 
 ## Tests avec HugePages "ON"
 
-Les HugePages sont créées à l'avance avant même le démarrage de PostgreSQL . PostgreSQL les alloue et les utilise. Il n'y aura donc même pas de changement notable dans la sortie `free` avant et après le démarrage. PostgreSQL alloue sa mémoire partagée dans ces HugePages si elles sont déjà disponibles. PostgreSQL `shared\_buffers` est le plus gros occupant de cette mémoire partagée.
+Les HugePages sont créées à l'avance avant même le démarrage de PostgreSQL . PostgreSQL les alloue et les utilise. Il n'y aura donc même pas de changement notable dans la sortie `free` avant et après le démarrage. PostgreSQL alloue sa mémoire partagée dans ces HugePages si elles sont déjà disponibles. PostgreSQL `shared_buffers` est le plus gros occupant de cette mémoire partagée.
 
 
 ![image07](/posts/2022/article04/img07.png)
