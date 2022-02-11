@@ -1,0 +1,322 @@
+<!doctype html><html lang=fr><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><title>Tables temporaires dans MySQL - Une histoire sans fin? | Les amis de Percona</title><meta name=viewport content="width=device-width,minimum-scale=1"><meta name=description content="Un résumé qui peut aider à dépanner l'utilisation des tables temporaires entre les principales versions de MySQL"><meta name=generator content="Hugo 0.80.0"><meta name=ROBOTS content="INDEX, FOLLOW"><link rel=stylesheet href=/ananke/css/main.min.css><link rel="shortcut icon" href=/img/favicon.png type=image/x-icon><meta property="og:title" content="Tables temporaires dans MySQL - Une histoire sans fin?"><meta property="og:description" content="Un résumé qui peut aider à dépanner l'utilisation des tables temporaires entre les principales versions de MySQL"><meta property="og:type" content="article"><meta property="og:url" content="https://www.lesamisdepercona.fr/posts/mysql-tables-temporaires/"><meta property="og:image" content="https://www.lesamisdepercona.fr/thumbnail2022/article05.jpg"><meta property="article:published_time" content="2022-02-08T00:00:00+00:00"><meta property="article:modified_time" content="2022-02-08T00:00:00+00:00"><meta itemprop=name content="Tables temporaires dans MySQL - Une histoire sans fin?"><meta itemprop=description content="Un résumé qui peut aider à dépanner l'utilisation des tables temporaires entre les principales versions de MySQL"><meta itemprop=datePublished content="2022-02-08T00:00:00+00:00"><meta itemprop=dateModified content="2022-02-08T00:00:00+00:00"><meta itemprop=wordCount content="2407"><meta itemprop=image content="https://www.lesamisdepercona.fr/thumbnail2022/article05.jpg"><meta itemprop=keywords content="MySQL,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://www.lesamisdepercona.fr/thumbnail2022/article05.jpg"><meta name=twitter:title content="Tables temporaires dans MySQL - Une histoire sans fin?"><meta name=twitter:description content="Un résumé qui peut aider à dépanner l'utilisation des tables temporaires entre les principales versions de MySQL"><script async src="https://www.googletagmanager.com/gtag/js?id=G-W9SYN1YL24"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-W9SYN1YL24');</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-203534013-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-203534013-1');</script></head><body class="ma0 avenir bg-near-white"><header><div class=bg-dark-blue><nav class="pv3 ph3 ph4-ns" role=navigation><div class="flex-l justify-between items-center center"><a href=/ class="f3 fw2 hover-white no-underline white-90 dib"><img src=/img/logo.png class="w100 mw5-ns" alt="Les amis de Percona"></a><div class="flex-l items-center"><ul class="pl0 mr3"><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/posts/ title="Articles page">Articles</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/about/ title="Qui Sommes Nous? page">Qui Sommes Nous?</a></li><li class="list f5 f4-ns fw4 dib pr3"><a class="hover-white no-underline white-90" href=/tags/ title="Tags page">Tags</a></li></ul></div></div></nav></div></header><main class=pb7 role=main><article class="flex-l flex-wrap justify-between mw8 center ph3"><header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked">POSTS</aside><div id=sharing class=mt3><a href="https://www.facebook.com/sharer.php?u=https://www.lesamisdepercona.fr/posts/mysql-tables-temporaires/" class="facebook no-underline" aria-label="share on Facebook"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765 50.32h6.744V33.998h4.499l.596-5.624h-5.095l.007-2.816c0-1.466.14-2.253 2.244-2.253h2.812V17.68h-4.5c-5.405.0-7.307 2.729-7.307 7.317v3.377h-3.369v5.625h3.369V50.32zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd"/></svg></a><a href="https://twitter.com/share?url=https://www.lesamisdepercona.fr/posts/mysql-tables-temporaires/&text=Tables%20temporaires%20dans%20MySQL%20-%20Une%20histoire%20sans%20fin?" class="twitter no-underline" aria-label="share on Twitter"><svg height="32" style="enable-background:new 0 0 67 67" viewBox="0 0 67 67" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167 22.283c-2.619.953-4.274 3.411-4.086 6.101l.063 1.038-1.048-.127c-3.813-.487-7.145-2.139-9.974-4.915l-1.383-1.377-.356 1.017c-.754 2.267-.272 4.661 1.299 6.271.838.89.649 1.017-.796.487-.503-.169-.943-.296-.985-.233-.146.149.356 2.076.754 2.839.545 1.06 1.655 2.097 2.871 2.712l1.027.487-1.215.021c-1.173.0-1.215.021-1.089.467.419 1.377 2.074 2.839 3.918 3.475l1.299.444-1.131.678c-1.676.976-3.646 1.526-5.616 1.568C19.775 43.256 19 43.341 19 43.405c0 .211 2.557 1.397 4.044 1.864 4.463 1.377 9.765.783 13.746-1.568 2.829-1.673 5.657-5 6.978-8.221.713-1.716 1.425-4.851 1.425-6.354.0-.975.063-1.102 1.236-2.267.692-.678 1.341-1.419 1.467-1.631.21-.403.188-.403-.88-.043-1.781.636-2.033.551-1.152-.402.649-.678 1.425-1.907 1.425-2.267.0-.063-.314.042-.671.233-.377.212-1.215.53-1.844.72l-1.131.361-1.027-.7c-.566-.381-1.361-.805-1.781-.932C39.766 21.902 38.131 21.944 37.167 22.283zM33 64C16.432 64 3 50.569 3 34S16.432 4 33 4s30 13.431 30 30S49.568 64 33 64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a><a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.lesamisdepercona.fr/posts/mysql-tables-temporaires/&title=Tables%20temporaires%20dans%20MySQL%20-%20Une%20histoire%20sans%20fin?" class="linkedin no-underline" aria-label="share on LinkedIn"><svg height="32" style="enable-background:new 0 0 65 65" viewBox="0 0 65 65" width="32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M50.837 48.137V36.425c0-6.275-3.35-9.195-7.816-9.195-3.604.0-5.219 1.983-6.119 3.374V27.71h-6.79c.09 1.917.0 20.427.0 20.427h6.79V36.729c0-.609.044-1.219.224-1.655.49-1.22 1.607-2.483 3.482-2.483 2.458.0 3.44 1.873 3.44 4.618v10.929H50.837zM22.959 24.922c2.367.0 3.842-1.57 3.842-3.531-.044-2.003-1.475-3.528-3.797-3.528s-3.841 1.524-3.841 3.528c0 1.961 1.474 3.531 3.753 3.531H22.959zM34 64C17.432 64 4 50.568 4 34 4 17.431 17.432 4 34 4s30 13.431 30 30C64 50.568 50.568 64 34 64zM26.354 48.137V27.71h-6.789v20.427H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:"/></svg></a></div><h1 class="f1 athelas mt3 mb1">Tables temporaires dans MySQL - Une histoire sans fin?</h1><p class=tracked>By <strong>Francis</strong></p><time class="f6 mv4 dib tracked" datetime=2022-02-08T00:00:00Z>February 8, 2022</time>
+<span class="f6 mv4 dib tracked">- 12 minutes read</span>
+<span class="f6 mv4 dib tracked">- 2407 words</span></header><div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-100-l"><p><img src=/thumbnail2022/article05.jpg alt=thumbnail></p><p>Si vous avez déjà dû faire face à des problèmes de performances et/ou d&rsquo;espace disque liés aux tables temporaires, je parie que vous vous êtes finalement retrouvé perplexe. Il existe de nombreux scénarios possibles en fonction du type de table temporaire, des paramètres et de la version MySQL utilisée. Nous avons observé une assez longue évolution dans ce domaine pour plusieurs raisons. L&rsquo;un d&rsquo;eux était la nécessité d&rsquo;éliminer complètement la nécessité d&rsquo;utiliser le moteur obsolète MyISAM , et en même temps d&rsquo;introduire des alternatives plus performantes et fiables. Un autre ensemble d&rsquo;améliorations était nécessaire concernant InnoDB , où il était nécessaire de <a href=https://docs.oracle.com/cd/E17952_01/mysql-5.7-relnotes-en/news-5-7-1.html>réduire la surcharge </a>des tables temporaires à l&rsquo;aide de ce moteur.</p><p>Pour cette raison, j&rsquo;ai décidé de les rassembler dans une sorte de résumé qui peut aider à dépanner leur utilisation. En raison de vastes changements entre les principales versions de MySQL, j&rsquo;ai divisé l&rsquo;article en fonction de celles-ci.</p><h2 id=mysql-56>MySQL 5.6</h2><p>(Si vous utilisez toujours cette version, nous vous encourageons à envisager de la mettre à niveau dès qu&rsquo;elle a atteint la fin de <a href=https://www.percona.com/blog/2020/12/07/not-ready-to-give-up-mysql-5-6-get-post-eol-support-from-percona/>vie </a>.)</p><h3 id=tables-temporaires-créées-par-lutilisateur>Tables temporaires créées par l&rsquo;utilisateur</h3><p>Lorsqu&rsquo;une table est créée à l&rsquo;aide de la clause CREATE TEMPORARY TABLE, elle utilisera le moteur défini par <a href=https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_default_tmp_storage_engine>default_tmp_storage_engine </a>(par défaut à InnoDB ) s&rsquo;il n&rsquo;est pas explicitement défini autrement et sera stockée dans le répertoire défini par la variable <a href=https://dev.mysql.com/doc/refman/5.6/en/server-system-variables.html#sysvar_tmpdir>tmpdir </a>.</p><p>Un exemple peut ressembler à ceci :</p><pre><code>mysql &gt; create temporary table tmp1 (id int, a varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql &gt; show create table tmp1\G
+*************************** 1. row ***************************
+Table: tmp1
+Create Table: CREATE TEMPORARY TABLE `tmp1` (
+`id` int(11) DEFAULT NULL,
+`a` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+</code></pre><p>Mais comment trouver le fichier créé sur disque qui stocke les données de cette table ? Bien que cette requête puisse aider :</p><pre><code>mysql &gt; select table_id,space,name,path from information_schema.INNODB_SYS_DATAFILES join information_schema.INNODB_SYS_TABLES using (space) where name like '%tmp%'\G
+*************************** 1. row ***************************
+table_id: 21
+space: 7
+name: tmp/#sql11765a_2_1
+path: /data/sandboxes/msb_5_6_51/tmp/#sql11765a_2_1.ibd
+1 row in set (0.00 sec)
+</code></pre><p>Nous ne voyons pas le nom de la table d&rsquo;origine ici. Même en regardant le pool de mémoire tampon, nous n&rsquo;avons toujours pas le vrai nom :</p><pre><code>mysql &gt; select TABLE_NAME from information_schema.INNODB_BUFFER_PAGE where table_name like '%tmp%';
++-------------------------+
+| TABLE_NAME              |
++-------------------------+
+| `tmp`.`#sql11765a_2_1`  |
++-------------------------+
+1 row in set (0.07 sec)
+</code></pre><p>Voici l&rsquo;extension disponible dans la variante Percona Server pour MySQL 5.6 - table information_schema supplémentaire : <a href=https://www.percona.com/doc/percona-server/5.6/diagnostics/misc_info_schema_tables.html#GLOBAL_TEMPORARY_TABLES>GLOBAL_TEMPORARY_TABLES </a>. Avec celui-ci, nous pouvons créer une requête qui fournit un peu plus d&rsquo;informations :</p><pre><code>mysql &gt; select SPACE,TABLE_SCHEMA,TABLE_NAME,ENGINE,g.NAME,PATH from information_schema.GLOBAL_TEMPORARY_TABLES g LEFT JOIN information_schema.INNODB_SYS_TABLES s ON s.NAME LIKE CONCAT('%', g.name, '%') LEFT JOIN information_schema.INNODB_SYS_DATAFILES USING(SPACE)\G
+*************************** 1. row ***************************
+SPACE: 16
+TABLE_SCHEMA: test
+TABLE_NAME: tmp1
+ENGINE: InnoDB
+NAME: #sql12c75d_2_0
+PATH: /data/sandboxes/msb_ps5_6_47/tmp/#sql12c75d_2_0.ibd
+*************************** 2. row ***************************
+SPACE: NULL
+TABLE_SCHEMA: test
+TABLE_NAME: tmp3
+ENGINE: MEMORY
+NAME: #sql12c75d_2_2
+PATH: NULL
+*************************** 3. row ***************************
+SPACE: NULL
+TABLE_SCHEMA: test
+TABLE_NAME: tmp2
+ENGINE: MyISAM
+NAME: #sql12c75d_2_1
+PATH: NULL
+3 rows in set (0.00 sec)
+</code></pre><p>Ainsi, au moins pour la table temporaire InnoDB , nous pouvons corréler le nom exact de la table avec le chemin du fichier.</p><h3 id=tables-temporaires-internes>Tables Temporaires Internes</h3><p>Ce sont ceux créés par MySQL lors du processus d&rsquo;exécution d&rsquo;une requête. Nous n&rsquo;avons pas accès à ces tables, mais voyons comment nous pouvons étudier leur utilisation.</p><p>Ce type est créé en mémoire (à l&rsquo;aide <a href=https://dev.mysql.com/doc/refman/5.6/en/memory-storage-engine.html#memory-storage-engine-user-created-and-temporary-tables>du moteur MEMORY </a>) tant que sa taille ne dépasse pas les variables tmp_table_size ou max_heap_table_size , et si aucune colonne TEXT/BLOB n&rsquo;est utilisée. Si une telle table doit être stockée sur le disque, dans MySQL 5.6, elle utilisera le stockage MyISAM et également tmpdir comme emplacement. Exemple rapide, sur une table sysbench de 10 millions de lignes, requête produisant une grande table temporaire interne :</p><pre><code>mysql &gt; SELECT pad, COUNT(*) FROM sbtest1 GROUP BY pad;
+</code></pre><p>Et nous pouvons voir les fichiers associés grandir:</p><pre><code>$ ls -lh /data/sandboxes/msb_5_6_51/tmp/
+total 808M
+-rw-rw---- 1 przemek przemek 329M Sep 29 23:24 '#sql_11765a_0.MYD'
+-rw-rw---- 1 przemek przemek 479M Sep 29 23:24 '#sql_11765a_0.MYI'
+</code></pre><p>Cependant, il peut être difficile de corréler une table temporaire particulière et sa connexion client. Les seules informations que j&rsquo;ai trouvées sont :</p><pre><code>mysql &gt; select FILE_NAME,EVENT_NAME from performance_schema.file_summary_by_instance where file_name like '%tmp%' \G
+*************************** 1. row ***************************
+FILE_NAME: /data/sandboxes/msb_5_6_51/tmp/Innodb Merge Temp File
+EVENT_NAME: wait/io/file/innodb/innodb_temp_file
+*************************** 2. row ***************************
+FILE_NAME: /data/sandboxes/msb_5_6_51/tmp/#sql_11765a_0.MYI
+EVENT_NAME: wait/io/file/myisam/kfile
+*************************** 3. row ***************************
+FILE_NAME: /data/sandboxes/msb_5_6_51/tmp/#sql_11765a_0.MYD
+EVENT_NAME: wait/io/file/myisam/dfile
+3 rows in set (0.00 sec)
+</code></pre><h2 id=mysql-57>MySQL 5.7</h2><h3 id=tables-temporaires-créées-par-lutilisateur-1>Tables temporaires créées par l&rsquo;utilisateur</h3><p>Comme précédemment, la variable default_tmp_storage_engine décide du moteur utilisé. Mais deux changements se sont produits ici. Les tables temporaires InnoDB utilisent désormais un espace de table <a href=https://dev.mysql.com/doc/refman/5.7/en/innodb-temporary-tablespace.html>partagé dédié commun - ibtmp1</a> sauf s&rsquo;il est compressé. De plus, nous avons une vue information_schema supplémentaire : INNODB_TEMP_TABLE_INFO. Cela dit , nous pouvons obtenir des informations comme ci- dessous :</p><pre><code>mysql &gt; select name, FILE_NAME, FILE_TYPE, TABLESPACE_NAME, SPACE, PER_TABLE_TABLESPACE, IS_COMPRESSED from INFORMATION_SCHEMA.INNODB_TEMP_TABLE_INFO join INFORMATION_SCHEMA.FILES on FILE_ID=SPACE\G
+*************************** 1. row ***************************
+name: #sql12cf58_2_5
+FILE_NAME: ./ibtmp1
+FILE_TYPE: TEMPORARY
+TABLESPACE_NAME: innodb_temporary
+SPACE: 109
+PER_TABLE_TABLESPACE: FALSE
+IS_COMPRESSED: FALSE
+*************************** 2. row ***************************
+name: #sql12cf58_2_4
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_4.ibd
+FILE_TYPE: TEMPORARY
+TABLESPACE_NAME: innodb_file_per_table_110
+SPACE: 110
+PER_TABLE_TABLESPACE: TRUE
+IS_COMPRESSED: TRUE
+2 rows in set (0.01 sec)
+</code></pre><p>Mais encore une fois, pour établir une corrélation avec un nom de table, l&rsquo;extension Percona Server for MySQL doit être utilisée :</p><pre><code>mysql &gt; select g.TABLE_SCHEMA, g.TABLE_NAME, name, FILE_NAME, FILE_TYPE, TABLESPACE_NAME, SPACE, PER_TABLE_TABLESPACE, IS_COMPRESSED from INFORMATION_SCHEMA.INNODB_TEMP_TABLE_INFO join INFORMATION_SCHEMA.FILES on FILE_ID=SPACE join information_schema.GLOBAL_TEMPORARY_TABLES g using (name)\G
+*************************** 1. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp1
+name: #sql12cf58_2_5
+FILE_NAME: ./ibtmp1
+FILE_TYPE: TEMPORARY
+TABLESPACE_NAME: innodb_temporary
+SPACE: 109
+PER_TABLE_TABLESPACE: FALSE
+IS_COMPRESSED: FALSE
+*************************** 2. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp3
+name: #sql12cf58_2_4
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_4.ibd
+FILE_TYPE: TEMPORARY
+TABLESPACE_NAME: innodb_file_per_table_110
+SPACE: 110
+PER_TABLE_TABLESPACE: TRUE
+IS_COMPRESSED: TRUE
+2 rows in set (0.01 sec)
+</code></pre><p>Alternativement, voir aussi MyISAM et les fichiers . frm , nous pouvons utiliser :</p><pre><code>mysql &gt; SELECT g.TABLE_SCHEMA, g.TABLE_NAME, NAME, f.FILE_NAME, g.ENGINE, TABLESPACE_NAME, PER_TABLE_TABLESPACE, SPACE FROM information_schema.GLOBAL_TEMPORARY_TABLES g join performance_schema.file_instances f ON FILE_NAME LIKE CONCAT('%', g.name, '%') left join INFORMATION_SCHEMA.INNODB_TEMP_TABLE_INFO using (name) left join INFORMATION_SCHEMA.FILES fl on space=FILE_ID order by table_name\G
+*************************** 1. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp1
+NAME: #sql12cf58_2_5
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_5.frm
+ENGINE: InnoDB
+TABLESPACE_NAME: innodb_temporary
+PER_TABLE_TABLESPACE: FALSE
+SPACE: 109
+*************************** 2. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp2
+NAME: #sql12cf58_2_6
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_6.MYD
+ENGINE: MyISAM
+TABLESPACE_NAME: NULL
+PER_TABLE_TABLESPACE: NULL
+SPACE: NULL
+*************************** 3. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp2
+NAME: #sql12cf58_2_6
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_6.MYI
+ENGINE: MyISAM
+TABLESPACE_NAME: NULL
+PER_TABLE_TABLESPACE: NULL
+SPACE: NULL
+*************************** 4. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp2
+NAME: #sql12cf58_2_6
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_6.frm
+ENGINE: MyISAM
+TABLESPACE_NAME: NULL
+PER_TABLE_TABLESPACE: NULL
+SPACE: NULL
+*************************** 5. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp3
+NAME: #sql12cf58_2_4
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_4.frm
+ENGINE: InnoDB
+TABLESPACE_NAME: innodb_file_per_table_110
+PER_TABLE_TABLESPACE: TRUE
+SPACE: 110
+*************************** 6. row ***************************
+TABLE_SCHEMA: test
+TABLE_NAME: tmp3
+NAME: #sql12cf58_2_4
+FILE_NAME: /data/sandboxes/msb_ps5_7_33/tmp/#sql12cf58_2_4.ibd
+ENGINE: InnoDB
+TABLESPACE_NAME: innodb_file_per_table_110
+PER_TABLE_TABLESPACE: TRUE
+SPACE: 110
+6 rows in set (0.01 sec)
+</code></pre><h3 id=tableaux-temporaires-interne>Tableaux Temporaires Interne</h3><p>Pour les tables temporaires internes dans 5.7, c&rsquo;est similaire en termes de tables en mémoire. Mais le moteur par défaut pour les tables temporaires sur disque est défini via une nouvelle variable : <a href=https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_internal_tmp_disk_storage_engine>internal_tmp_disk_storage_engine </a>, qui est désormais également par défaut InnoDB , et le tablespace ibtmp1 est également utilisé pour stocker son contenu.</p><p>L&rsquo;aperçu de cet espace de table temporaire partagé est assez limité. Nous pouvons vérifier sa taille et combien d&rsquo;espace libre est actuellement disponible. Un exemple voir a été pris pendant lourd requête en cours :</p><pre><code>mysql &gt; select FILE_NAME, FILE_TYPE, TABLESPACE_NAME, ENGINE, TOTAL_EXTENTS, FREE_EXTENTS, EXTENT_SIZE/1024/1024 as 'extent in MB', MAXIMUM_SIZE from INFORMATION_SCHEMA.FILES where file_name like '%ibtmp%'\G
+*************************** 1. row ***************************
+FILE_NAME: ./ibtmp1
+FILE_TYPE: TEMPORARY
+TABLESPACE_NAME: innodb_temporary
+ENGINE: InnoDB
+TOTAL_EXTENTS: 588
+FREE_EXTENTS: 1
+extent in MB: 1.00000000
+MAXIMUM_SIZE: NULL
+1 row in set (0.00 sec)
+</code></pre><p>Et une fois la requête terminée, nous pouvons voir que la majeure partie de l&rsquo;espace est libérée (FREE_EXTENTS) :</p><pre><code>mysql &gt; select FILE_NAME, FILE_TYPE, TABLESPACE_NAME, ENGINE, TOTAL_EXTENTS, FREE_EXTENTS, EXTENT_SIZE/1024/1024 as 'extent in MB', MAXIMUM_SIZE from INFORMATION_SCHEMA.FILES where file_name like '%ibtmp%'\G
+*************************** 1. row ***************************
+FILE_NAME: ./ibtmp1
+FILE_TYPE: TEMPORARY
+TABLESPACE_NAME: innodb_temporary
+ENGINE: InnoDB
+TOTAL_EXTENTS: 780
+FREE_EXTENTS: 764
+extent in MB: 1.00000000
+MAXIMUM_SIZE: NULL
+1 row in set (0.00 sec)
+</code></pre><p>Cependant, le tablespace ne sera pas tronqué à moins que MySQL ne soit redémarré :</p><pre><code>$ ls -lh msb_5_7_35/data/ibtmp*
+-rw-r----- 1 przemek przemek 780M Sep 30 19:50 msb_5_7_35/data/ibtmp1
+</code></pre><p>Pour voir l&rsquo;activité d&rsquo;écriture (qui peut s&rsquo;avérer beaucoup plus élevée pour une seule requête que la croissance totale de la taille réalisée par celle-ci) :</p><pre><code>mysql &gt; select FILE_NAME, SUM_NUMBER_OF_BYTES_WRITE/1024/1024/1024 as GB_written from performance_schema.file_summary_by_instance where file_name like '%ibtmp%' \G
+*************************** 1. row ***************************
+FILE_NAME: /data/sandboxes/msb_5_7_35/data/ibtmp1
+GB_written: 46.925933837891
+1 row in set (0.00 sec)
+</code></pre><h2 id=mysql-80>MySQL 8.0</h2><p>Pour plus de simplicité, ignorons comment les choses fonctionnaient avant la version 8.0.16 et discutons uniquement de la façon dont cela fonctionne depuis lors, car les changements en la matière sont assez importants :</p><ul><li><a href=https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_internal_tmp_mem_storage_engine>internal_tmp_disk_storage_engine</a> a été supprimée et il n&rsquo;est plus possible d&rsquo;utiliser le moteur MyISAM pour les tables temporaires internes</li><li>l&rsquo;espace table partagé ibtmp1 n&rsquo;est plus utilisé pour aucun des types de table temporaire</li><li>un pool de nouveaux <a href=https://dev.mysql.com/doc/refman/8.0/en/innodb-temporary-tablespace.html>tablespaces temporaires de session</a> a été introduit pour gérer à la fois les tables temporaires utilisateur et internes sur le disque et est situé par défaut dans le répertoire de données principal</li><li>le nouveau moteur <a href=https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_TEMPTABLE.html>TempTable</a> pour les tables en mémoire utilise à la fois l&rsquo;espace en mémoire et les fichiers mmappés sur le disque</li></ul><h3 id=tables-temporaires-créées-par-lutilisateur-2>Tables temporaires créées par l&rsquo;utilisateur</h3><p>Pour un exemple de table temporaire :</p><pre><code>mysql &gt; create temporary table tmp1 (id int, a varchar(10));
+Query OK, 0 rows affected (0.00 sec)
+
+mysql &gt; select * from information_schema.INNODB_TEMP_TABLE_INFO;
++----------+----------------+--------+------------+
+| TABLE_ID | NAME           | N_COLS | SPACE      |
++----------+----------------+--------+------------+
+|     1089 | #sqlbbeb3_a_12 |      5 | 4243767289 |
++----------+----------------+--------+------------+
+1 row in set (0.00 sec)
+</code></pre><p>Nous pouvons corréler quel fichier a été utilisé à partir de ce pool en regardant le numéro d&rsquo;espace :</p><pre><code>mysql &gt; select * from INFORMATION_SCHEMA.INNODB_SESSION_TEMP_TABLESPACES ;
++----+------------+----------------------------+-------+----------+-----------+
+| ID | SPACE      | PATH                       | SIZE  | STATE    | PURPOSE   |
++----+------------+----------------------------+-------+----------+-----------+
+| 10 | 4243767290 | ./#innodb_temp/temp_10.ibt | 81920 | ACTIVE   | INTRINSIC |
+| 10 | 4243767289 | ./#innodb_temp/temp_9.ibt  | 98304 | ACTIVE   | USER      |
+|  0 | 4243767281 | ./#innodb_temp/temp_1.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767282 | ./#innodb_temp/temp_2.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767283 | ./#innodb_temp/temp_3.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767284 | ./#innodb_temp/temp_4.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767285 | ./#innodb_temp/temp_5.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767286 | ./#innodb_temp/temp_6.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767287 | ./#innodb_temp/temp_7.ibt  | 81920 | INACTIVE | NONE      |
+|  0 | 4243767288 | ./#innodb_temp/temp_8.ibt  | 81920 | INACTIVE | NONE      |
++----+------------+----------------------------+-------+----------+-----------+
+10 rows in set (0.00 sec)
+</code></pre><p>Mais encore une fois, aucun moyen de rechercher le nom de la table. Heureusement, Percona Server pour MySQL a toujours la table <a href=https://www.percona.com/doc/percona-server/8.0/diagnostics/misc_info_schema_tables.html#GLOBAL_TEMPORARY_TABLES>GLOBAL_TEMPORARY_TABLES </a>, donc étant donné les trois vues système disponibles, nous pouvons obtenir de meilleures informations sur les tables temporaires créées par l&rsquo;utilisateur en utilisant divers moteurs, comme ci-dessous :</p><pre><code>mysql &gt; SELECT SESSION_ID, SPACE, PATH, TABLE_SCHEMA, TABLE_NAME, SIZE, DATA_LENGTH, INDEX_LENGTH, ENGINE, PURPOSE FROM information_schema.GLOBAL_TEMPORARY_TABLES LEFT JOIN information_schema.INNODB_TEMP_TABLE_INFO USING(NAME) LEFT JOIN INFORMATION_SCHEMA.INNODB_SESSION_TEMP_TABLESPACES USING(SPACE)\G
+*************************** 1. row ***************************
+  SESSION_ID: 10
+      SPACE: 4243767290
+        PATH: ./#innodb_temp/temp_10.ibt
+TABLE_SCHEMA: test
+  TABLE_NAME: tmp3
+        SIZE: 98304
+DATA_LENGTH: 16384
+INDEX_LENGTH: 0
+      ENGINE: InnoDB
+    PURPOSE: USER
+*************************** 2. row ***************************
+  SESSION_ID: 13
+      SPACE: NULL
+        PATH: NULL
+TABLE_SCHEMA: test
+  TABLE_NAME: tmp41
+        SIZE: NULL
+DATA_LENGTH: 24
+INDEX_LENGTH: 1024
+      ENGINE: MyISAM
+    PURPOSE: NULL
+*************************** 3. row ***************************
+  SESSION_ID: 13
+      SPACE: NULL
+        PATH: NULL
+TABLE_SCHEMA: test
+  TABLE_NAME: tmp40
+        SIZE: NULL
+DATA_LENGTH: 128256
+INDEX_LENGTH: 0
+      ENGINE: MEMORY
+    PURPOSE: NULL
+*************************** 4. row ***************************
+  SESSION_ID: 13
+      SPACE: 4243767287
+        PATH: ./#innodb_temp/temp_7.ibt
+TABLE_SCHEMA: test
+  TABLE_NAME: tmp33
+        SIZE: 98304
+DATA_LENGTH: 16384
+INDEX_LENGTH: 0
+      ENGINE: InnoDB
+    PURPOSE: USER
+4 rows in set (0.01 sec)
+</code></pre><p>Semblable à ibtmp1, ces espaces de table ne sont pas tronqués en dehors du redémarrage de MySQL .</p><p>D&rsquo;après ce qui précède, nous pouvons voir que la connexion utilisateur 10 a une table temporaire InnoDB ouverte et que la connexion 13 a trois tables temporaires utilisant trois moteurs différents.</p><h3 id=tableaux-interne-temporaires>Tableaux Interne Temporaires</h3><p>Lorsqu&rsquo;une requête lourde est en cours d&rsquo;exécution dans la connexion 10, nous pouvons obtenir les vues suivantes :</p><pre><code>mysql &gt; show processlist\G
+...
+*************************** 2. row ***************************
+    Id: 10
+  User: msandbox
+  Host: localhost
+    db: test
+Command: Query
+  Time: 108
+  State: converting HEAP to ondisk
+  Info: SELECT pad, COUNT(*) FROM sbtest1 GROUP BY pad
+
+mysql &gt; select * from performance_schema.memory_summary_global_by_event_name where EVENT_NAME like '%temptable%'\G
+*************************** 1. row ***************************
+                  EVENT_NAME: memory/temptable/physical_disk
+                COUNT_ALLOC: 2
+                  COUNT_FREE: 0
+  SUM_NUMBER_OF_BYTES_ALLOC: 1073741824
+    SUM_NUMBER_OF_BYTES_FREE: 0
+              LOW_COUNT_USED: 0
+          CURRENT_COUNT_USED: 2
+            HIGH_COUNT_USED: 2
+    LOW_NUMBER_OF_BYTES_USED: 0
+CURRENT_NUMBER_OF_BYTES_USED: 1073741824
+  HIGH_NUMBER_OF_BYTES_USED: 1073741824
+*************************** 2. row ***************************
+                  EVENT_NAME: memory/temptable/physical_ram
+                COUNT_ALLOC: 12
+                  COUNT_FREE: 1
+  SUM_NUMBER_OF_BYTES_ALLOC: 1074790400
+    SUM_NUMBER_OF_BYTES_FREE: 1048576
+              LOW_COUNT_USED: 0
+          CURRENT_COUNT_USED: 11
+            HIGH_COUNT_USED: 11
+    LOW_NUMBER_OF_BYTES_USED: 0
+CURRENT_NUMBER_OF_BYTES_USED: 1073741824
+  HIGH_NUMBER_OF_BYTES_USED: 1073741824
+2 rows in set (0.00 sec)
+
+mysql &gt; select * from INFORMATION_SCHEMA.INNODB_SESSION_TEMP_TABLESPACES where id=10\G
+*************************** 1. row ***************************
+     ID: 10
+  SPACE: 4243767290
+   PATH: ./#innodb_temp/temp_10.ibt
+   SIZE: 2399141888
+  STATE: ACTIVE
+PURPOSE: INTRINSIC
+*************************** 2. row ***************************
+     ID: 10
+  SPACE: 4243767289
+   PATH: ./#innodb_temp/temp_9.ibt
+   SIZE: 98304
+  STATE: ACTIVE
+PURPOSE: USER
+2 rows in set (0.00 sec)
+</code></pre><p>D&rsquo;après ce qui précède, nous pouvons voir que la requête a créé une énorme table temporaire, qui a d&rsquo;abord dépassé la variable <a href=https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_temptable_max_ram>temptable_max_ram </a>et a continué à croître dans un fichier mmappé (toujours moteur TempTable ), mais comme <a href=https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_temptable_max_mmap>temptable_max_mmap a également</a> été atteint, la table a dû être convertie en on- table intrinsèque du disque InnoDB . Le même pool de tables InnoDB temporaires est utilisé dans ce cas, mais nous pouvons voir les informations sur l&rsquo;objectif, selon si la table est externe (créée par l&rsquo;utilisateur) ou interne.</p><p>Le fichier mmappé n&rsquo;est pas visible dans le système de fichiers car il a un état supprimé, mais peut être surveillé avec lsof :</p><pre><code>mysqld  862655 przemek   52u      REG              253,3  133644288  52764900 /data/sandboxes/msb_ps8_0_23/tmp/mysql_temptable.8YIGV8 (deleted)
+</code></pre><p>Il est important de savoir ici que tant que l&rsquo;espace mmappé n&rsquo;a pas dépassé, le compteur <a href=https://dev.mysql.com/doc/refman/8.0/en/server-status-variables.html#statvar_Created_tmp_disk_tables>Created_tmp_disk_tables</a> n&rsquo;est pas incrémenté même si un fichier est créé sur le disque ici.</p><p>De plus, dans Percona Server pour MySQL , le journal lent étendu, la taille des tables temporaires lorsque le moteur TempTable est utilisé, n&rsquo;est pas pris en compte : <a href=https://jira.percona.com/browse/PS-5168>https://jira.percona.com/browse/PS-5168 </a>- il affiche " Tmp_table_sizes : 0".</p><p>Dans certains cas d&rsquo;utilisation, des problèmes sont signalés avec TempTable . Il est possible de revenir à l&rsquo;ancien moteur de mémoire via le variable <a href=https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_internal_tmp_mem_storage_engine>internal_tmp_mem_storage_engine</a> si nécessaire.</p><h2 id=les-références>Les références</h2><ul><li><a href=https://www.percona.com/blog/2017/12/04/internal-temporary-tables-mysql-5-7/>https://www.percona.com/blog/2017/12/04/internal-temporary-tables-mysql-5-7/</a></li><li><a href="https://dev.mysql.com/worklog/task/?id=7682">https://dev.mysql.com/worklog/task/?id=7682</a></li><li><a href=https://dev.mysql.com/doc/refman/5.7/en/innodb-information-schema-temp-table-info.html>https://dev.mysql.com/doc/refman/5.7/en/innodb-information-schema-temp-table-info.html</a></li><li><a href="https://bugs.mysql.com/bug.php?id=96236">https://bugs.mysql.com/bug.php?id=96236</a></li><li><a href=https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#other-information>https://www.percona.com/doc/percona-server/8.0/diagnostics/slow_extended.html#other-information</a></li><li><a href=https://dev.mysql.com/doc/refman/8.0/en/internal-temporary-tables.html>https://dev.mysql.com/doc/refman/8.0/en/internal-temporary-tables.html</a></li></ul><ul class=pa0><li class=list><a href=/tags/mysql class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">MySQL</a></li></ul><div class="mt6 instapaper_ignoref"></div></div></article></main><footer class="bg-dark-blue bottom-0 w-100 pa3" role=contentinfo><div class="flex justify-between"><a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href=https://www.lesamisdepercona.fr/>&copy; Les amis de Percona 2022</a><div></div></div></footer></body></html>
