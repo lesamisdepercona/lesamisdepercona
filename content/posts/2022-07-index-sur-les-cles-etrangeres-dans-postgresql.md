@@ -10,8 +10,6 @@ images = ["thumbnail2022/article07.jpg"]
 slug = "index-sur-les-cles-etrangeres-dans-postgresql"
 +++
 
-****
-
 ![thumbnail](/thumbnail2022/article07.jpg)
 
 *Bienvenue sur un blog hebdomadaire où je peux répondre (comme, vraiment répondre) à certaines des questions que j'ai vues dans les webinaires que j'ai présentés récemment. Si vous avez manqué le dernier, [PostgreSQL Performance Tuning Secrets ](https://www.brighttalk.com/webcast/18708/513655?utm_source=Percona&utm_medium=brighttalk&utm_campaign=513655), il peut être utile d'en écouter une partie avant ou après avoir lu cet article. Chaque semaine, je vais plonger profondément dans une question. Faites-moi savoir ce que vous pensez dans les commentaires.*
@@ -32,7 +30,7 @@ Lorsque Postgres utilise un index, il doit ouvrir le fichier d'index, trouver le
 ## Avec tout cela, on peut penser que les index FK sont toujours mauvais et ne jamais les utiliser sur une table enfant, n'est-ce pas?
 Eh bien, ce n'est pas vrai non plus et il y a de nombreuses circonstances où ils sont utiles et nécessaires, par exemple, l'image ci-dessous a deux autres tableaux, " Customer" et " Order" :
 
-![image01](/posts/2022/article07/img02.png)
+![image02](/posts/2022/article07/img02.png)
 
 Il peut être pratique d'avoir un index sur la table enfant " *Order-> CustomerId* " car il est courant d'afficher toutes les commandes d'un certain utilisateur et la colonne "*CustomerId* " de la table "Order" sera utilisée assez fréquemment comme clé de recherche .
 
