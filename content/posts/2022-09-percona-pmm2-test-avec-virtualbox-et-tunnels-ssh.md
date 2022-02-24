@@ -18,7 +18,7 @@ Cet article de blog décrira une méthode pour tester PMM2 à l'aide de la Virtu
 
 L'architecture PMM2 se compose de 2+1 composants:
 
-![image01](/posts/2022/article07/img01.png)
+![image01](/posts/2022/article09/img01.png)
 
 Deux composants s'exécutent sur votre infrastructure: les agents PMM et le serveur PMM. Les agents collectent les métriques au niveau de la base de données et du système d'exploitation. PMM Server s'occupe du traitement, du stockage, du regroupement et de l'affichage de ces métriques. Il peut également effectuer des opérations supplémentaires telles que la capture de métriques de bases de données sans serveur, des sauvegardes et l'envoi d'alertes (les deux dernières fonctionnalités sont en préversion technique au moment de la rédaction de cet article). L'autre composant pour compléter la formule est la plate-forme Percona, qui ajoute plus de fonctionnalités au PMM, des conseillers au DBaaS. Avis de non-responsabilité: la plate-forme Percona est en version préliminaire avec des fonctionnalités limitées; elle convient aux premiers utilisateurs, au développement et aux tests. Outre les fonctionnalités étendues ajoutées à PMM, la plateforme Percona rassemble les distributions de MySQL, PostgreSQL et MongoDB , y compris une gamme d'outils open source pour la sauvegarde, la disponibilité et la gestion des données. Vous pouvez en savoir plus sur la plateforme [ici ](https://www.percona.com/software/percona-platform).
 
@@ -254,11 +254,11 @@ roles: [
 ![image05](/posts/2022/article09/img05.jpg)
 
 
-Nous ne pouvons pas installer les agents car nous n'avons pas accès à notre environnement de test PMM à partir des serveurs de base de données. Au lieu de cela, nous allons configurer les deux services en tant qu'instances distantes. Allez dans le menu "Configuration" ![image06](/posts/2022/article09/img-06-small.png), sélectionnez "Inventaire PMM" ![image07](/posts/2022/article09/img-07-small.jpeg) , puis "Ajouter une instance" ![image08](/posts/2022/article09/img-08-small.jpeg) . Choisissez ensuite MySQL Ajouter une instance distante.
+Nous ne pouvons pas installer les agents car nous n'avons pas accès à notre environnement de test PMM à partir des serveurs de base de données. Au lieu de cela, nous allons configurer les deux services en tant qu'instances distantes. Allez dans le menu "Configuration" ![image06](/posts/2022/article09/img-06-small.png =100x100), sélectionnez "Inventaire PMM" ![image07](/posts/2022/article09/img-07-small.jpeg =100x100) , puis "Ajouter une instance" ![image08](/posts/2022/article09/img-08-small.jpeg =100x100) . Choisissez ensuite MySQL Ajouter une instance distante.
 
 Complétez les champs suivants : 
 ```
-![image09](/posts/2022/article09/img09.jpg)
+![image09](/posts/2022/article09/img09.jpg =300x300)
 ```
 
 Nom d'hôte : 192.168.56.1 (Il s'agit de l'adresse interne Host-Only VirtualBox ) 
@@ -271,13 +271,13 @@ Et appuyez sur le bouton. Il vérifiera la connectivité et, si tout est correct
 
 Nous utiliserons un processus similaire pour MongoDB :
 
-![image10](/posts/2022/article09/img10.jpg)
+![image10](/posts/2022/article09/img10.jpg =300x300)
 
 Voici les champs que vous devez remplir avec les informations correctes : Nom d'hôte : 192.168.56.1 (Encore une fois, l'adresse interne de VirtualBox Host-Only ) 
 
 Nom du service : Port MongoDB
 
-` `: 27017 Nom d'utilisateur : pmm\_mongodb 
+` `: 27017 Nom d'utilisateur : pmm_mongodb 
 
 Mot de passe : <mot de passe>
 
