@@ -254,7 +254,7 @@ roles: [
 ![image05](/posts/2022/article09/img05.jpg)
 
 
-Nous ne pouvons pas installer les agents car nous n'avons pas accès à notre environnement de test PMM à partir des serveurs de base de données. Au lieu de cela, nous allons configurer les deux services en tant qu'instances distantes. Allez dans le menu "Configuration" ![image06](/posts/2022/article09/img-06-small.png =100x100), sélectionnez "Inventaire PMM" ![image07](/posts/2022/article09/img-07-small.jpeg =100x100) , puis "Ajouter une instance" ![image08](/posts/2022/article09/img-08-small.jpeg =100x100) . Choisissez ensuite MySQL Ajouter une instance distante.
+Nous ne pouvons pas installer les agents car nous n'avons pas accès à notre environnement de test PMM à partir des serveurs de base de données. Au lieu de cela, nous allons configurer les deux services en tant qu'instances distantes. Allez dans le menu "Configuration" <img src="/posts/2022/article09/img-06-small.png" width="200">, sélectionnez "Inventaire PMM" <img src="/posts/2022/article09/img-07-small.jpeg" width="200">, puis "Ajouter une instance" <img src="/posts/2022/article09/img-08-small.jpeg" width="200">. Choisissez ensuite MySQL Ajouter une instance distante.
 
 Complétez les champs suivants : 
 ```
