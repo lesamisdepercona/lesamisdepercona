@@ -262,9 +262,13 @@ Complétez les champs suivants :
 
 
 Hostname : 192.168.56.1 (Il s'agit de l'adresse interne Host-Only VirtualBox)
+
 Service name: MySQL8
+
 Port: 3306
+
 Username: pmm
+
 Password: password
 
 Et appuyez sur le bouton. Il vérifiera la connectivité et, si tout est correct, le service MySQL sera ajouté à l'inventaire. S'il y a une erreur, vérifiez que la connexion ssh est toujours ouverte et que vous avez entré les informations d'identification correctes. Assurez-vous que l'hôte que vous avez spécifié pour créer l’utilisateur MySQL est correct.
@@ -276,9 +280,13 @@ Nous utiliserons un processus similaire pour MongoDB :
 Voici les champs que vous devez remplir avec les informations correctes : 
 
 Hostname : 192.168.56.1 (Encore une fois, l'adresse interne de VirtualBox Host-Only )
+
 Service name: MongoDB
+
 Port: 27017
+
 Username: pmm_mongodb
+
 Password: password
 
 Et appuyez sur le bouton. Il vérifiera la connectivité et, si tout est correct, le service MongoDB sera ajouté à l'inventaire. S'il y a une erreur, revérifiez à nouveau que la connexion ssh est ouverte et que vous avez saisi les informations d'identification correctes. Vous pouvez également utiliser l'application cliente MongoDB pour vérifier l'accès.
