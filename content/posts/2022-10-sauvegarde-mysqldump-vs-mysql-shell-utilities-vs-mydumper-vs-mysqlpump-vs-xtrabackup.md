@@ -1,5 +1,5 @@
 ﻿+++
-title = "Comparaison des performances de sauvegarde entre mysqldump vs MySQL Shell Utilities vs mydumper vs mysqlpump vs XtraBackup"
+title = "Comparaison entre mysqldump vs MySQL Shell Utilities vs mydumper vs mysqlpump vs XtraBackup"
 description = "Comparaison des performances d'une sauvegarde à partir d'une base de données MySQL à l'aide de mysqldump vs MySQL Shell Utilities vs mydumper vs mysqlpump vs XtraBackup"
 author = "Francis"
 date = 2022-03-08
