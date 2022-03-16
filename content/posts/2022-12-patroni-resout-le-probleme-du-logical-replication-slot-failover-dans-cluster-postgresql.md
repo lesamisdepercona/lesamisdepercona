@@ -1,6 +1,6 @@
 ﻿+++
 title = "Comment Patroni résout le problème du Logical Replication Slot Failover dans un cluster PostgreSQL"
-description = "Le basculement de l'emplacement de réplication logique a toujours été le problème lors de l'utilisation de la réplication logique dans PostgreSQL. La bonne nouvelle est que les développeurs et les mainteneurs de Patroni ont résolu ce problème à partir de la version 2.1.0"
+description = "Le basculement de l'emplacement de réplication logique a toujours été le problème lors de l'utilisation de la réplication logique dans PostgreSQL. La bonne nouvelle est que les développeurs et les mainteneurs de Patroni ont résolu ce problème"
 author = "Francis"
 date = 2022-03-15
 tags = ['PostgreSQL']
