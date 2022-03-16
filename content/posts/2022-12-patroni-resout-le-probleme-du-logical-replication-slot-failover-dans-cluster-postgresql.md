@@ -157,3 +157,4 @@ L'emplacement de réplication logique n'est conceptuellement possible que sur l'
 - **hot_standby_feedback** doit être activé sur tous les nœuds de secours où l'emplacement de réplication logique doit être maintenu.
 - paramètre Patroni **postgresql.use_slots** doit être activé pour s'assurer que chaque nœud de secours utilise un emplacement sur le nœud principal.
 
+Source : [Percona](https://www.percona.com/blog/how-patroni-addresses-the-problem-of-the-logical-replication-slot-failover-in-a-postgresql-cluster/)
